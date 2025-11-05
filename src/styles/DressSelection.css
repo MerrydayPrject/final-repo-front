@@ -168,7 +168,7 @@
     position: relative;
     width: calc(50% - 6px);
     padding-top: calc((50% - 6px) * 0.7);
-    background: #cecccc;
+    background: #ebe8e8;
     border-radius: 0;
     overflow: hidden;
     cursor: grab;

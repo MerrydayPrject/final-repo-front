@@ -82,6 +82,7 @@ function App() {
                 </>
             )}
             <Header
+                currentPage={currentPage}
                 onBackToMain={currentPage !== 'main' ? handleBackToMain : null}
                 onMenuClick={handleMenuClick}
                 onLogoClick={handleLogoClick}

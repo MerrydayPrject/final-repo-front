@@ -1,7 +1,7 @@
 import React from 'react'
 import '../styles/Header.css'
 
-const Header = ({ onBackToMain, onMenuClick, onLogoClick }) => {
+const Header = ({ onBackToMain, onMenuClick, onLogoClick, currentPage }) => {
     const handleLogoClick = () => {
         if (onLogoClick) {
             onLogoClick()
@@ -17,7 +17,7 @@ const Header = ({ onBackToMain, onMenuClick, onLogoClick }) => {
     }
 
     return (
-        <header className="header">
+        <header className={`header ${currentPage !== 'main' ? 'header-in-menu' : ''}`}>
             <div className="header-content">
                 <div className="logo-container">
                     <h1 className="logo-text" onClick={handleLogoClick} style={{ cursor: 'pointer' }}>

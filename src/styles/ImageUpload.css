@@ -28,7 +28,7 @@
 }
 
 .upload-area {
-    background: #f8f6f6;
+    background: #f8f6f683;
     border: 15px solid #f8f8f800;
     border-radius: 2px;
     padding: 40px 20px;
@@ -55,7 +55,7 @@
 }
 
 .upload-area:hover {
-    border-color: #49111c;
+    border-color: #a9927d;
     background: #c9c4c6;
     transform: translateY(-2px);
 }
@@ -95,9 +95,9 @@
 
 .preview-container {
     position: relative;
-    background: #ffffff;
+    background: #3a3a3a;
     border-radius: 2px;
-    padding: 20px;
+    padding: 0;
     /* 사진 액자 프레임 효과 */
     border: 15px solid #f8f8f8fb;
     box-shadow:
@@ -113,7 +113,7 @@
     min-height: 0;
     height: 100%;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
     transition: var(--transition);
     overflow: hidden;
@@ -127,9 +127,9 @@
 
 .preview-image {
     max-width: 100%;
-    max-height: 120%;
-    width: auto;
-    height: auto;
+    max-height: 100%;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
     border-radius: 0;
     pointer-events: none;
@@ -159,7 +159,7 @@
     position: absolute;
     right: 12px;
     bottom: 12px;
-    background: #28af06;
+    background: #4c956c;
     color: white;
     padding: 10px 16px;
     border-radius: 8px;
