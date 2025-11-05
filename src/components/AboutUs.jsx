@@ -136,8 +136,8 @@ const AboutUs = () => {
                         >
                             <h3 className="about-us-main-text">AI 맞춤 체형 피팅</h3>
                             <p className="about-us-description">
-                                다양한 체형 카드를 선택하면 AI가 업로드한 이미지를 해당 체형에 맞게 조정해
-                                드레스 핏을 현실감 있게 시뮬레이션합니다
+                                사용자 이미지를 업로드하면 AI가 체형을 분석해 어울리는 드레스를 추천하고,
+                                보정 탭에서 AI 기반으로 자연스러운 이미지 보정도 제공합니다
                             </p>
                         </div>
                     </div>
