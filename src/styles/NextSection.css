@@ -1,0 +1,30 @@
+.next-section {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-white);
+    padding: 100px 20px;
+}
+
+.next-section-content {
+    max-width: 1400px;
+    width: 100%;
+    text-align: center;
+}
+
+.next-section-title {
+    font-size: 72px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin: 0 0 40px 0;
+    letter-spacing: 2px;
+}
+
+.next-section-description {
+    font-size: 18px;
+    color: var(--text-light);
+    line-height: 1.8;
+    margin: 0;
+}

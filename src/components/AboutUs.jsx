@@ -57,7 +57,13 @@ const AboutUs = () => {
                             const isVisible = entry.isIntersecting && entry.intersectionRatio >= 0.5
                             setVisibleItems((prev) => {
                                 const newVisible = [...prev]
-                                newVisible[index] = isVisible
+                                // 마지막 텍스트(인덱스 2)는 한 번 visible이 되면 계속 유지
+                                if (index === 2 && isVisible) {
+                                    newVisible[index] = true
+                                } else if (index !== 2) {
+                                    // 다른 텍스트는 화면에 있을 때만 표시
+                                    newVisible[index] = isVisible
+                                }
                                 return newVisible
                             })
                         })
@@ -106,33 +112,32 @@ const AboutUs = () => {
                             ref={textItem1Ref}
                             className={`about-us-text-item ${visibleItems[0] ? 'visible' : ''}`}
                         >
-                            <h3 className="about-us-main-text">AI 자동 피팅을 체험 해보세요. 1</h3>
+                            <h3 className="about-us-main-text">AI 자동 피팅 체험</h3>
                             <p className="about-us-description">
-                                사진 한 장만 업로드하면 AI가 당신에게 가장 잘 어울리는 웨딩드레스를 찾아드립니다.
-                                다양한 스타일의 드레스를 비교하고, 실제 착용 모습을 미리 확인해보세요.
-                                당신만의 완벽한 웨딩드레스를 찾는 여정을 시작하세요.
+                                사진 한 장만 업로드하면 AI가 당신에게 가장 잘 어울리는 웨딩드레스를 찾아보세요
+                                다양한 스타일의 드레스를 비교하고, 실제 착용 모습을 미리 확인해보세요
+                                당신만의 완벽한 웨딩드레스를 찾는 여정을 시작하세요
                             </p>
                         </div>
                         <div
                             ref={textItem2Ref}
                             className={`about-us-text-item ${visibleItems[1] ? 'visible' : ''}`}
                         >
-                            <h3 className="about-us-main-text">AI 자동 피팅을 체험 해보세요. 2</h3>
+                            <h3 className="about-us-main-text">3D 실감 피팅 체험</h3>
                             <p className="about-us-description">
-                                사진 한 장만 업로드하면 AI가 당신에게 가장 잘 어울리는 웨딩드레스를 찾아드립니다.
-                                다양한 스타일의 드레스를 비교하고, 실제 착용 모습을 미리 확인해보세요.
-                                당신만의 완벽한 웨딩드레스를 찾는 여정을 시작하세요.
+                                AI가 결과 이미지를 입체감 있는 3D 형태로 변환해
+                                드레스의 실루엣과 볼륨을 현실감 있게 표현합니다
+                                360도 각도에서 나만의 웨딩드레스 핏을 확인해보세요
                             </p>
                         </div>
                         <div
                             ref={textItem3Ref}
                             className={`about-us-text-item ${visibleItems[2] ? 'visible' : ''}`}
                         >
-                            <h3 className="about-us-main-text">AI 자동 피팅을 체험 해보세요. 3</h3>
+                            <h3 className="about-us-main-text">AI 맞춤 체형 피팅</h3>
                             <p className="about-us-description">
-                                사진 한 장만 업로드하면 AI가 당신에게 가장 잘 어울리는 웨딩드레스를 찾아드립니다.
-                                다양한 스타일의 드레스를 비교하고, 실제 착용 모습을 미리 확인해보세요.
-                                당신만의 완벽한 웨딩드레스를 찾는 여정을 시작하세요.
+                                다양한 체형 카드를 선택하면 AI가 업로드한 이미지를 해당 체형에 맞게 조정해
+                                드레스 핏을 현실감 있게 시뮬레이션합니다
                             </p>
                         </div>
                     </div>

@@ -1,6 +1,6 @@
 .about-us-section {
     width: 100%;
-    min-height: 400vh;
+    min-height: 500vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -46,15 +46,18 @@
     flex-direction: column;
     padding-right: 40px;
     align-items: center;
-    justify-content: center;
+    min-height: 100vh;
+    position: relative;
 }
 
 .about-us-text-content {
     display: flex;
     flex-direction: column;
     gap: 300px;
-    padding: 300px 0;
+    padding: 300px 0 0 0;
     width: 100%;
+    flex: 1;
+    justify-content: flex-start;
 }
 
 .about-us-text-item {
@@ -77,6 +80,19 @@
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
+}
+
+/* 마지막 텍스트 아이템 고정 - 더 아래 스크롤해도 유지 */
+.about-us-text-content {
+    position: relative;
+}
+
+.about-us-text-item:last-child.visible {
+    position: sticky;
+    top: 400px;
+    z-index: 10;
+    align-self: center;
+    margin-top: 200px;
 }
 
 .about-us-main-text {

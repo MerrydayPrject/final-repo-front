@@ -6,6 +6,7 @@ import CustomUpload from './components/CustomUpload'
 import CustomResult from './components/CustomResult'
 import VideoBackground from './components/VideoBackground'
 import AboutUs from './components/AboutUs'
+import NextSection from './components/NextSection'
 import Modal from './components/Modal'
 import { autoMatchImage, removeBackground, customMatchImage } from './utils/api'
 import './styles/App.css'
@@ -245,6 +246,7 @@ function App() {
                 <>
                     <VideoBackground onNavigateToFitting={handleNavigateToFitting} />
                     <AboutUs />
+                    <NextSection />
                 </>
             )}
             <Header onBackToMain={showFittingPage ? handleBackToMain : null} onMenuClick={handleMenuClick} />
