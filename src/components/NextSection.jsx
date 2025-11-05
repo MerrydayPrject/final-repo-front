@@ -56,7 +56,7 @@ const NextSection = () => {
     return (
         <section ref={sectionRef} className={`next-section ${isVisible ? 'visible' : ''}`}>
             <div className="next-section-content">
-                <h2 className="next-section-title">다음 섹션</h2>
+                <h2 className="next-section-title">Style & Fit</h2>
             </div>
             <div className="next-section-video-banner">
                 <video

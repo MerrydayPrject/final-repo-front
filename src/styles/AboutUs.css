@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Great+Vibes&family=Dancing+Script:wght@400;500;600;700&display=swap');
+
 .about-us-section {
     width: 100%;
     min-height: 380vh;
@@ -22,13 +24,15 @@
 
 .about-us-title {
     font-size: 72px;
-    font-weight: 700;
+    font-weight: 400;
+    font-family: 'Playfair Display', serif;
     color: var(--text-dark);
     text-align: center;
     margin: 0 0 60px 0;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
     width: 100%;
     max-width: 1400px;
+    font-style: italic;
 }
 
 .about-us-content-wrapper {
