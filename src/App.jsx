@@ -4,16 +4,14 @@ import ImageUpload from './components/ImageUpload'
 import DressSelection from './components/DressSelection'
 import CustomUpload from './components/CustomUpload'
 import CustomResult from './components/CustomResult'
-import IntroAnimation from './components/IntroAnimation'
 import VideoBackground from './components/VideoBackground'
+import AboutUs from './components/AboutUs'
 import Modal from './components/Modal'
 import { autoMatchImage, removeBackground, customMatchImage } from './utils/api'
 import './styles/App.css'
 
 function App() {
     const [showFittingPage, setShowFittingPage] = useState(false)
-    const [hasShownIntro, setHasShownIntro] = useState(false)
-    const [skipIntro, setSkipIntro] = useState(false) // 인트로 스킵 여부
     const [uploadedImage, setUploadedImage] = useState(null)
     const [selectedDress, setSelectedDress] = useState(null)
     const [isProcessing, setIsProcessing] = useState(false)
@@ -35,6 +33,15 @@ function App() {
     // 이미지 업로드 모달 상태
     const [imageUploadModalOpen, setImageUploadModalOpen] = useState(false)
     const [pendingDress, setPendingDress] = useState(null)
+
+    // 새로고침 시 스크롤을 최상단으로 이동
+    useEffect(() => {
+        window.scrollTo(0, 0)
+        // 페이지 로드 시 스크롤 위치 복원 방지
+        if ('scrollRestoration' in window.history) {
+            window.history.scrollRestoration = 'manual'
+        }
+    }, [])
 
     const handleImageUpload = (image) => {
         setUploadedImage(image)
@@ -65,13 +72,18 @@ function App() {
 
     const handleBackToMain = () => {
         setShowFittingPage(false)
-        setSkipIntro(true) // 피팅에서 돌아올 때는 인트로 스킵
         setActiveTab('general')
         handleReset()
     }
 
-    const handleIntroComplete = () => {
-        setHasShownIntro(true)
+    const handleMenuClick = (menuType) => {
+        if (menuType === 'general' || menuType === 'custom') {
+            setShowFittingPage(true)
+            setActiveTab(menuType)
+        } else if (menuType === 'ai') {
+            // AI 체형 피팅 기능은 추후 구현
+            openModal('AI 체형 피팅 기능은 준비 중입니다.')
+        }
     }
 
     // 드레스 드롭으로 매칭 실행
@@ -231,11 +243,11 @@ function App() {
         <div className="app">
             {!showFittingPage && (
                 <>
-                    {!hasShownIntro && !skipIntro && <IntroAnimation onComplete={handleIntroComplete} />}
-                    <VideoBackground onNavigateToFitting={handleNavigateToFitting} skipIntro={skipIntro || hasShownIntro} />
+                    <VideoBackground onNavigateToFitting={handleNavigateToFitting} />
+                    <AboutUs />
                 </>
             )}
-            <Header onBackToMain={showFittingPage ? handleBackToMain : null} />
+            <Header onBackToMain={showFittingPage ? handleBackToMain : null} onMenuClick={handleMenuClick} />
 
             {showFittingPage && (
                 <main className="main-content">

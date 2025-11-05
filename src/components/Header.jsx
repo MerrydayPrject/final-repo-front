@@ -1,18 +1,33 @@
 import React from 'react'
 import '../styles/Header.css'
 
-const Header = ({ onBackToMain }) => {
+const Header = ({ onBackToMain, onMenuClick }) => {
     return (
-        <header className={`header ${onBackToMain ? 'header-fitting' : ''}`}>
+        <header className="header">
             <div className="header-content">
-                {onBackToMain && (
-                    <button className="back-to-main-button" onClick={onBackToMain}>
-                        메인으로
-                    </button>
-                )}
-                <div className="logo">
-                    <h1 className="logo-text">Marry Day</h1>
+                <div className="logo-container">
+                    <h1 className="logo-text">Marryday</h1>
                 </div>
+                <nav className="header-menu">
+                    <button
+                        className="menu-item"
+                        onClick={() => onMenuClick && onMenuClick('general')}
+                    >
+                        일반피팅
+                    </button>
+                    <button
+                        className="menu-item"
+                        onClick={() => onMenuClick && onMenuClick('custom')}
+                    >
+                        커스텀피팅
+                    </button>
+                    <button
+                        className="menu-item"
+                        onClick={() => onMenuClick && onMenuClick('ai')}
+                    >
+                        AI 체형 피팅
+                    </button>
+                </nav>
             </div>
         </header>
     )
