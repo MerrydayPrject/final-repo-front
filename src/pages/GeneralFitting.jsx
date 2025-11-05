@@ -75,10 +75,12 @@ const GeneralFitting = ({ onBackToMain }) => {
                 const response = await getDresses()
 
                 if (response.success && response.data) {
+                    // 리스트 이미지만 백엔드 프록시로 교체 (디자인/카테고리 로직 수정 없음)
+                    const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
                     const transformedDresses = response.data.map((dress) => ({
                         id: dress.id,
                         name: dress.image_name.replace(/\.[^/.]+$/, ''),
-                        image: `/images/${dress.image_name}`,
+                        image: `${apiBaseUrl}/api/images/${dress.image_name}`,
                         description: `${dress.style} 스타일의 드레스`,
                         category: styleToCategory(dress.style)
                     }))
