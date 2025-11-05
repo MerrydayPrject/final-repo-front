@@ -35,7 +35,7 @@ const VideoBackground = ({ onNavigateToFitting }) => {
                 loop
                 playsInline
             >
-                <source src="/Image/Main-video.mp4" type="video/mp4" />
+                <source src="" type="video/mp4" />
             </video>
             <div className="video-background-overlay"></div>
             <div className="video-text-overlay no-delay">

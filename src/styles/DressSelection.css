@@ -4,7 +4,7 @@
     display: flex;
     flex-direction: column;
     background: white;
-    padding: 12px 0 0;
+    padding: 30px 0 0;
     overflow: hidden;
 }
 
@@ -12,14 +12,24 @@
 .category-buttons-wrapper {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
     margin-bottom: 20px;
-    padding: 0 16px;
+    margin-top: 20px;
+    padding: 0;
     flex-shrink: 0;
     justify-content: center;
     width: 100%;
     box-sizing: border-box;
     overflow: visible;
+    position: relative;
+}
+
+.category-nav-button.prev {
+    margin-right: 50px;
+}
+
+.category-nav-button.next {
+    margin-left: 50px;
 }
 
 /* 카테고리 네비게이션 버튼 */
@@ -27,9 +37,9 @@
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    border: 2px solid #f4acb7;
-    background: white;
-    color: #f4acb7;
+    border: 2px solid #2c2c2c;
+    background: #000000;
+    color: white;
     font-size: 24px;
     font-weight: bold;
     cursor: pointer;
@@ -39,11 +49,14 @@
     justify-content: center;
     flex-shrink: 0;
     line-height: 1;
-    padding: 0 0 3px 0;
+    padding: 0;
+    margin: 0;
+    position: relative;
+    z-index: 2;
 }
 
 .category-nav-button:hover:not(:disabled) {
-    background: #f4acb7;
+    background: #2c2c2c;
     color: white;
     transform: scale(1.1);
 }
@@ -57,7 +70,7 @@
 .category-buttons {
     display: flex;
     gap: 12px;
-    flex: 1;
+    flex: 0 1 auto;
     min-width: 0;
     justify-content: center;
     flex-wrap: nowrap;
@@ -65,7 +78,10 @@
     overflow-y: visible;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    padding: 4px 0;
+    padding: 0;
+    margin: 0;
+    position: relative;
+    z-index: 1;
 }
 
 .category-buttons::-webkit-scrollbar {
@@ -87,14 +103,14 @@
 }
 
 .category-button:hover {
-    border-color: #f4acb7;
-    background: rgba(236, 72, 153, 0.05);
+    border-color: #2c2c2c;
+    background: rgba(44, 44, 44, 0.05);
 }
 
 .category-button.active {
-    background: #f4acb7;
+    background: #2c2c2c;
     color: white;
-    border-color: #f4acb7;
+    border-color: #2c2c2c;
 }
 
 /* 커스텀 메시지 */
@@ -111,11 +127,12 @@
     position: relative;
     flex: 1 1 auto;
     min-height: 0;
-    height: 100%;
+    height: 85%;
     display: flex;
     gap: 16px;
     padding-right: 8px;
     padding-left: 50px;
+    pointer-events: auto;
 }
 
 /* 드레스 그리드 컨테이너 - 세로 스크롤 숨김 */
@@ -129,6 +146,7 @@
     /* 스크롤바 숨김 */
     scrollbar-width: none;
     -ms-overflow-style: none;
+    pointer-events: auto;
 }
 
 .dress-grid-container::-webkit-scrollbar {
@@ -137,28 +155,30 @@
 
 .dress-grid {
     display: flex;
-    flex-direction: column;
-    gap: 8px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 12px;
     width: 100%;
-    align-items: center;
+    align-items: flex-start;
+    justify-content: center;
+    pointer-events: auto;
 }
 
 .dress-card {
     position: relative;
-    width: 60%;
-    padding-top: 40%;
-    background: var(--bg-white);
-    border-radius: var(--border-radius);
+    width: calc(50% - 6px);
+    padding-top: calc((50% - 6px) * 0.7);
+    background: #cecccc;
+    border-radius: 0;
     overflow: hidden;
     cursor: grab;
     transition: var(--transition);
     box-shadow: var(--shadow-sm);
-    border: 3px solid transparent;
     flex-shrink: 0;
 }
 
 .dress-card:active {
-    cursor: grabbing;
+    cursor: grab;
 }
 
 .dress-card:hover {
@@ -171,7 +191,7 @@
 }
 
 .dress-card.selected {
-    border-color: #f4acb7;
+    border-color: #2c2c2c;
     box-shadow: var(--shadow-lg);
 }
 
@@ -183,17 +203,37 @@
     height: 100%;
     object-fit: cover;
     transition: var(--transition);
+    cursor: grab;
 }
 
 .dress-card:hover .dress-image {
     transform: scale(1.05);
 }
 
+/* 드레스 선택/드래그 중에도 grab 커서 강제 유지 */
+.draggable,
+.draggable * {
+    cursor: grab !important;
+    pointer-events: auto;
+}
+
+.draggable:active,
+.draggable:active * {
+    cursor: grabbing !important;
+}
+
+/* 이미지의 브라우저 기본 드래그(🚫커서)를 비활성화 */
+.dress-image {
+    -webkit-user-drag: none;
+    user-drag: none;
+    pointer-events: auto;
+}
+
 .selected-badge {
     position: absolute;
     top: 10px;
     right: 10px;
-    background: #f4acb7;
+    background: #2c2c2c;
     color: white;
     width: 32px;
     height: 32px;
@@ -256,20 +296,20 @@
     width: 32px;
     height: 32px;
     background: white;
-    border: 2px solid #f4acb7;
+    border: 2px solid #2c2c2c;
     border-radius: 4px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 14px;
-    color: #f4acb7;
+    color: #2c2c2c;
     transition: all 0.3s ease;
     flex-shrink: 0;
 }
 
 .slider-arrow:hover {
-    background: #f4acb7;
+    background: #2c2c2c;
     color: white;
     transform: scale(1.1);
 }
@@ -291,19 +331,19 @@
     position: absolute;
     width: 20px;
     height: 20px;
-    background: #f4acb7;
+    background: #2c2c2c;
     border: 3px solid white;
     border-radius: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     cursor: grab;
-    box-shadow: 0 2px 8px rgba(236, 72, 153, 0.3);
+    box-shadow: 0 2px 8px rgba(44, 44, 44, 0.3);
     transition: all 0.2s ease;
 }
 
 .slider-handle:hover {
     transform: translate(-50%, -50%) scale(1.2);
-    box-shadow: 0 4px 12px rgba(236, 72, 153, 0.5);
+    box-shadow: 0 4px 12px rgba(44, 44, 44, 0.5);
 }
 
 .slider-handle:active {

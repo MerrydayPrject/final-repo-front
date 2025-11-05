@@ -19,8 +19,8 @@
 /* 피팅 컨테이너 레이아웃 */
 .fitting-container {
     width: 100%;
-    max-width: 1400px;
-    height: calc(100vh - 160px);
+    max-width: 1800px;
+    height: calc(100vh - 200px);
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -30,11 +30,22 @@
 /* 콘텐츠 래퍼 - 좌우 분할 레이아웃 */
 .content-wrapper {
     display: flex;
-    gap: 5px;
-    padding: 70px 10px 0;
+    gap: 10px;
+    padding: 40px 60px 0;
     flex: 1;
     min-height: 0;
     overflow: hidden;
+    position: relative;
+}
+
+.content-wrapper.show-result {
+    flex-direction: column;
+    padding: 0;
+}
+
+.content-wrapper.show-result>.general-fitting-header {
+    width: 100%;
+    margin-bottom: 20px;
 }
 
 .left-container {
@@ -45,6 +56,66 @@
     min-height: 0;
     gap: 12px;
     overflow: hidden;
+}
+
+.general-fitting-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    margin-bottom: 20px;
+    gap: 15px;
+}
+
+.general-fitting-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #2c2c2c;
+    text-align: left;
+    margin: 0;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.tab-guide-text {
+    font-size: 16px;
+    color: #666;
+    text-align: left;
+    margin: 0;
+    padding: 0;
+}
+
+.convert-3d-button {
+    width: 100%;
+    padding: 14px 20px;
+    background: #0c0c0c;
+    color: white;
+    border: none;
+    border-radius: 0;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    box-shadow: 0 4px 12px rgba(44, 44, 44, 0.3);
+}
+
+.convert-3d-button:hover:not(:disabled) {
+    background: #1a1a1a;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(44, 44, 44, 0.4);
+}
+
+.convert-3d-button:disabled {
+    background: #999;
+    cursor: default;
+    opacity: 0.6;
+}
+
+/* 드레스 드래그 중 전역 커서 강제 */
+body.dragging-dress,
+body.dragging-dress * {
+    cursor: grab !important;
 }
 
 .right-container {
@@ -71,21 +142,26 @@
 .drag-guide-text {
     font-size: 16px;
     font-weight: 600;
-    color: #f4acb7;
+    color: #2c2c2c;
     white-space: nowrap;
-    text-shadow: 0 1px 4px rgba(236, 72, 153, 0.2);
+    text-shadow: 0 1px 4px rgba(44, 44, 44, 0.2);
     margin-left: 80px;
     cursor: default;
 }
 
 .arrow-icon {
-    font-size: 48px;
-    color: #f4acb7;
-    animation: slideRight 1.5s ease-in-out infinite;
-    text-shadow: 0 2px 8px #f4acb7;
     margin-left: 80px;
-    margin-top: -15px;
+    margin-top: 10px;
     cursor: default;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.drag-gif-icon {
+    width: 50px;
+    height: auto;
+    display: block;
 }
 
 @keyframes slideRight {
@@ -113,7 +189,7 @@
 
 .center-button-container .match-button {
     padding: 14px 48px;
-    background: #f4acb7;
+    background: #2c2c2c;
     color: white;
     border: none;
     border-radius: 50px;
@@ -121,9 +197,13 @@
     font-weight: 700;
     cursor: pointer;
     transition: var(--transition);
-    box-shadow: 0 6px 20px rgba(244, 114, 182, 0.4);
+    box-shadow: 0 6px 20px rgba(44, 44, 44, 0.3);
     position: relative;
     overflow: hidden;
+}
+
+.center-button-container .match-button:hover:not(:disabled) {
+    background: #1a1a1a;
 }
 
 .center-button-container .match-button::before {
@@ -143,8 +223,8 @@
 
 .center-button-container .match-button:hover:not(:disabled) {
     transform: translateY(-3px);
-    box-shadow: 0 8px 25px #f4acb7;
-    background: linear-gradient(135deg, #f19696);
+    box-shadow: 0 8px 25px rgba(44, 44, 44, 0.3);
+    background: #1a1a1a;
     animation: sparkle 1.5s ease-in-out infinite;
 }
 
@@ -156,13 +236,13 @@
 
     0%,
     100% {
-        box-shadow: 0 8px 25px #f4acb7;
+        box-shadow: 0 8px 25px rgba(44, 44, 44, 0.3);
     }
 
     50% {
-        box-shadow: 0 8px 30px rgba(236, 72, 153, 0.7),
-            0 0 30px rgba(236, 72, 153, 0.5),
-            0 0 40px rgba(236, 72, 153, 0.3);
+        box-shadow: 0 8px 30px rgba(44, 44, 44, 0.5),
+            0 0 30px rgba(44, 44, 44, 0.3),
+            0 0 40px rgba(44, 44, 44, 0.2);
     }
 }
 
@@ -206,14 +286,14 @@
 }
 
 .tab-button:hover {
-    border-color: #f4acb7;
-    color: #f4acb7;
+    border-color: #2c2c2c;
+    color: #2c2c2c;
 }
 
 .tab-button.active {
-    background: #f4acb7;
+    background: #2c2c2c;
     color: white;
-    border-color: #f4acb7;
+    border-color: #2c2c2c;
 }
 
 /* 탭 가이드 텍스트 */
@@ -283,10 +363,11 @@
     }
 
     .arrow-icon {
-        font-size: 36px;
-        transform: rotate(90deg);
-        animation: slideDown 1.5s ease-in-out infinite;
         margin-top: -6px;
+    }
+
+    .drag-gif-icon {
+        width: 40px;
     }
 
     @keyframes slideDown {
@@ -323,7 +404,7 @@
     }
 
     .content-wrapper {
-        padding: 40px 8px 0;
+        padding: 40px 20px 0;
         gap: 16px;
     }
 
@@ -369,7 +450,10 @@
     }
 
     .arrow-icon {
-        font-size: 32px;
         margin-top: -5px;
+    }
+
+    .drag-gif-icon {
+        width: 35px;
     }
 }

@@ -76,14 +76,14 @@
     transform: translateX(-50%) scaleX(0);
     width: 60%;
     height: 2px;
-    background: #f4acb7;
+    background: #2c2c2c;
     border-radius: 2px;
     transition: transform 0.3s ease;
 }
 
 .menu-item:hover {
-    color: #f4acb7;
-    background: rgba(244, 172, 183, 0.1);
+    color: #2c2c2c;
+    background: rgba(44, 44, 44, 0.1);
 }
 
 .menu-item:hover::after {

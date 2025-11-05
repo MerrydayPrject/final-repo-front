@@ -1,12 +1,28 @@
 import React from 'react'
 import '../styles/Header.css'
 
-const Header = ({ onBackToMain, onMenuClick }) => {
+const Header = ({ onBackToMain, onMenuClick, onLogoClick }) => {
+    const handleLogoClick = () => {
+        if (onLogoClick) {
+            onLogoClick()
+        } else if (onBackToMain) {
+            onBackToMain()
+        } else {
+            // 메인 페이지로 스크롤
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            })
+        }
+    }
+
     return (
         <header className="header">
             <div className="header-content">
                 <div className="logo-container">
-                    <h1 className="logo-text">Marryday</h1>
+                    <h1 className="logo-text" onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
+                        Marryday
+                    </h1>
                 </div>
                 <nav className="header-menu">
                     <button
