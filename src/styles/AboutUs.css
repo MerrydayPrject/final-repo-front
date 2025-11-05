@@ -1,12 +1,13 @@
 .about-us-section {
     width: 100%;
-    min-height: 500vh;
+    min-height: 380vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     background: var(--bg-light);
-    padding: 0 20px 80px 20px;
+    padding: 0 20px 0 20px;
     margin-top: 0;
+    margin-bottom: 0;
     padding-top: 100px;
     transform: translateY(100px);
     opacity: 0;
@@ -58,6 +59,8 @@
     width: 100%;
     flex: 1;
     justify-content: flex-start;
+    margin-bottom: 0;
+    padding-bottom: 0;
 }
 
 .about-us-text-item {

@@ -1,25 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Diphylleia&display=swap');
+
 .next-section {
     width: 100%;
     min-height: 100vh;
     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    background: var(--bg-light);
+    padding: 0;
+    margin-top: -200px;
+    position: relative;
+    transform: translateY(50px);
+    opacity: 0;
+    transition: transform 0.8s ease-out, opacity 0.8s ease-out;
+    overflow: hidden;
+}
+
+.next-section.visible {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.next-section-video-banner {
+    width: 100vw;
+    height: 400px;
+    overflow: hidden;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    margin-top: 20px;
+    margin-bottom: 0;
+    display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--bg-white);
-    padding: 100px 20px;
+}
+
+.next-section-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.next-section-video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2;
+}
+
+.next-section-video-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-family: 'Diphylleia', serif;
+    font-size: 30px;
+    text-align: center;
+    z-index: 3;
+    white-space: nowrap;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 .next-section-content {
     max-width: 1400px;
     width: 100%;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 60px;
+    padding: 40px 20px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 3;
+    overflow: visible;
 }
 
 .next-section-title {
     font-size: 72px;
     font-weight: 700;
     color: var(--text-dark);
-    margin: 0 0 40px 0;
+    margin: 0;
     letter-spacing: 2px;
+    text-align: center;
+}
+
+.next-section-body {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    /* 여기에 추가 스타일을 적용하세요 */
 }
 
 .next-section-description {
@@ -27,4 +109,47 @@
     color: var(--text-light);
     line-height: 1.8;
     margin: 0;
+    text-align: center;
+}
+
+@media (max-width: 1024px) {
+    .next-section-video-banner {
+        height: 350px;
+    }
+
+    .next-section-title {
+        font-size: 56px;
+    }
+
+    .next-section-body {
+        gap: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .next-section-video-banner {
+        height: 300px;
+    }
+
+    .next-section-title {
+        font-size: 48px;
+    }
+
+    .next-section-description {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .next-section-video-banner {
+        height: 250px;
+    }
+
+    .next-section-title {
+        font-size: 36px;
+    }
+
+    .next-section-description {
+        font-size: 15px;
+    }
 }
