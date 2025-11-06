@@ -35,10 +35,10 @@ export const autoMatchImage = async (personImage, dressData) => {
         // 드레스 이미지가 파일인 경우
         if (dressData instanceof File) {
             formData.append('dress_image', dressData)
-        } else if (dressData.image) {
-            // 드레스 정보가 객체인 경우 (URL에서 이미지 가져오기)
-            const dressImageFile = await urlToFile(dressData.image, `dress_${dressData.id}.jpg`)
-            formData.append('dress_image', dressImageFile)
+        } else if (dressData.originalUrl || dressData.image) {
+            // 드레스 URL이 있는 경우 백엔드에서 다운로드하도록 URL 전달
+            // originalUrl이 있으면 원본 S3 URL 사용, 없으면 image 사용
+            formData.append('dress_url', dressData.originalUrl || dressData.image)
         }
 
         const response = await api.post('/api/compose-dress', formData, {

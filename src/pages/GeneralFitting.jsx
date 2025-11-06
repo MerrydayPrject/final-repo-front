@@ -75,12 +75,14 @@ const GeneralFitting = ({ onBackToMain }) => {
                 const response = await getDresses()
 
                 if (response.success && response.data) {
-                    // 리스트 이미지만 백엔드 프록시로 교체 (디자인/카테고리 로직 수정 없음)
+                    // DB에서 받은 URL을 백엔드 프록시를 통해 제공
                     const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
                     const transformedDresses = response.data.map((dress) => ({
                         id: dress.id,
                         name: dress.image_name.replace(/\.[^/.]+$/, ''),
-                        image: `${apiBaseUrl}/api/images/${dress.image_name}`,
+                        // 썸네일은 백엔드 프록시 사용, 실제 합성에는 원본 S3 URL 사용
+                        image: `${apiBaseUrl}/api/proxy-image?url=${encodeURIComponent(dress.url)}`,
+                        originalUrl: dress.url,  // 합성용 원본 URL 보관
                         description: `${dress.style} 스타일의 드레스`,
                         category: styleToCategory(dress.style)
                     }))
