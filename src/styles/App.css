@@ -88,28 +88,65 @@
 .convert-3d-button {
     width: 100%;
     padding: 14px 20px;
-    background: #0c0c0c;
+    background: #766C08;
     color: white;
     border: none;
-    border-radius: 0;
+    border-radius: 50px;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     margin-top: 10px;
     box-shadow: 0 4px 12px rgba(44, 44, 44, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.convert-3d-button::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(90deg,
+            transparent 0%,
+            transparent 40%,
+            rgba(255, 255, 255, 0.5) 50%,
+            transparent 60%,
+            transparent 100%);
+    transform: translateX(-100%) skewX(-20deg);
+    animation: shine3d 7s ease-in-out infinite;
 }
 
 .convert-3d-button:hover:not(:disabled) {
-    background: #1a1a1a;
+    background: #8a7f09;
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(44, 44, 44, 0.4);
 }
 
 .convert-3d-button:disabled {
-    background: #999;
+    background: #766C08;
     cursor: default;
     opacity: 0.6;
+}
+
+.convert-3d-button:disabled::before {
+    animation: none;
+}
+
+@keyframes shine3d {
+    0% {
+        transform: translateX(-100%) skewX(-20deg);
+    }
+
+    30% {
+        transform: translateX(150%) skewX(-20deg);
+    }
+
+    100% {
+        transform: translateX(150%) skewX(-20deg);
+    }
 }
 
 /* 드레스 드래그 중 전역 커서 강제 */

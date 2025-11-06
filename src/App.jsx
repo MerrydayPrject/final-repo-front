@@ -79,6 +79,7 @@ function App() {
                     <VideoBackground onNavigateToFitting={handleNavigateToFitting} />
                     <AboutUs />
                     <NextSection />
+                    <ScrollToTop />
                 </>
             )}
             <Header
@@ -87,7 +88,6 @@ function App() {
                 onMenuClick={handleMenuClick}
                 onLogoClick={handleLogoClick}
             />
-            <ScrollToTop />
 
             {currentPage === 'general' && <GeneralFitting onBackToMain={handleBackToMain} />}
             {currentPage === 'custom' && <CustomFitting onBackToMain={handleBackToMain} />}
