@@ -195,12 +195,13 @@ export const fileToBase64 = (file) => {
 }
 
 /**
- * 드레스 목록 조회
+ * 드레스 목록 조회 (전체)
  * @returns {Promise} 드레스 목록
  */
 export const getDresses = async () => {
     try {
-        const response = await api.get('/api/admin/dresses', {
+        // limit를 크게 설정하여 모든 드레스 가져오기
+        const response = await api.get('/api/admin/dresses?limit=1000', {
             headers: {
                 'Content-Type': 'application/json',
             },
