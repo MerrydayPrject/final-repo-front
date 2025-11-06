@@ -55,8 +55,8 @@
 }
 
 .upload-area:hover {
-    border-color: #766C08;
-    background: #e2e0e1cc;
+    border-color: #a9927d;
+    background: #c9c4c6;
     transform: translateY(-2px);
 }
 
@@ -177,7 +177,7 @@
 }
 
 .remove-button:hover {
-    background: rgba(238, 15, 15, 0.9);
+    background: rgba(255, 99, 99, 1);
     transform: scale(1.1);
 }
 
@@ -201,7 +201,7 @@
     margin-top: 16px;
     font-size: 18px;
     font-weight: 600;
-    color: #22223b;
+    color: #49111c;
     pointer-events: none;
 }
 
@@ -209,7 +209,7 @@
     width: 50px;
     height: 50px;
     border: 5px solid #f3f3f3;
-    border-top: 5px solid #22223b;
+    border-top: 5px solid #2c2c2c;
     border-radius: 50%;
     animation: spin 1s linear infinite;
     pointer-events: none;
@@ -230,7 +230,7 @@
     align-items: center;
     justify-content: center;
     font-size: 40px;
-    color: #22223b;
+    color: #2c2c2c;
     font-weight: bold;
     pointer-events: none;
     animation: checkPop 0.5s ease-out;
@@ -344,7 +344,7 @@
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    border: 2px solid #766C08;
+    border: 2px solid #2c2c2c;
     background: white;
     cursor: pointer;
     display: flex;
