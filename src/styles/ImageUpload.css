@@ -55,7 +55,7 @@
 }
 
 .upload-area:hover {
-    border-color: #766C08;
+    border-color: #ad9f41;
     background: #c9c4c6;
     transform: translateY(-2px);
 }
@@ -159,7 +159,7 @@
     position: absolute;
     right: 12px;
     bottom: 12px;
-    background: #6fa185;
+    background: #4b4737;
     color: white;
     padding: 10px 16px;
     border-radius: 8px;
@@ -167,13 +167,13 @@
     font-weight: 700;
     transition: var(--transition);
     z-index: 10;
-    box-shadow: 0 4px 12px #a2d894;
+    box-shadow: 0 4px 12px #4b4737;
 }
 
 .download-button:hover {
-    background: #6fa185;
+    background: #4b4737;
     transform: scale(1.05);
-    box-shadow: 0 6px 16px #76d65d;
+    box-shadow: 0 6px 16px #4b4737;
 }
 
 .remove-button:hover {
@@ -268,7 +268,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(44, 44, 44, 0.85);
+    background: rgba(119, 118, 118, 0.85);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -295,7 +295,7 @@
     padding: 20px;
     border: 2px dashed white;
     border-radius: 8px;
-    background: rgba(44, 44, 44, 0.5);
+    background: rgba(146, 145, 145, 0.5);
     pointer-events: none;
 }
 
@@ -359,7 +359,7 @@
 .background-button:hover {
     transform: scale(1.1);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-    border-color: #1a1a1a;
+    border-color: white;
 }
 
 .background-button.active {

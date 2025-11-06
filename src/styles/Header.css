@@ -25,7 +25,7 @@
 
 /* 메뉴 페이지에서의 헤더 스타일 */
 .header.header-in-menu {
-    background: #E7E7E7;
+    background: #e7e7e715;
     backdrop-filter: blur(15px);
 }
 
@@ -35,22 +35,22 @@
 
 .header.header-in-menu .logo-text {
 
-    color: #766C08;
+    color: #ad9f41;
 
 
     text-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
 }
 
 .header.header-in-menu .menu-item {
-    color: #766C08;
+    color: #ad9f41;
 }
 
 .header.header-in-menu .menu-item::after {
-    background: #766C08;
+    background: #ad9f41;
 }
 
 .header.header-in-menu .menu-item:hover {
-    color: #766C08;
+    color: #ad9f41;
 }
 
 .header-content {

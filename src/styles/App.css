@@ -91,7 +91,7 @@
 .convert-3d-button {
     width: 100%;
     padding: 14px 20px;
-    background: #766C08;
+    background: #ad9f41;
     color: white;
     border: none;
     border-radius: 20px;
@@ -135,13 +135,13 @@
 }
 
 .convert-3d-button:hover:not(:disabled) {
-    background: #8a7f09;
+    background: #ad9f41;
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(138, 127, 9, 0.4);
 }
 
 .convert-3d-button:disabled {
-    background: #766C08;
+    background: #ad9f41;
     cursor: default;
     opacity: 0.6;
 }

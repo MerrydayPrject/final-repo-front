@@ -39,8 +39,8 @@
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    border: 2px solid #766C08;
-    background: #766C08;
+    border: 2px solid #ad9f41;
+    background: #ad9f41;
     color: white;
     font-size: 24px;
     font-weight: bold;
@@ -51,14 +51,14 @@
     justify-content: center;
     flex-shrink: 0;
     line-height: 1;
-    padding: 0;
+    padding-bottom: 5px;
     margin: 0;
     position: relative;
     z-index: 2;
 }
 
 .category-nav-button:hover:not(:disabled) {
-    background: #8a7f09;
+    background: #ad9f41;
     color: white;
     transform: scale(1.1);
 }
@@ -106,14 +106,14 @@
 }
 
 .category-button:hover {
-    border-color: #766C08;
+    border-color: #ad9f41;
     background: rgba(118, 108, 8, 0.05);
 }
 
 .category-button.active {
-    background: #766C08;
+    background: #ad9f41;
     color: white;
-    border-color: #766C08;
+    border-color: #ad9f41;
 }
 
 /* 커스텀 메시지 */
@@ -235,7 +235,7 @@
     position: absolute;
     top: 10px;
     left: 10px;
-    background: rgba(183, 148, 158, 0.9);
+    background: #b0ab99;
     color: white;
     padding: 6px 12px;
     border-radius: 20px;
@@ -250,7 +250,7 @@
     position: absolute;
     top: 10px;
     right: 10px;
-    background: rgba(183, 148, 158, 0.95);
+    background: #b0ab99;
     color: white;
     width: 32px;
     height: 32px;
@@ -313,20 +313,20 @@
     width: 32px;
     height: 32px;
     background: white;
-    border: 2px solid #766C08;
+    border: 2px solid #ad9f41;
     border-radius: 4px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 14px;
-    color: #766C08;
+    color: #ad9f41;
     transition: all 0.3s ease;
     flex-shrink: 0;
 }
 
 .slider-arrow:hover {
-    background: #766C08;
+    background: #ad9f41;
     color: white;
     transform: scale(1.1);
 }
@@ -348,7 +348,7 @@
     position: absolute;
     width: 20px;
     height: 20px;
-    background: #766C08;
+    background: #ad9f41;
     border: 3px solid white;
     border-radius: 50%;
     left: 50%;
