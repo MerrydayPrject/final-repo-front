@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbit&family=Static&display=swap');
+
 .app {
     min-height: 100vh;
     display: flex;
@@ -70,6 +72,7 @@
 .general-fitting-title {
     font-size: 32px;
     font-weight: 700;
+    font-family: 'Orbit', 'Static', sans-serif;
     color: #2c2c2c;
     text-align: left;
     margin: 0;
@@ -82,32 +85,63 @@
     color: #666;
     text-align: left;
     margin: 0;
-    padding: 0;
+    padding-top: 15px;
 }
 
 .convert-3d-button {
     width: 100%;
     padding: 14px 20px;
-    background: #0c0c0c;
+    background: #766C08;
     color: white;
     border: none;
-    border-radius: 0;
+    border-radius: 20px;
     font-size: 16px;
     font-weight: 600;
+    font-family: 'Orbit', 'Static', sans-serif;
     cursor: pointer;
     transition: all 0.3s ease;
     margin-top: 10px;
-    box-shadow: 0 4px 12px rgba(44, 44, 44, 0.3);
+    box-shadow: 0 4px 12px rgba(118, 108, 8, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.convert-3d-button:not(:disabled)::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.6),
+            transparent);
+    animation: shine 7s infinite;
+}
+
+@keyframes shine {
+    0% {
+        left: -100%;
+    }
+
+    40% {
+        left: 100%;
+    }
+
+    100% {
+        left: 100%;
+    }
 }
 
 .convert-3d-button:hover:not(:disabled) {
-    background: #1a1a1a;
+    background: #8a7f09;
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(44, 44, 44, 0.4);
+    box-shadow: 0 6px 16px rgba(138, 127, 9, 0.4);
 }
 
 .convert-3d-button:disabled {
-    background: #999;
+    background: #766C08;
     cursor: default;
     opacity: 0.6;
 }

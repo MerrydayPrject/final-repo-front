@@ -24,7 +24,7 @@ const GeneralFitting = ({ onBackToMain }) => {
     // DressSelection 상태
     const [selectedCategory, setSelectedCategory] = useState('all')
     const [scrollPosition, setScrollPosition] = useState(0)
-    const [displayCount, setDisplayCount] = useState(5)
+    const [displayCount, setDisplayCount] = useState(6)
     const [categoryStartIndex, setCategoryStartIndex] = useState(0)
     const [dresses, setDresses] = useState([])
     const [loading, setLoading] = useState(true)
@@ -38,12 +38,14 @@ const GeneralFitting = ({ onBackToMain }) => {
     const categories = [
         { id: 'all', name: '전체' },
         { id: 'ballgown', name: '벨라인' },
-        { id: 'empire', name: '엠파이어' },
         { id: 'mermaid', name: '머메이드' },
-        { id: 'mini', name: '미니드레스' },
-        { id: 'aline', name: 'A라인' },
         { id: 'princess', name: '프린세스' },
-        { id: 'hanbok', name: '한국 한복' }
+        { id: 'aline', name: 'A라인' },
+        { id: 'slim', name: '슬림' },
+        { id: 'trumpet', name: '트럼펫' },
+        { id: 'mini', name: '미니드레스' },
+        { id: 'squareneck', name: '스퀘어넥' },
+        { id: 'hanbok', name: '한복' }
     ]
 
     // 한 번에 보여질 카테고리 수
@@ -61,7 +63,11 @@ const GeneralFitting = ({ onBackToMain }) => {
             '미니드레스': 'mini',
             '벨라인': 'ballgown',
             '프린세스': 'princess',
-            '한복': 'hanbok'
+            '슬림': 'slim',
+            '한복': 'hanbok',
+            '머메이드': 'mermaid',
+            '트럼펫': 'trumpet',
+            '스퀘어넥': 'squareneck'
         }
         return styleMap[style] || 'all'
     }
@@ -265,7 +271,7 @@ const GeneralFitting = ({ onBackToMain }) => {
 
     const handleCategoryClick = (categoryId) => {
         setSelectedCategory(categoryId)
-        setDisplayCount(5)
+        setDisplayCount(6)
     }
 
     const handleDragStart = (e, dress) => {
@@ -323,7 +329,7 @@ const GeneralFitting = ({ onBackToMain }) => {
                 setScrollPosition(percentage)
 
                 if (percentage > 80 && displayCount < filteredDresses.length) {
-                    setDisplayCount(prev => Math.min(prev + 5, filteredDresses.length))
+                    setDisplayCount(prev => Math.min(prev + 6, filteredDresses.length))
                 }
             }
         }

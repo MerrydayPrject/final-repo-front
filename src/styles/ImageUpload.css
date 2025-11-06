@@ -55,7 +55,7 @@
 }
 
 .upload-area:hover {
-    border-color: #a9927d;
+    border-color: #766C08;
     background: #c9c4c6;
     transform: translateY(-2px);
 }
@@ -95,7 +95,7 @@
 
 .preview-container {
     position: relative;
-    background: #3a3a3a;
+    background: #fdfbfb;
     border-radius: 2px;
     padding: 0;
     /* 사진 액자 프레임 효과 */
@@ -159,7 +159,7 @@
     position: absolute;
     right: 12px;
     bottom: 12px;
-    background: #4c956c;
+    background: #6fa185;
     color: white;
     padding: 10px 16px;
     border-radius: 8px;
@@ -171,7 +171,7 @@
 }
 
 .download-button:hover {
-    background: #76d65d;
+    background: #6fa185;
     transform: scale(1.05);
     box-shadow: 0 6px 16px #76d65d;
 }
@@ -201,7 +201,7 @@
     margin-top: 16px;
     font-size: 18px;
     font-weight: 600;
-    color: #49111c;
+    color: #000000;
     pointer-events: none;
 }
 
@@ -220,7 +220,7 @@
     height: 120px;
     object-fit: contain;
     pointer-events: none;
-    opacity: 0.85;
+    opacity: 0.3;
 }
 
 .completion-icon {
@@ -344,7 +344,7 @@
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    border: 2px solid #2c2c2c;
+    border: 2px solid white;
     background: white;
     cursor: pointer;
     display: flex;
@@ -363,7 +363,7 @@
 }
 
 .background-button.active {
-    border-color: #1a1a1a;
+    border-color: white;
     box-shadow: 0 4px 12px rgba(44, 44, 44, 0.4);
 }
 
