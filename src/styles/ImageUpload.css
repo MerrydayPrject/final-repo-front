@@ -52,11 +52,30 @@
         0 8px 16px rgba(0, 0, 0, 0.281),
         0 16px 32px rgba(0, 0, 0, 0.06);
     height: 100%;
+    animation: gentleJump 7s ease-in-out infinite;
+}
+
+@keyframes gentleJump {
+
+    0%,
+    85%,
+    100% {
+        transform: translateY(0);
+    }
+
+    90% {
+        transform: translateY(-12px);
+    }
+
+    95% {
+        transform: translateY(0);
+    }
 }
 
 .upload-area:hover {
     border-color: #ad9f41;
     background: #c9c4c6;
+    animation: none;
     transform: translateY(-2px);
 }
 
