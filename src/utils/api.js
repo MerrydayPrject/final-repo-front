@@ -196,11 +196,17 @@ export const fileToBase64 = (file) => {
 
 /**
  * 드레스 목록 조회
+ * @param {number} limit - 가져올 드레스 개수 (기본값: 10000, 전체 조회)
+ * @param {number} page - 페이지 번호 (기본값: 1)
  * @returns {Promise} 드레스 목록
  */
-export const getDresses = async () => {
+export const getDresses = async (limit = 10000, page = 1) => {
     try {
         const response = await api.get('/api/admin/dresses', {
+            params: {
+                limit,
+                page
+            },
             headers: {
                 'Content-Type': 'application/json',
             },
