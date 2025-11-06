@@ -428,7 +428,7 @@ const GeneralFitting = ({ onBackToMain }) => {
                                         <div className="upload-icon">
                                             <img src="/Image/body_icon.png" alt="전신사진 아이콘" />
                                         </div>
-                                        <p className="upload-text">전신 사진을 업로드 해주세요</p>
+                                        <p className="upload-text">전신 또는 얼굴 이미지를 먼저 업로드 해주세요</p>
                                         <p className="upload-subtext">JPG, PNG, JPEG 형식 지원</p>
                                     </div>
                                 ) : (

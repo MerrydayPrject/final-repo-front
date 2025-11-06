@@ -73,8 +73,8 @@
 }
 
 .upload-area:hover {
-    border-color: #ad9f41;
-    background: #c9c4c6;
+    border-color: #f0deb4;
+    background: #fef9e8;
     animation: none;
     transform: translateY(-2px);
 }
