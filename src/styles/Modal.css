@@ -73,7 +73,7 @@
 
 .modal-button {
     padding: 12px 32px;
-    background: #f786bc;
+    background: #ad9f41;
     color: #ffffff;
     border: none;
     border-radius: 8px;
@@ -81,13 +81,13 @@
     font-weight: 600;
     cursor: pointer;
     transition: var(--transition);
-    box-shadow: 0 4px 12px rgba(248, 180, 217, 0.3);
+    box-shadow: 0 4px 12px rgba(173, 159, 65, 0.3);
 }
 
 .modal-button:hover {
-    background: #f7a5cc;
+    background: #8a7f09;
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(248, 180, 217, 0.4);
+    box-shadow: 0 6px 16px rgba(138, 127, 9, 0.4);
 }
 
 .modal-button:active {

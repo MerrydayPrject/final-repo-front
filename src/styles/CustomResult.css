@@ -212,23 +212,25 @@
 
 .result-image-container .download-button {
     position: absolute;
-    right: 12px;
-    bottom: 15px;
-    background: #a2d894;
+    right: 8px;
+    bottom: 8px;
+    background: #4b4737;
     color: white;
-    padding: 10px 16px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
     transition: var(--transition);
     z-index: 10;
-    box-shadow: 0 4px 12px #a2d894;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    border: none;
+    cursor: pointer;
 }
 
 .result-image-container .download-button:hover {
-    background: #76d65d;
-    transform: scale(1.05);
-    box-shadow: 0 6px 16px #76d65d;
+    background: rgba(26, 26, 26, 0.95);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px #4b4737;
 }
 
 @media (max-width: 768px) {

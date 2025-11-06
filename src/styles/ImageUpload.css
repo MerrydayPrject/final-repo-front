@@ -73,8 +73,8 @@
 }
 
 .upload-area:hover {
-    border-color: #f0deb4;
-    background: #fef9e8;
+    border-color: #fdf9ee;
+    background: #fdf9ee;
     animation: none;
     transform: translateY(-2px);
 }
@@ -174,25 +174,31 @@
     border: none;
 }
 
-.download-button {
-    position: absolute;
-    right: 12px;
-    bottom: 12px;
-    background: #4b4737;
-    color: white;
-    padding: 10px 16px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 700;
-    transition: var(--transition);
-    z-index: 10;
-    box-shadow: 0 4px 12px #4b4737;
+.preview-container .download-button {
+    position: absolute !important;
+    right: 8px !important;
+    bottom: 8px !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    background: #4b4737 !important;
+    color: white !important;
+    padding: 6px 12px !important;
+    border-radius: 6px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    transition: var(--transition) !important;
+    z-index: 10 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+    border: none !important;
+    cursor: pointer !important;
+    width: auto !important;
 }
 
-.download-button:hover {
-    background: #4b4737;
-    transform: scale(1.05);
-    box-shadow: 0 6px 16px #4b4737;
+.preview-container .download-button:hover {
+    background: rgba(26, 26, 26, 0.95) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px #4b4737 !important;
 }
 
 .remove-button:hover {
