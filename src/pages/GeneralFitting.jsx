@@ -435,7 +435,7 @@ const GeneralFitting = ({ onBackToMain }) => {
                                         <img src={imageSrc} alt="Preview" className="preview-image" />
                                         {isProcessing && (
                                             <div className="processing-overlay">
-                                                <div className="spinner"></div>
+                                                <img src="/Image/free-animated-icon-fitting-17904496.gif" alt="로딩중" className="spinner-gif" />
                                                 <p>매칭 중...</p>
                                             </div>
                                         )}
@@ -580,6 +580,9 @@ const GeneralFitting = ({ onBackToMain }) => {
                                                             e.currentTarget.style.cursor = 'grab'
                                                         }}
                                                     >
+                                                        <div className="dress-category-badge">
+                                                            {categories.find(cat => cat.id === dress.category)?.name || '기타'}
+                                                        </div>
                                                         <img src={dress.image} alt={dress.name} className="dress-image" draggable={false} />
                                                         {selectedDress?.id === dress.id && (
                                                             <div className="selected-badge">✓</div>

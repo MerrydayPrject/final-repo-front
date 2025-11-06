@@ -228,11 +228,26 @@
     pointer-events: auto;
 }
 
+.dress-category-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(183, 148, 158, 0.9);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    box-shadow: var(--shadow-md);
+    z-index: 2;
+    pointer-events: none;
+}
+
 .selected-badge {
     position: absolute;
     top: 10px;
     right: 10px;
-    background: #2c2c2c;
+    background: rgba(183, 148, 158, 0.95);
     color: white;
     width: 32px;
     height: 32px;
@@ -395,6 +410,13 @@
     .dress-card {
         width: 80%;
         padding-top: 45%;
+    }
+
+    .dress-category-badge {
+        top: 8px;
+        left: 8px;
+        padding: 4px 10px;
+        font-size: 11px;
     }
 
     .selected-badge {
