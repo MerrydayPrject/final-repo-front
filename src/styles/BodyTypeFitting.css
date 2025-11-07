@@ -191,6 +191,22 @@
     justify-self: center;
 }
 
+.analysis-main-section .upload-area {
+    animation: none !important;
+}
+
+.analysis-main-section .upload-area .image-container {
+    animation: none !important;
+}
+
+.analysis-main-section .empty-image-placeholder {
+    animation: none !important;
+}
+
+.analysis-main-section .empty-image-placeholder .camera-icon {
+    animation: none !important;
+}
+
 .section-title {
     font-size: 24px;
     font-weight: 700;

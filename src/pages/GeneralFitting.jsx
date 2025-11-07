@@ -282,6 +282,10 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection }) => {
     const handleCategoryClick = (categoryId) => {
         setSelectedCategory(categoryId)
         setDisplayCount(6)
+        setScrollPosition(0)
+        if (contentRef.current) {
+            contentRef.current.scrollTop = 0
+        }
     }
 
     const handleDragStart = (e, dress) => {
