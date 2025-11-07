@@ -9,15 +9,19 @@ import ScrollToTop from './components/ScrollToTop'
 import Modal from './components/Modal'
 import GeneralFitting from './pages/GeneralFitting'
 import CustomFitting from './pages/CustomFitting'
-import BodyTypeFitting from './pages/BodyTypeFitting'
+import BodyAnalysis from './pages/BodyAnalysis'
+import BodyCorrection from './pages/BodyCorrection'
 import './styles/App.css'
 
 function App() {
-    const [currentPage, setCurrentPage] = useState('main') // 'main', 'general', 'custom', 'ai'
+    const [currentPage, setCurrentPage] = useState('main') // 'main', 'general', 'custom', 'analysis', 'correction'
 
     // 모달 상태
     const [modalOpen, setModalOpen] = useState(false)
     const [modalMessage, setModalMessage] = useState('')
+
+    // 보정 페이지로 전달할 이미지
+    const [correctionImage, setCorrectionImage] = useState(null)
 
     // 새로고침 시 스크롤을 최상단으로 이동
     useEffect(() => {
@@ -58,8 +62,10 @@ function App() {
             setCurrentPage('general')
         } else if (menuType === 'custom') {
             setCurrentPage('custom')
-        } else if (menuType === 'ai') {
-            setCurrentPage('ai')
+        } else if (menuType === 'analysis') {
+            setCurrentPage('analysis')
+        } else if (menuType === 'correction') {
+            setCurrentPage('correction')
         }
     }
 
@@ -93,9 +99,23 @@ function App() {
             />
             <ScrollToTop />
 
-            {currentPage === 'general' && <GeneralFitting onBackToMain={handleBackToMain} />}
+            {currentPage === 'general' && (
+                <GeneralFitting
+                    onBackToMain={handleBackToMain}
+                    onNavigateToCorrection={(image) => {
+                        setCorrectionImage(image)
+                        setCurrentPage('correction')
+                    }}
+                />
+            )}
             {currentPage === 'custom' && <CustomFitting onBackToMain={handleBackToMain} />}
-            {currentPage === 'ai' && <BodyTypeFitting onBackToMain={handleBackToMain} />}
+            {currentPage === 'analysis' && <BodyAnalysis onBackToMain={handleBackToMain} />}
+            {currentPage === 'correction' && (
+                <BodyCorrection
+                    onBackToMain={handleBackToMain}
+                    initialImage={correctionImage}
+                />
+            )}
 
             <Modal
                 isOpen={modalOpen}

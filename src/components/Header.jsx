@@ -39,9 +39,15 @@ const Header = ({ onBackToMain, onMenuClick, onLogoClick, currentPage }) => {
                     </button>
                     <button
                         className="menu-item"
-                        onClick={() => onMenuClick && onMenuClick('ai')}
+                        onClick={() => onMenuClick && onMenuClick('analysis')}
                     >
-                        AI 체형 피팅
+                        체형 분석
+                    </button>
+                    <button
+                        className="menu-item"
+                        onClick={() => onMenuClick && onMenuClick('correction')}
+                    >
+                        체형 보정
                     </button>
                 </nav>
             </div>

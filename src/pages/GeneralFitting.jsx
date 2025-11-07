@@ -5,7 +5,7 @@ import '../styles/App.css'
 import '../styles/ImageUpload.css'
 import '../styles/DressSelection.css'
 
-const GeneralFitting = ({ onBackToMain }) => {
+const GeneralFitting = ({ onBackToMain, onNavigateToCorrection }) => {
     // General Fitting 상태
     const [uploadedImage, setUploadedImage] = useState(null)
     const [selectedDress, setSelectedDress] = useState(null)
@@ -460,25 +460,39 @@ const GeneralFitting = ({ onBackToMain }) => {
                                             ✕
                                         </button>
                                         {canDownload && imageSrc && !isProcessing && (
-                                            <button
-                                                className="download-button"
-                                                onClick={(e) => {
-                                                    e.stopPropagation()
-                                                    try {
-                                                        const link = document.createElement('a')
-                                                        link.href = imageSrc
-                                                        link.download = 'match_result.png'
-                                                        document.body.appendChild(link)
-                                                        link.click()
-                                                        document.body.removeChild(link)
-                                                    } catch (err) {
-                                                        console.error('다운로드 실패:', err)
-                                                    }
-                                                }}
-                                                title="결과 이미지를 다운로드"
-                                            >
-                                                ⬇ 다운로드
-                                            </button>
+                                            <>
+                                                <button
+                                                    className="download-button"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        try {
+                                                            const link = document.createElement('a')
+                                                            link.href = imageSrc
+                                                            link.download = 'match_result.png'
+                                                            document.body.appendChild(link)
+                                                            link.click()
+                                                            document.body.removeChild(link)
+                                                        } catch (err) {
+                                                            console.error('다운로드 실패:', err)
+                                                        }
+                                                    }}
+                                                    title="결과 이미지를 다운로드"
+                                                >
+                                                    ⬇ 다운로드
+                                                </button>
+                                                <button
+                                                    className="correction-button"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        if (onNavigateToCorrection) {
+                                                            onNavigateToCorrection(generalResultImage)
+                                                        }
+                                                    }}
+                                                    title="체형 보정 페이지로 이동"
+                                                >
+                                                    ✨ 보정하러 가기
+                                                </button>
+                                            </>
                                         )}
                                     </div>
                                 )}

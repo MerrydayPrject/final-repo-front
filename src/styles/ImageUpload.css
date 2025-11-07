@@ -176,7 +176,7 @@
 
 .preview-container .download-button {
     position: absolute !important;
-    right: 8px !important;
+    right: 140px !important;
     bottom: 8px !important;
     left: auto !important;
     top: auto !important;
@@ -199,6 +199,33 @@
     background: rgba(26, 26, 26, 0.95) !important;
     transform: translateY(-1px) !important;
     box-shadow: 0 4px 12px #4b4737 !important;
+}
+
+.preview-container .correction-button {
+    position: absolute !important;
+    right: 8px !important;
+    bottom: 8px !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    background: linear-gradient(135deg, #b08968 0%, #ddb892 100%) !important;
+    color: white !important;
+    padding: 6px 12px !important;
+    border-radius: 6px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    transition: var(--transition) !important;
+    z-index: 10 !important;
+    box-shadow: 0 2px 8px rgba(176, 137, 104, 0.3) !important;
+    border: none !important;
+    cursor: pointer !important;
+    width: auto !important;
+}
+
+.preview-container .correction-button:hover {
+    background: linear-gradient(135deg, #c9a077 0%, #e6ccb2 100%) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(176, 137, 104, 0.5) !important;
 }
 
 .remove-button:hover {

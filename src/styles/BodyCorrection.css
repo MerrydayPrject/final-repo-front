@@ -1,0 +1,333 @@
+.correction-content-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.correction-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 550px;
+    width: 100%;
+    justify-self: center;
+}
+
+.section-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2c2c2c;
+    text-align: center;
+    margin: 0;
+    padding: 10px;
+    background: linear-gradient(135deg, #f8f6f6 0%, #e8e6e6 100%);
+    border-radius: 8px;
+}
+
+.before-section .section-title {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    color: #1565c0;
+}
+
+.after-section .section-title {
+    background: linear-gradient(135deg, #b08968 0%, #ddb892 100%);
+    color: white;
+}
+
+.image-container {
+    position: relative;
+    width: 100%;
+    height: 600px;
+    max-height: 75vh;
+    background: #f5f5f5;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.after-section .image-container {
+    overflow: visible;
+}
+
+.correction-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.empty-image-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 40px;
+    text-align: center;
+    color: #999;
+}
+
+.empty-image-placeholder p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.upload-placeholder-button {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.upload-placeholder-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.processing-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.processing-state .spinner-gif {
+    width: 80px;
+    height: 80px;
+}
+
+.processing-state p {
+    font-size: 16px;
+    color: #666;
+    margin: 0;
+}
+
+.download-result-button {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    padding: 8px 16px;
+    background: rgba(44, 44, 44, 0.9);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.download-result-button:hover {
+    background: rgba(44, 44, 44, 1);
+    transform: translateY(-2px);
+}
+
+.reopen-prompt-button {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    padding: 6px 12px;
+    background: linear-gradient(135deg, #b08968 0%, #ddb892 100%);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.reopen-prompt-button:hover {
+    background: linear-gradient(135deg, #c9a077 0%, #e6ccb2 100%);
+    transform: translateY(-2px);
+}
+
+/* 프롬프트 입력 컨테이너 (After 영역 안) */
+.prompt-input-container {
+    width: 100%;
+    height: 100%;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: white;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.prompt-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.prompt-label {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2c2c2c;
+}
+
+.prompt-hint {
+    font-size: 13px;
+    color: #999;
+}
+
+.prompt-input-wrapper {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.prompt-input-container .prompt-input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: none;
+    transition: border-color 0.3s ease;
+    min-height: 80px;
+    max-height: 120px;
+}
+
+.prompt-input:focus {
+    outline: none;
+    border-color: #b08968;
+}
+
+.prompt-input::placeholder {
+    color: #bbb;
+}
+
+.prompt-input-container .correction-submit-button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    margin-top: 8px;
+}
+
+.prompt-input-container .correction-submit-button.active:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(176, 137, 104, 0.4) !important;
+}
+
+/* 예시 프롬프트 */
+.prompt-examples {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.prompt-input-container .prompt-examples {
+    margin-bottom: 5px;
+}
+
+.example-label {
+    font-size: 12px;
+    color: #666;
+    font-weight: 600;
+}
+
+.example-chip {
+    padding: 6px 12px;
+    background: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    border-radius: 20px;
+    font-size: 11px;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.example-chip:hover {
+    background: #b08968;
+    color: white;
+    border-color: #b08968;
+    transform: translateY(-1px);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1024px) {
+    .correction-content-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .prompt-input-wrapper {
+        flex-direction: column;
+    }
+
+    .correction-submit-button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .section-title {
+        font-size: 20px;
+    }
+
+    .image-container {
+        height: 400px;
+        max-height: 60vh;
+    }
+
+    .prompt-input-container {
+        padding: 15px;
+        gap: 10px;
+    }
+
+    .prompt-input-container .prompt-input {
+        min-height: 60px;
+        max-height: 100px;
+    }
+
+    .prompt-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .prompt-label {
+        font-size: 14px;
+    }
+
+    .prompt-hint {
+        font-size: 11px;
+    }
+
+    .prompt-examples {
+        gap: 6px;
+    }
+
+    .example-chip {
+        font-size: 10px;
+        padding: 5px 10px;
+    }
+}
