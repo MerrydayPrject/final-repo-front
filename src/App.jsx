@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Header from './components/Header'
 import VideoBackground from './components/VideoBackground'
 import DressSlider from './components/DressSlider'
+import DressCollection from './components/DressCollection'
 import AboutUs from './components/AboutUs'
 import NextSection from './components/NextSection'
 import ScrollToTop from './components/ScrollToTop'
@@ -80,6 +81,7 @@ function App() {
                     <VideoBackground onNavigateToFitting={handleNavigateToFitting} />
                     <AboutUs />
                     <DressSlider />
+                    <DressCollection />
                     <NextSection />
                 </>
             )}

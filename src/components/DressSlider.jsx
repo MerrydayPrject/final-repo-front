@@ -83,12 +83,16 @@ const DressSlider = () => {
 
     return (
         <div className="dress-slider-container">
-            <h2
-                ref={titleRef}
-                className={`dress-slider-title ${titleVisible ? 'visible' : ''}`}
-            >
-                다양한 드레스를 피팅해보세요
-            </h2>
+            <div style={{ textAlign: 'center' }}>
+                <h2
+                    ref={titleRef}
+                    className={`dress-slider-title ${titleVisible ? 'visible' : ''}`}
+                >
+
+                    다양한 드레스를 피팅해보세요
+
+                </h2>
+            </div>
             <div className="dress-slider-wrapper">
                 <div
                     ref={sliderRef}
