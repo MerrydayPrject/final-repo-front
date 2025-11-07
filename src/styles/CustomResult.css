@@ -119,7 +119,7 @@
     align-items: center;
     justify-content: center;
     font-size: 48px;
-    color: #2c2c2c;
+    color: white;
     font-weight: bold;
     animation: checkPop 0.5s ease-out;
 }

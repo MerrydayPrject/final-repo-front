@@ -100,6 +100,10 @@
     margin: 0;
 }
 
+.spinner-lottie+.processing-text {
+    margin-top: -20px;
+}
+
 .processing-subtext {
     font-size: 14px;
     color: #666;
@@ -119,12 +123,13 @@
     font-weight: 700;
 }
 
-.spinner-gif {
-    width: 120px;
-    height: 120px;
+.spinner-lottie {
+    width: 250px;
+    height: 250px;
     object-fit: contain;
     pointer-events: none;
-    opacity: 0.3;
+    filter: brightness(0) saturate(100%) invert(67%) sepia(12%) saturate(507%) hue-rotate(12deg) brightness(90%) contrast(120%);
+    opacity: 1;
 }
 
 .custom-upload-area {

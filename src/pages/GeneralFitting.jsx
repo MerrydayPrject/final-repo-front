@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
+import Lottie from 'lottie-react'
 import Modal from '../components/Modal'
 import { autoMatchImage, getDresses } from '../utils/api'
 import '../styles/App.css'
@@ -13,6 +14,7 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection }) => {
     const [generalResultImage, setGeneralResultImage] = useState(null)
     const [imageUploadModalOpen, setImageUploadModalOpen] = useState(false)
     const [pendingDress, setPendingDress] = useState(null)
+    const [loadingAnimation, setLoadingAnimation] = useState(null)
 
     // ImageUpload 상태
     const [preview, setPreview] = useState(null)
@@ -107,6 +109,14 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection }) => {
         }
 
         loadDresses()
+    }, [])
+
+    useEffect(() => {
+        // Lottie 애니메이션 로드
+        fetch('/Image/One line dress.json')
+            .then(response => response.json())
+            .then(data => setLoadingAnimation(data))
+            .catch(error => console.error('Lottie 로드 실패:', error))
     }, [])
 
     // 매칭 완료 감지
@@ -441,7 +451,9 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection }) => {
                                         <img src={imageSrc} alt="Preview" className="preview-image" />
                                         {isProcessing && (
                                             <div className="processing-overlay">
-                                                <img src="/Image/free-animated-icon-fitting-17904496.gif" alt="로딩중" className="spinner-gif" />
+                                                {loadingAnimation && (
+                                                    <Lottie animationData={loadingAnimation} loop={true} className="spinner-lottie" />
+                                                )}
                                                 <p>매칭 중...</p>
                                             </div>
                                         )}

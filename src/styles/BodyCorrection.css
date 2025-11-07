@@ -1,8 +1,17 @@
+/* 체형 보정 페이지의 여백 최적화 */
+.left-container {
+    gap: 8px !important;
+}
+
+.general-fitting-header {
+    margin-bottom: 8px !important;
+}
+
 .correction-content-layout {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 30px;
-    margin-bottom: 30px;
+    gap: 150px;
+    margin-bottom: 0;
     width: 100%;
     max-width: 1200px;
     margin-left: auto;
@@ -12,7 +21,7 @@
 .correction-section {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
     max-width: 550px;
     width: 100%;
     justify-self: center;
@@ -21,34 +30,32 @@
 .section-title {
     font-size: 24px;
     font-weight: 700;
-    color: #2c2c2c;
     text-align: center;
     margin: 0;
-    padding: 10px;
-    background: linear-gradient(135deg, #f8f6f6 0%, #e8e6e6 100%);
+    padding: 8px;
     border-radius: 8px;
 }
 
 .before-section .section-title {
-    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-    color: #1565c0;
+    background: #f0f0f0;
+    color: #2c2c2c;
 }
 
 .after-section .section-title {
-    background: linear-gradient(135deg, #b08968 0%, #ddb892 100%);
+    background: #b0ab99;
     color: white;
 }
 
 .image-container {
     position: relative;
     width: 100%;
-    height: 600px;
-    max-height: 75vh;
+    height: 550px;
+    max-height: 80vh;
     background: #f5f5f5;
     border-radius: 12px;
     overflow: hidden;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
@@ -60,7 +67,8 @@
 .correction-image {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
+    object-position: top center;
 }
 
 .empty-image-placeholder {
@@ -71,7 +79,27 @@
     gap: 20px;
     padding: 40px;
     text-align: center;
-    color: #999;
+    color: #666;
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.empty-image-placeholder:hover {
+    background: rgba(176, 171, 153, 0.1);
+}
+
+.empty-image-placeholder .camera-icon {
+    width: 80px;
+    height: 80px;
+    opacity: 0.6;
+    transition: all 0.3s ease;
+}
+
+.empty-image-placeholder:hover .camera-icon {
+    opacity: 0.8;
+    transform: scale(1.1);
 }
 
 .empty-image-placeholder p {
@@ -80,22 +108,6 @@
     line-height: 1.6;
 }
 
-.upload-placeholder-button {
-    padding: 12px 24px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.upload-placeholder-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-}
 
 .processing-state {
     display: flex;
@@ -103,11 +115,18 @@
     align-items: center;
     justify-content: center;
     gap: 20px;
+    width: 100%;
+    height: 100%;
 }
 
-.processing-state .spinner-gif {
-    width: 80px;
-    height: 80px;
+.processing-state .spinner-lottie {
+    width: 250px;
+    height: 250px;
+    filter: brightness(0) saturate(100%) invert(67%) sepia(12%) saturate(507%) hue-rotate(12deg) brightness(90%) contrast(120%);
+}
+
+.processing-state .spinner-lottie+p {
+    margin-top: -20px;
 }
 
 .processing-state p {
@@ -121,7 +140,7 @@
     bottom: 12px;
     right: 12px;
     padding: 8px 16px;
-    background: rgba(44, 44, 44, 0.9);
+    background: #4b4737;
     color: white;
     border: none;
     border-radius: 6px;
@@ -133,7 +152,7 @@
 }
 
 .download-result-button:hover {
-    background: rgba(44, 44, 44, 1);
+    background: #5c5545;
     transform: translateY(-2px);
 }
 
@@ -161,14 +180,41 @@
     transform: translateY(-2px);
 }
 
+.remove-image-button {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 99, 99, 1);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.remove-image-button:hover {
+    background: rgba(255, 99, 99, 1);
+    transform: scale(1.1);
+}
+
 /* 프롬프트 입력 컨테이너 (After 영역 안) */
 .prompt-input-container {
     width: 100%;
     height: 100%;
-    padding: 25px;
+    padding: 40px 30px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    justify-content: flex-start;
+    gap: 18px;
     background: white;
     overflow-y: auto;
     box-sizing: border-box;
@@ -178,7 +224,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
 }
 
 .prompt-label {
@@ -192,23 +238,17 @@
     color: #999;
 }
 
-.prompt-input-wrapper {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 15px;
-}
-
 .prompt-input-container .prompt-input {
     width: 100%;
-    padding: 12px;
+    padding: 15px;
     border: 2px solid #e0e0e0;
     border-radius: 8px;
     font-size: 14px;
     font-family: inherit;
     resize: none;
     transition: border-color 0.3s ease;
-    min-height: 80px;
-    max-height: 120px;
+    min-height: 120px;
+    max-height: 180px;
 }
 
 .prompt-input:focus {
@@ -222,13 +262,13 @@
 
 .prompt-input-container .correction-submit-button {
     width: 100%;
-    padding: 12px;
+    padding: 14px;
     border: none;
     border-radius: 8px;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 700;
     transition: all 0.3s ease;
-    margin-top: 8px;
+    margin-top: 12px;
 }
 
 .prompt-input-container .correction-submit-button.active:hover {
@@ -277,14 +317,6 @@
     .correction-content-layout {
         grid-template-columns: 1fr;
         gap: 20px;
-    }
-
-    .prompt-input-wrapper {
-        flex-direction: column;
-    }
-
-    .correction-submit-button {
-        width: 100%;
     }
 }
 

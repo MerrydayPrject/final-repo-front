@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import Lottie from 'lottie-react'
 import '../styles/BodyTypeFitting.css'
 import '../styles/BodyCorrection.css'
 
@@ -8,6 +9,7 @@ const BodyCorrection = ({ onBackToMain, initialImage }) => {
     const [prompt, setPrompt] = useState('')
     const [isProcessing, setIsProcessing] = useState(false)
     const [showPromptInput, setShowPromptInput] = useState(true)
+    const [loadingAnimation, setLoadingAnimation] = useState(null)
     const fileInputRef = useRef(null)
 
     useEffect(() => {
@@ -15,6 +17,14 @@ const BodyCorrection = ({ onBackToMain, initialImage }) => {
             setBeforeImage(initialImage)
         }
     }, [initialImage])
+
+    useEffect(() => {
+        // Lottie 애니메이션 로드
+        fetch('/Image/One line dress.json')
+            .then(response => response.json())
+            .then(data => setLoadingAnimation(data))
+            .catch(error => console.error('Lottie 로드 실패:', error))
+    }, [])
 
     const handleFileChange = (e) => {
         const file = e.target.files[0]
@@ -60,6 +70,13 @@ const BodyCorrection = ({ onBackToMain, initialImage }) => {
         }
     }
 
+    const handleRemoveImage = () => {
+        setBeforeImage(null)
+        setAfterImage(null)
+        setPrompt('')
+        setShowPromptInput(true)
+    }
+
     return (
         <main className="main-content">
             <div className="fitting-container">
@@ -78,16 +95,19 @@ const BodyCorrection = ({ onBackToMain, initialImage }) => {
                                 <h3 className="section-title">Before</h3>
                                 <div className="image-container">
                                     {beforeImage ? (
-                                        <img src={beforeImage} alt="보정 전" className="correction-image" />
-                                    ) : (
-                                        <div className="empty-image-placeholder">
-                                            <p>이미지를 업로드하거나<br />일반 피팅에서 이동해주세요</p>
-                                            <button
-                                                className="upload-placeholder-button"
-                                                onClick={() => fileInputRef.current?.click()}
-                                            >
-                                                📸 이미지 업로드
+                                        <>
+                                            <img src={beforeImage} alt="보정 전" className="correction-image" />
+                                            <button className="remove-image-button" onClick={handleRemoveImage}>
+                                                ✕
                                             </button>
+                                        </>
+                                    ) : (
+                                        <div
+                                            className="empty-image-placeholder"
+                                            onClick={() => fileInputRef.current?.click()}
+                                        >
+                                            <img src="/Image/icons8-카메라-80.png" alt="카메라" className="camera-icon" />
+                                            <p>이미지를 업로드해주세요</p>
                                         </div>
                                     )}
                                     <input
@@ -106,7 +126,9 @@ const BodyCorrection = ({ onBackToMain, initialImage }) => {
                                 <div className="image-container">
                                     {isProcessing ? (
                                         <div className="processing-state">
-                                            <img src="/Image/free-animated-icon-fitting-17904496.gif" alt="로딩중" className="spinner-gif" />
+                                            {loadingAnimation && (
+                                                <Lottie animationData={loadingAnimation} loop={true} className="spinner-lottie" />
+                                            )}
                                             <p>AI가 보정 중입니다...</p>
                                         </div>
                                     ) : afterImage && !showPromptInput ? (
@@ -170,10 +192,10 @@ const BodyCorrection = ({ onBackToMain, initialImage }) => {
                                                     handleCorrection()
                                                 }}
                                                 style={{
-                                                    background: prompt.trim() ? 'linear-gradient(135deg, #b08968 0%, #ddb892 100%)' : '#e0e0e0',
+                                                    background: prompt.trim() ? '#b0ab99' : '#e0e0e0',
                                                     color: prompt.trim() ? 'white' : '#999',
                                                     cursor: prompt.trim() ? 'pointer' : 'default',
-                                                    boxShadow: prompt.trim() ? '0 4px 12px rgba(176, 137, 104, 0.3)' : 'none'
+                                                    boxShadow: prompt.trim() ? '0 4px 12px rgba(176, 171, 153, 0.3)' : 'none'
                                                 }}
                                             >
                                                 {isProcessing ? '보정 중...' : '보정하기'}

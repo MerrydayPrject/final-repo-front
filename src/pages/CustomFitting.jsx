@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import Lottie from 'lottie-react'
 import Modal from '../components/Modal'
 import { removeBackground, customMatchImage } from '../utils/api'
 import '../styles/App.css'
@@ -13,6 +14,7 @@ const CustomFitting = ({ onBackToMain }) => {
     const [isMatching, setIsMatching] = useState(false)
     const [isRemovingBackground, setIsRemovingBackground] = useState(false)
     const [isBackgroundRemoved, setIsBackgroundRemoved] = useState(false)
+    const [loadingAnimation, setLoadingAnimation] = useState(null)
     const [bgRemovalModalOpen, setBgRemovalModalOpen] = useState(false)
 
     // CustomUpload 상태
@@ -26,6 +28,14 @@ const CustomFitting = ({ onBackToMain }) => {
     // CustomResult 상태
     const [showCheckmark, setShowCheckmark] = useState(false)
     const prevProcessingRef = useRef(isMatching)
+
+    useEffect(() => {
+        // Lottie 애니메이션 로드
+        fetch('/Image/One line dress.json')
+            .then(response => response.json())
+            .then(data => setLoadingAnimation(data))
+            .catch(error => console.error('Lottie 로드 실패:', error))
+    }, [])
 
     // Custom Fitting 핸들러
     const handleFullBodyUpload = (image) => {
@@ -367,7 +377,9 @@ const CustomFitting = ({ onBackToMain }) => {
                                 </div>
                             ) : isMatching ? (
                                 <div className="processing-container">
-                                    <img src="/Image/free-animated-icon-fitting-17904496.gif" alt="로딩중" className="spinner-gif" />
+                                    {loadingAnimation && (
+                                        <Lottie animationData={loadingAnimation} loop={true} className="spinner-lottie" />
+                                    )}
                                     <p className="processing-text">AI 매칭 중...</p>
                                     <p className="processing-subtext">잠시만 기다려주세요</p>
                                 </div>
