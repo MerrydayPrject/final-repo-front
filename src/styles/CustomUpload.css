@@ -6,6 +6,8 @@
     min-width: 0;
     gap: 12px;
     overflow: hidden;
+
+
 }
 
 .custom-left .general-fitting-header {
@@ -26,6 +28,8 @@
     min-height: 0;
     height: 100%;
     overflow: hidden;
+    margin-right: 200px;
+    padding-left: 10px;
 }
 
 /* 업로드 카드 */
@@ -41,11 +45,13 @@
 .custom-upload-card>* {
     width: 80%;
     max-width: 400px;
+    margin-left: 200px;
 }
 
 .custom-left .convert-3d-button {
     width: 80%;
     max-width: 400px;
+    margin-left: 200px;
 }
 
 /* 결과 컨테이너 */
