@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Header from './components/Header'
 import VideoBackground from './components/VideoBackground'
-import DressSlider from './components/DressSlider'
+import DomeGallery from './components/DomeGallery'
 import DressCollection from './components/DressCollection'
 import AboutUs from './components/AboutUs'
 import NextSection from './components/NextSection'
@@ -86,7 +86,12 @@ function App() {
                 <>
                     <VideoBackground onNavigateToFitting={handleNavigateToFitting} />
                     <AboutUs />
-                    <DressSlider />
+                    <section className="dome-gallery-section">
+                        <div className="dome-gallery-header">
+                            <h2 className="dome-gallery-title">다양한 드레스를 피팅해보세요</h2>
+                        </div>
+                        <DomeGallery />
+                    </section>
                     <DressCollection />
                     <NextSection />
                 </>
