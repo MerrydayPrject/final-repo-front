@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react'
 import Header from './components/Header'
 import VideoBackground from './components/VideoBackground'
+import DressSlider from './components/DressSlider'
 import AboutUs from './components/AboutUs'
 import NextSection from './components/NextSection'
 import ScrollToTop from './components/ScrollToTop'
 import Modal from './components/Modal'
 import GeneralFitting from './pages/GeneralFitting'
 import CustomFitting from './pages/CustomFitting'
+import BodyTypeFitting from './pages/BodyTypeFitting'
 import './styles/App.css'
 
 function App() {
-    const [currentPage, setCurrentPage] = useState('main') // 'main', 'general', 'custom'
+    const [currentPage, setCurrentPage] = useState('main') // 'main', 'general', 'custom', 'ai'
 
     // 모달 상태
     const [modalOpen, setModalOpen] = useState(false)
@@ -56,8 +58,7 @@ function App() {
         } else if (menuType === 'custom') {
             setCurrentPage('custom')
         } else if (menuType === 'ai') {
-            // AI 체형 피팅 기능은 추후 구현
-            openModal('AI 체형 피팅 기능은 준비 중입니다.')
+            setCurrentPage('ai')
         }
     }
 
@@ -78,6 +79,7 @@ function App() {
                 <>
                     <VideoBackground onNavigateToFitting={handleNavigateToFitting} />
                     <AboutUs />
+                    <DressSlider />
                     <NextSection />
                 </>
             )}
@@ -91,6 +93,7 @@ function App() {
 
             {currentPage === 'general' && <GeneralFitting onBackToMain={handleBackToMain} />}
             {currentPage === 'custom' && <CustomFitting onBackToMain={handleBackToMain} />}
+            {currentPage === 'ai' && <BodyTypeFitting onBackToMain={handleBackToMain} />}
 
             <Modal
                 isOpen={modalOpen}

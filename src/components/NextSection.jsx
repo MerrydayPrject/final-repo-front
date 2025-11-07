@@ -55,9 +55,7 @@ const NextSection = () => {
 
     return (
         <section ref={sectionRef} className={`next-section ${isVisible ? 'visible' : ''}`}>
-            <div className="next-section-content">
-                <h2 className="next-section-title">Style & Fit</h2>
-            </div>
+
             <div className="next-section-video-banner">
                 <video
                     ref={videoRef}
@@ -70,14 +68,10 @@ const NextSection = () => {
                 </video>
                 <div className="next-section-video-overlay"></div>
                 <div className="next-section-video-text">
-                    "당신의 가장 아름다운 순간, 지금부터 시작됩니다."
+                    " 당신의 가장 아름다운 순간, 지금부터 시작됩니다 "
                 </div>
             </div>
-            <div className="next-section-content">
-                <div className="next-section-body">
-                    {/* 여기에 화면 구성 요소들을 추가하세요 */}
-                </div>
-            </div>
+
         </section>
     )
 }

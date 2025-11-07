@@ -3,7 +3,8 @@
     top: 0;
     left: 0;
     width: 100vw;
-    height: 150vh;
+    height: 100vh;
+    padding-top: 80px;
     z-index: 0;
     overflow: hidden;
     animation: fadeInVideo 1s ease-in;

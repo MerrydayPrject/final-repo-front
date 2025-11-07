@@ -1,0 +1,230 @@
+/* Body Type Fitting Container */
+
+/* Tab Menu */
+.tab-menu {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    margin-top: 30px;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    width: 100%;
+}
+
+.tab-button {
+    padding: 10px 25px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #333;
+    background: #b0ab99;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.tab-button:hover {
+    background: #9e9887;
+    transform: translateY(-2px);
+}
+
+.tab-button.active {
+    background: #8a8472;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Tab Content */
+.tab-content {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 50px;
+    margin-top: 40px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.content-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: black;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.content-description {
+    font-size: 1.1rem;
+    color: black;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+/* Upload Section */
+.upload-section {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 50px;
+}
+
+.upload-box {
+    width: 400px;
+    height: 500px;
+    border: 3px dashed rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    background: rgba(255, 255, 255, 0.02);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.upload-box:hover {
+    border-color: rgba(255, 107, 157, 0.5);
+    background: rgba(255, 107, 157, 0.05);
+    transform: translateY(-5px);
+}
+
+.upload-icon {
+    font-size: 5rem;
+    opacity: 0.7;
+}
+
+.upload-text {
+    font-size: 1.2rem;
+    color: rgba(0, 0, 0, 0.616);
+    text-align: center;
+    margin: 0;
+}
+
+.upload-button {
+    padding: 12px 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(135deg, #ff6b9d 0%, #c86dd7 100%);
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.upload-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(255, 107, 157, 0.4);
+}
+
+/* Info Section */
+.info-section {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 15px;
+    padding: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.info-section h4 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: black;
+    margin-bottom: 20px;
+}
+
+.feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.feature-list li {
+    font-size: 1.1rem;
+    color: black;
+    padding: 12px 0;
+    padding-left: 30px;
+    position: relative;
+}
+
+.feature-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #ff6b9d;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+/* Analysis Content Specific Styles */
+.analysis-content {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Correction Content Specific Styles */
+.correction-content {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .tab-menu {
+        gap: 8px;
+    }
+
+    .tab-button {
+        padding: 8px 20px;
+        font-size: 0.9rem;
+    }
+
+    .tab-content {
+        padding: 30px 20px;
+    }
+
+    .content-title {
+        font-size: 1.5rem;
+    }
+
+    .content-description {
+        font-size: 1rem;
+    }
+
+    .upload-box {
+        width: 100%;
+        max-width: 350px;
+        height: 450px;
+    }
+
+    .upload-icon {
+        font-size: 4rem;
+    }
+
+    .upload-text {
+        font-size: 1rem;
+    }
+
+    .info-section {
+        padding: 20px;
+    }
+
+    .info-section h4 {
+        font-size: 1.2rem;
+    }
+
+    .feature-list li {
+        font-size: 1rem;
+    }
+}

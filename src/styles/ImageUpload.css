@@ -14,7 +14,7 @@
 }
 
 .image-upload-wrapper {
-    width: 100%;
+    width: 80%;
     flex: 1;
     min-height: 0;
     display: flex;
@@ -103,7 +103,7 @@
 .upload-text {
     font-size: 18px;
     font-weight: 600;
-    color: var(--text-dark);
+    color: black;
     margin-bottom: 8px;
 }
 
