@@ -113,11 +113,11 @@
     border-radius: 6.4px;
     cursor: pointer;
     text-transform: uppercase;
-    background-color: #1d1d1d;
+    background-color: #4b4737;
     color: rgb(234, 234, 234);
     font-weight: 700;
     transition: 0.6s;
-    box-shadow: 0px 0px 60px #1f4c65;
+    box-shadow: 0px 0px 60px rgba(75, 71, 55, 0.6);
     -webkit-box-reflect: below .625rem linear-gradient(to bottom, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.4));
     position: fixed;
     bottom: 6rem;
@@ -135,9 +135,9 @@
 }
 
 .video-fitting-button:hover {
-    background: linear-gradient(270deg, #4b4737 0%, #6b5d47 50%, #8b7a5f 100%);
+    background: linear-gradient(270deg, #b08968 0%, #ad9f41 100%);
     color: white;
-    box-shadow: 0px 0px 60px rgba(75, 71, 55, 0.8);
+    box-shadow: 0px 0px 60px rgba(176, 137, 104, 0.7);
 }
 
 .video-fitting-button.sticky {
