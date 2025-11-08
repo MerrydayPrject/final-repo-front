@@ -44,7 +44,7 @@
 
 .sphere-root {
     position: relative;
-    width: min(1200px, 90vw);
+    width: min(1400px, 95vw);
     height: clamp(420px, 60vw, 720px);
     margin: 0 auto;
     --radius: 520px;
@@ -75,7 +75,7 @@ main.sphere-main {
     touch-action: none;
     user-select: none;
     -webkit-user-select: none;
-    background: transparent;
+    background: #ffffff;
 }
 
 .stage {
@@ -103,12 +103,12 @@ main.sphere-main {
 }
 
 .overlay {
-    background-image: radial-gradient(rgba(235, 235, 235, 0) 65%, var(--overlay-blur-color, #060010) 100%);
+    background-image: radial-gradient(rgba(235, 235, 235, 0) 65%, var(--overlay-blur-color, #ffffff) 100%);
 }
 
 .overlay--blur {
-    -webkit-mask-image: radial-gradient(rgba(235, 235, 235, 0) 70%, var(--overlay-blur-color, #060010) 90%);
-    mask-image: radial-gradient(rgba(235, 235, 235, 0) 70%, var(--overlay-blur-color, #060010) 90%);
+    -webkit-mask-image: radial-gradient(rgba(235, 235, 235, 0) 70%, var(--overlay-blur-color, #ffffff) 90%);
+    mask-image: radial-gradient(rgba(235, 235, 235, 0) 70%, var(--overlay-blur-color, #ffffff) 90%);
     backdrop-filter: blur(3px);
 }
 
@@ -130,18 +130,30 @@ main.sphere-main {
 .item__image {
     position: absolute;
     display: block;
-    inset: 10px;
+    inset: 5px;
     border-radius: var(--tile-radius, 12px);
-    background: transparent;
+    background: #ffffff;
+    border: 2px solid rgba(0, 0, 0, 0.08);
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.1),
+        0 1px 3px rgba(0, 0, 0, 0.08);
     overflow: hidden;
     backface-visibility: hidden;
-    transition: transform 300ms;
+    transition: transform 300ms, box-shadow 300ms, border-color 300ms;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
     pointer-events: auto;
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
+}
+
+.item__image:hover {
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.15),
+        0 2px 6px rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 0, 0, 0.12);
+    transform: translateZ(0) scale(1.02);
 }
 
 .item__image:focus {
@@ -155,6 +167,7 @@ main.sphere-main {
     pointer-events: none;
     backface-visibility: hidden;
     filter: var(--image-filter, none);
+    display: block;
 }
 
 .viewer {
@@ -228,7 +241,7 @@ main.sphere-main {
     height: 120px;
     z-index: 5;
     pointer-events: none;
-    background: linear-gradient(to bottom, transparent, var(--overlay-blur-color, #060010));
+    background: linear-gradient(to bottom, transparent, var(--overlay-blur-color, #ffffff));
 }
 
 .edge-fade--top {
