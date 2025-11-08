@@ -120,7 +120,7 @@
     box-shadow: 0px 0px 60px #1f4c65;
     -webkit-box-reflect: below .625rem linear-gradient(to bottom, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.4));
     position: fixed;
-    bottom: 10rem;
+    bottom: 6rem;
     left: 45%;
     transform: translateX(-50%);
     margin: 0;
@@ -153,6 +153,47 @@
     transform: translateX(-50%) scale(0.92);
 }
 
+/* 우측 텍스트 */
+.video-side-text {
+    position: absolute;
+    right: 7rem;
+    bottom: 17rem;
+    z-index: 9999;
+    opacity: 0;
+    transform: translateX(30px);
+    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    text-align: right;
+    will-change: opacity, transform;
+}
+
+.video-side-text.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.video-side-text-line1,
+.video-side-text-line2 {
+    color: #1d1d1d;
+    margin: 0;
+    font-family: 'Gowun Batang', 'Noto Sans KR', serif;
+    line-height: 1.8;
+}
+
+.video-side-text-line1 {
+    font-size: 2.5rem;
+    font-weight: 400;
+    letter-spacing: 0.15rem;
+    margin-bottom: 0.75rem;
+}
+
+.video-side-text-line2 {
+    font-size: 1.75rem;
+    font-weight: 300;
+    letter-spacing: 0.125rem;
+    font-style: italic;
+}
+
 /* 모바일에서도 잘 보이도록 */
 @media (max-width: 48rem) {
     .video-background-video {
@@ -174,5 +215,17 @@
     .video-fitting-button {
         font-size: 16px;
         padding: 12.8px 32px;
+    }
+
+    .video-side-text {
+        right: 1rem;
+    }
+
+    .video-side-text-line1 {
+        font-size: 1.75rem;
+    }
+
+    .video-side-text-line2 {
+        font-size: 1.25rem;
     }
 }

@@ -5,7 +5,9 @@ const VideoBackground = ({ onNavigateToFitting }) => {
     const videoRef = useRef(null)
     const videoBackgroundRef = useRef(null)
     const buttonRef = useRef(null)
+    const sideTextRef = useRef(null)
     const [isSticky, setIsSticky] = useState(false)
+    const [isTextVisible, setIsTextVisible] = useState(false)
 
     // 비디오가 로드되면 재생 속도 설정 및 재생
     useEffect(() => {
@@ -29,7 +31,7 @@ const VideoBackground = ({ onNavigateToFitting }) => {
         }
     }, [])
 
-    // 스크롤 감지하여 버튼 위치 조정
+    // 스크롤 감지하여 버튼 위치 조정 및 텍스트 표시
     useEffect(() => {
         const handleScroll = () => {
             if (!videoBackgroundRef.current || !buttonRef.current) return
@@ -44,12 +46,28 @@ const VideoBackground = ({ onNavigateToFitting }) => {
             const scrollY = window.scrollY
 
             // 동영상 영역이 끝나고 About us 영역이 보이기 시작하면 버튼을 동영상 영역 끝에 고정
-            if (scrollY + window.innerHeight >= videoBottom || scrollY >= aboutUsTop - 100) {
+            // 문구는 더 일찍 나타나도록 조건 완화
+            const shouldShowText = scrollY + window.innerHeight >= videoBottom - 300 || scrollY >= aboutUsTop - 400
+            const shouldSticky = scrollY + window.innerHeight >= videoBottom || scrollY >= aboutUsTop - 100
+            
+            if (shouldSticky) {
                 setIsSticky(true)
                 buttonRef.current.classList.add('sticky')
             } else {
                 setIsSticky(false)
                 buttonRef.current.classList.remove('sticky')
+            }
+            
+            if (shouldShowText) {
+                setIsTextVisible(true)
+                if (sideTextRef.current) {
+                    sideTextRef.current.classList.add('visible')
+                }
+            } else {
+                setIsTextVisible(false)
+                if (sideTextRef.current) {
+                    sideTextRef.current.classList.remove('visible')
+                }
             }
         }
 
@@ -75,6 +93,10 @@ const VideoBackground = ({ onNavigateToFitting }) => {
                 <source src="/Image/Main COMP.mp4" type="video/mp4" />
             </video>
             <div className="video-background-overlay"></div>
+            <div ref={sideTextRef} className={`video-side-text ${isTextVisible ? 'visible' : ''}`}>
+                <p className="video-side-text-line1">입어보지 않아도, 느껴지는 설렘</p>
+                <p className="video-side-text-line2">AI가 완성하는 나만의 웨딩드레스 피팅룸</p>
+            </div>
             <button 
                 ref={buttonRef}
                 className={`video-fitting-button ${isSticky ? 'sticky' : ''}`} 
