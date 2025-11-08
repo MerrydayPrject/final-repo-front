@@ -13,7 +13,28 @@ const DEFAULT_IMAGES = [
     { src: '/Image/n8.png', alt: 'Image 8' },
     { src: '/Image/n9.png', alt: 'Image 9' },
     { src: '/Image/n10.png', alt: 'Image 10' },
-    { src: '/Image/n11.png', alt: 'Image 11' }
+    { src: '/Image/n11.png', alt: 'Image 11' },
+    { src: '/Image/n12.png', alt: 'Image 12' },
+    { src: '/Image/n13.png', alt: 'Image 13' },
+    { src: '/Image/n14.png', alt: 'Image 14' },
+    { src: '/Image/n15.png', alt: 'Image 15' },
+    { src: '/Image/n16.png', alt: 'Image 16' },
+    { src: '/Image/n17.png', alt: 'Image 17' },
+    { src: '/Image/n18.png', alt: 'Image 18' },
+    { src: '/Image/n19.png', alt: 'Image 19' },
+    { src: '/Image/n20.png', alt: 'Image 20' },
+    { src: '/Image/n21.png', alt: 'Image 21' },
+    { src: '/Image/n22.png', alt: 'Image 22' },
+    { src: '/Image/n23.png', alt: 'Image 23' },
+    { src: '/Image/n24.png', alt: 'Image 24' },
+    { src: '/Image/n23.png', alt: 'Image 23' },
+    { src: '/Image/n23.png', alt: 'Image 23' },
+    { src: '/Image/n25.png', alt: 'Image 25' },
+    { src: '/Image/n26.png', alt: 'Image 26' },
+    { src: '/Image/n27.png', alt: 'Image 27' },
+    { src: '/Image/n28.png', alt: 'Image 28' },
+    { src: '/Image/n29.png', alt: 'Image 29' },
+    { src: '/Image/n30.png', alt: 'Image 30' }
 ]
 
 const DEFAULTS = {

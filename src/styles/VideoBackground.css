@@ -3,8 +3,8 @@
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
-    padding-top: 80px;
+    height: 170vh;
+    padding-top: 5rem;
     z-index: 0;
     overflow: hidden;
     animation: fadeInVideo 1s ease-in;
@@ -34,14 +34,14 @@
     filter: brightness(1);
 }
 
-/* 검은색 오버레이 - 살짝 어둡게 */
+/* 검은색 오버레이 - 제거됨 */
 .video-background-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.40);
+    background: transparent;
     pointer-events: none;
     z-index: 1;
 }
@@ -55,7 +55,7 @@
     z-index: 2;
     text-align: center;
     width: 90%;
-    max-width: 1000px;
+    max-width: 62.5rem;
 }
 
 /* 인트로 스킵 시 딜레이 제거 */
@@ -68,7 +68,7 @@
 .video-text-line1,
 .video-text-line2 {
     color: white;
-    text-shadow: 2px 2px 12px rgba(0, 0, 0, 0.6);
+    text-shadow: .125rem .125rem .75rem rgba(0, 0, 0, 0.6);
     margin: 0;
     opacity: 0;
     animation: slideInText 1.5s ease-out forwards;
@@ -76,18 +76,18 @@
 
 .video-text-line1 {
     font-family: 'Gowun Batang', 'Noto Sans KR', serif;
-    font-size: 40px;
+    font-size: 2.5rem;
     font-weight: 400;
-    letter-spacing: 2px;
-    margin-bottom: 24px;
+    letter-spacing: .125rem;
+    margin-bottom: 1.5rem;
     animation-delay: 0.5s;
 }
 
 .video-text-line2 {
     font-family: 'Cormorant Garamond', 'Gowun Batang', serif;
-    font-size: 26px;
+    font-size: 1.625rem;
     font-weight: 300;
-    letter-spacing: 3px;
+    letter-spacing: .1875rem;
     animation-delay: 1s;
     font-style: italic;
 }
@@ -95,7 +95,7 @@
 @keyframes slideInText {
     from {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(1.875rem);
     }
 
     to {
@@ -106,70 +106,73 @@
 
 /* 피팅하러 가기 버튼 */
 .video-fitting-button {
-    margin-top: 40px;
-    padding: 16px 48px;
-    background-color: transparent;
-    border: 2px solid white;
-    border-radius: 50px;
-    color: white;
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 18px;
-    font-weight: 500;
-    letter-spacing: 2px;
+    font-size: 19.2px;
+    padding: 19.2px 40px;
+    border: none;
+    outline: none;
+    border-radius: 6.4px;
     cursor: pointer;
-    position: relative;
-    overflow: hidden;
+    text-transform: uppercase;
+    background-color: #1d1d1d;
+    color: rgb(234, 234, 234);
+    font-weight: 700;
+    transition: 0.6s;
+    box-shadow: 0px 0px 60px #1f4c65;
+    -webkit-box-reflect: below .625rem linear-gradient(to bottom, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.4));
+    position: fixed;
+    bottom: 10rem;
+    left: 45%;
+    transform: translateX(-50%);
+    margin: 0;
+    z-index: 1000;
     opacity: 0;
     animation: slideInText 1.5s ease-out forwards;
     animation-delay: 1.5s;
-    transition: color 0.4s ease;
-    z-index: 1;
 }
 
-.video-fitting-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: white;
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s ease;
-    z-index: -1;
-}
-
-.video-fitting-button:hover::before {
-    transform: scaleX(1);
+.video-fitting-button:active {
+    scale: 0.92;
 }
 
 .video-fitting-button:hover {
-    color: black;
+    background: linear-gradient(270deg, #4b4737 0%, #6b5d47 50%, #8b7a5f 100%);
+    color: white;
+    box-shadow: 0px 0px 60px rgba(75, 71, 55, 0.8);
+}
+
+.video-fitting-button.sticky {
+    position: absolute;
+    bottom: 10rem;
+    left: 45%;
+    transform: translateX(-50%);
+    margin: 0;
+    z-index: 1000;
+}
+
+.video-fitting-button.sticky:active {
+    transform: translateX(-50%) scale(0.92);
 }
 
 /* 모바일에서도 잘 보이도록 */
-@media (max-width: 768px) {
+@media (max-width: 48rem) {
     .video-background-video {
         min-width: 100%;
         min-height: 100%;
     }
 
     .video-text-line1 {
-        font-size: 32px;
-        margin-bottom: 16px;
-        letter-spacing: 1px;
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        letter-spacing: .0625rem;
     }
 
     .video-text-line2 {
-        font-size: 20px;
-        letter-spacing: 2px;
+        font-size: 1.25rem;
+        letter-spacing: .125rem;
     }
 
     .video-fitting-button {
-        margin-top: 30px;
-        padding: 14px 36px;
         font-size: 16px;
-        letter-spacing: 1.5px;
+        padding: 12.8px 32px;
     }
 }
