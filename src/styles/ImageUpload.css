@@ -145,10 +145,22 @@
     box-sizing: border-box;
 }
 
-/* 일반피팅에서 preview-container 높이도 함께 줄임 */
+/* 일반피팅에서 preview-container 크기 키우기 */
+.fitting-container .image-upload-wrapper {
+    width: 80%;
+    /* 80%에서 95%로 증가 */
+}
+
 .fitting-container .preview-container {
-    max-height: 75%;
-    height: 75%;
+    width: 95%;
+    /* 80%에서 95%로 증가 */
+    max-height: 100%;
+    height: 100%;
+}
+
+.fitting-container .upload-area {
+    width: 95%;
+    /* 80%에서 95%로 증가 */
 }
 
 .preview-container.dragging {
