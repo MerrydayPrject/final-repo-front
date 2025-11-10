@@ -4,9 +4,8 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
 const api = axios.create({
     baseURL: API_BASE_URL,
-    headers: {
-        'Content-Type': 'multipart/form-data',
-    },
+    // multipart/form-data는 FormData를 보낼 때 axios가 자동으로 boundary를 포함한 Content-Type을 설정하므로
+    // 기본 헤더에 설정하지 않음 (필요한 경우 개별 요청에서만 설정)
 })
 
 /**
@@ -144,7 +143,7 @@ export const segmentDress = async (image) => {
 }
 
 /**
- * 이미지 분석 API 호출
+ * 이미지 분석 API 호출 (세그멘테이션 분석)
  * @param {File} image - 분석할 이미지
  * @returns {Promise} 분석 결과
  */
@@ -162,6 +161,26 @@ export const analyzeImage = async (image) => {
         return response.data
     } catch (error) {
         console.error('이미지 분석 오류:', error)
+        throw error
+    }
+}
+
+/**
+ * 체형 분석 API 호출 (MediaPipe 기반 체형 분석)
+ * @param {File} image - 전신 이미지 파일
+ * @returns {Promise} 체형 분석 결과
+ */
+export const analyzeBody = async (image) => {
+    try {
+        const formData = new FormData()
+        formData.append('file', image)
+
+        // axios는 FormData를 감지하면 자동으로 multipart/form-data Content-Type을 설정
+        const response = await api.post('/api/analyze-body', formData)
+
+        return response.data
+    } catch (error) {
+        console.error('체형 분석 오류:', error)
         throw error
     }
 }

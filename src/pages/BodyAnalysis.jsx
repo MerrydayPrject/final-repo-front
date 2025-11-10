@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import '../styles/BodyTypeFitting.css'
-import { analyzeImage, getDresses } from '../utils/api'
+import { analyzeBody, getDresses } from '../utils/api'
 
 const BodyAnalysis = ({ onBackToMain }) => {
     const [uploadedImage, setUploadedImage] = useState(null)
@@ -20,7 +20,19 @@ const BodyAnalysis = ({ onBackToMain }) => {
     const loadDresses = async () => {
         try {
             const response = await getDresses()
-            if (response.success && response.dresses) {
+            if (response.success && response.data) {
+                // 백엔드 응답 형식에 맞게 변환
+                const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+                const transformedDresses = response.data.map((dress) => ({
+                    id: dress.id,
+                    name: dress.image_name?.replace(/\.[^/.]+$/, '') || `드레스 ${dress.id}`,
+                    image: `${apiBaseUrl}/api/proxy-image?url=${encodeURIComponent(dress.url)}`,
+                    originalUrl: dress.url,
+                    category: dress.style || 'all',
+                    description: `${dress.style || ''} 스타일의 드레스`
+                }))
+                setAllDresses(transformedDresses)
+            } else if (response.success && response.dresses) {
                 setAllDresses(response.dresses)
             }
         } catch (error) {
@@ -57,25 +69,58 @@ const BodyAnalysis = ({ onBackToMain }) => {
 
         setIsAnalyzing(true)
         try {
-            const result = await analyzeImage(uploadedImage)
+            const result = await analyzeBody(uploadedImage)
+
+            if (!result.success) {
+                throw new Error(result.message || '체형 분석에 실패했습니다.')
+            }
+
             setAnalysisResult(result)
 
-            // 분석 결과의 카테고리에 맞는 드레스 필터링
-            if (result && result.category) {
-                const category = result.category.toLowerCase().trim()
-                const filtered = allDresses.filter(dress => {
-                    const dressCategory = (dress.category || dress.dress_category || '').toLowerCase().trim()
-                    return dressCategory === category || dressCategory.includes(category)
+            // Gemini 분석에서 추천 카테고리 추출 (Gemini 응답에서 카테고리명 찾기)
+            let recommendedCategories = []
+            if (result.gemini_analysis?.detailed_analysis) {
+                const analysisText = result.gemini_analysis.detailed_analysis.toLowerCase()
+                const categories = ['벨라인', '머메이드', '프린세스', 'aline', 'a라인', '슬림', '트럼펫']
+                const categoryMap = {
+                    '벨라인': 'ballgown',
+                    '머메이드': 'mermaid',
+                    '프린세스': 'princess',
+                    'aline': 'aline',
+                    'a라인': 'aline',
+                    '슬림': 'slim',
+                    '트럼펫': 'trumpet'
+                }
+
+                categories.forEach(cat => {
+                    if (analysisText.includes(cat.toLowerCase())) {
+                        const mapped = categoryMap[cat] || cat
+                        if (!recommendedCategories.includes(mapped)) {
+                            recommendedCategories.push(mapped)
+                        }
+                    }
                 })
-                setFilteredDresses(filtered)
-                setCurrentSlideIndex(0) // 슬라이더 위치 초기화
+            }
+
+            // 추천 카테고리에 맞는 드레스 필터링
+            if (recommendedCategories.length > 0) {
+                const filtered = allDresses.filter(dress => {
+                    const dressCategory = (dress.category || '').toLowerCase()
+                    return recommendedCategories.some(recCat =>
+                        dressCategory === recCat.toLowerCase() ||
+                        dressCategory.includes(recCat.toLowerCase())
+                    )
+                })
+                setFilteredDresses(filtered.length > 0 ? filtered : allDresses)
             } else {
                 // 카테고리 정보가 없으면 전체 드레스 표시
                 setFilteredDresses(allDresses)
             }
+            setCurrentSlideIndex(0) // 슬라이더 위치 초기화
         } catch (error) {
             console.error('분석 오류:', error)
-            alert('이미지 분석 중 오류가 발생했습니다.')
+            const errorMessage = error.response?.data?.message || error.message || '이미지 분석 중 오류가 발생했습니다.'
+            alert(errorMessage)
         } finally {
             setIsAnalyzing(false)
         }
@@ -158,15 +203,22 @@ const BodyAnalysis = ({ onBackToMain }) => {
                                     ) : (
                                         <div className="result-content">
                                             <div className="result-item">
-                                                <strong>체형 유형:</strong> {analysisResult.body_type || '분석 중...'}
+                                                <strong>체형 유형:</strong> {analysisResult.body_analysis?.body_type || analysisResult.body_analysis?.body_type_category?.type || '분석 중...'}
                                             </div>
                                             <div className="result-item">
-                                                <strong>추천 카테고리:</strong> {analysisResult.category || '전체'}
+                                                <strong>체형 측정:</strong>
+                                                {analysisResult.body_analysis?.measurements && (
+                                                    <ul style={{ marginTop: '5px', paddingLeft: '20px' }}>
+                                                        <li>어깨/엉덩이 비율: {analysisResult.body_analysis.measurements.shoulder_hip_ratio?.toFixed(2) || '-'}</li>
+                                                        <li>허리/어깨 비율: {analysisResult.body_analysis.measurements.waist_shoulder_ratio?.toFixed(2) || '-'}</li>
+                                                        <li>허리/엉덩이 비율: {analysisResult.body_analysis.measurements.waist_hip_ratio?.toFixed(2) || '-'}</li>
+                                                    </ul>
+                                                )}
                                             </div>
                                             <div className="result-item">
-                                                <strong>분석 내용:</strong>
+                                                <strong>상세 분석:</strong>
                                                 <p className="analysis-description">
-                                                    {analysisResult.message || analysisResult.description || '체형 분석이 완료되었습니다.'}
+                                                    {analysisResult.gemini_analysis?.detailed_analysis || analysisResult.message || '체형 분석이 완료되었습니다.'}
                                                 </p>
                                             </div>
                                         </div>
@@ -186,8 +238,8 @@ const BodyAnalysis = ({ onBackToMain }) => {
                         <div className="dress-slider-section">
                             <div className="slider-header">
                                 <h3 className="section-title">
-                                    {analysisResult && analysisResult.category
-                                        ? `추천 드레스 - ${analysisResult.category}`
+                                    {analysisResult && filteredDresses.length > 0
+                                        ? '추천 드레스'
                                         : '추천 드레스'}
                                 </h3>
                                 {analysisResult && filteredDresses.length > 0 && (

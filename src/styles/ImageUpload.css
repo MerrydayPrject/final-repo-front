@@ -55,6 +55,12 @@
     animation: gentleJump 7s ease-in-out infinite;
 }
 
+/* 일반피팅에서 upload-area 높이만 줄임 */
+.fitting-container .upload-area {
+    max-height: 100%;
+    height: 100%;
+}
+
 @keyframes gentleJump {
 
     0%,
@@ -137,6 +143,12 @@
     transition: var(--transition);
     overflow: hidden;
     box-sizing: border-box;
+}
+
+/* 일반피팅에서 preview-container 높이도 함께 줄임 */
+.fitting-container .preview-container {
+    max-height: 75%;
+    height: 75%;
 }
 
 .preview-container.dragging {

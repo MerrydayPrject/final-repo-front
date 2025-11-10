@@ -196,7 +196,7 @@
 }
 
 .dress-card.selected {
-    border-color: #2c2c2c;
+    border-color: #c4baba;
     box-shadow: var(--shadow-lg);
 }
 

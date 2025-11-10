@@ -174,6 +174,8 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 150px;
+    margin-top: 40px;
+    /* 이미지 영역을 아래로 이동 */
     margin-bottom: 0;
     width: 100%;
     max-width: 1200px;
@@ -189,6 +191,19 @@
     max-width: 550px;
     width: 100%;
     justify-self: center;
+    flex-shrink: 0;
+    /* 축소 방지 */
+}
+
+/* 이미지 영역과 결과 영역의 높이를 동일하게 고정 */
+.upload-area {
+    height: 612px;
+    /* image-container(550px) + 여유 공간 */
+}
+
+.analysis-result-area {
+    height: 612px;
+    /* result-box(550px) + gap(12px) + analyze-button(약 50px) */
 }
 
 .analysis-main-section .upload-area {
@@ -221,21 +236,26 @@
     position: relative;
     width: 100%;
     height: 550px;
-    max-height: 80vh;
+    max-height: 550px;
+    /* 고정 높이 */
     background: #f5f5f5;
     border-radius: 12px;
     overflow: hidden;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+    /* 축소 방지 */
 }
 
 .upload-area .correction-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: top center;
+    max-width: 90%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    object-position: center;
 }
 
 .empty-image-placeholder {
@@ -304,12 +324,19 @@
 /* Analysis Result Area Styles */
 .result-box {
     width: 100%;
-    min-height: 450px;
+    height: 550px;
+    /* 고정 높이로 이미지 컨테이너와 동일하게 */
+    max-height: 550px;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 20px;
     padding: 30px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
+    overflow-y: auto;
+    /* 내용이 많으면 스크롤 */
+    box-sizing: border-box;
+    flex-shrink: 0;
+    /* 축소 방지 */
 }
 
 .result-placeholder {
@@ -317,7 +344,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 450px;
+    min-height: 490px;
+    /* padding 제외한 높이 (550px - 60px padding) */
 }
 
 .placeholder-text {
@@ -358,7 +386,8 @@
 .analyze-button {
     width: 100%;
     padding: 15px;
-    margin-top: 20px;
+    margin-top: 0;
+    /* gap으로 간격 조정 */
     font-size: 1.1rem;
     font-weight: 600;
     color: #fff;
@@ -368,6 +397,8 @@
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 12px rgba(173, 159, 65, 0.3);
+    flex-shrink: 0;
+    /* 버튼 크기 고정 */
 }
 
 .analyze-button:hover:not(:disabled) {
