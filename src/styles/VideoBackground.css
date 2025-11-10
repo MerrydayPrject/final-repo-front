@@ -28,22 +28,10 @@
     min-height: 100%;
     width: auto;
     height: auto;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -55%);
     object-fit: cover;
     /* 천천히 재생되도록 */
     filter: brightness(1);
-}
-
-/* 검은색 오버레이 - 제거됨 */
-.video-background-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    pointer-events: none;
-    z-index: 1;
 }
 
 /* 텍스트 오버레이 */
@@ -156,8 +144,8 @@
 /* 우측 텍스트 */
 .video-side-text {
     position: absolute;
-    right: 7rem;
-    bottom: 17rem;
+    right: 5rem;
+    bottom: 18rem;
     z-index: 9999;
     opacity: 0;
     transform: translateX(30px);

@@ -15,7 +15,7 @@ const VideoBackground = ({ onNavigateToFitting }) => {
         if (!video) return
 
         const handleLoadedMetadata = () => {
-            video.playbackRate = 0.5 // 절반 속도로 느리게 재생
+            video.playbackRate = 1.0 // 원본 속도로 재생
             video.play().catch(err => console.error('Video play error:', err))
         }
 
@@ -38,7 +38,7 @@ const VideoBackground = ({ onNavigateToFitting }) => {
 
             const videoBackground = videoBackgroundRef.current
             const aboutUsSection = document.querySelector('.about-us-section')
-            
+
             if (!aboutUsSection) return
 
             const videoBottom = videoBackground.offsetTop + videoBackground.offsetHeight
@@ -49,7 +49,7 @@ const VideoBackground = ({ onNavigateToFitting }) => {
             // 문구는 더 일찍 나타나도록 조건 완화
             const shouldShowText = scrollY + window.innerHeight >= videoBottom - 300 || scrollY >= aboutUsTop - 400
             const shouldSticky = scrollY + window.innerHeight >= videoBottom || scrollY >= aboutUsTop - 100
-            
+
             if (shouldSticky) {
                 setIsSticky(true)
                 buttonRef.current.classList.add('sticky')
@@ -57,7 +57,7 @@ const VideoBackground = ({ onNavigateToFitting }) => {
                 setIsSticky(false)
                 buttonRef.current.classList.remove('sticky')
             }
-            
+
             if (shouldShowText) {
                 setIsTextVisible(true)
                 if (sideTextRef.current) {
@@ -90,16 +90,15 @@ const VideoBackground = ({ onNavigateToFitting }) => {
                 loop
                 playsInline
             >
-                <source src="/Image/Main COMP.mp4" type="video/mp4" />
+                <source src="/Image/Main_vd.mp4" type="video/mp4" />
             </video>
-            <div className="video-background-overlay"></div>
             <div ref={sideTextRef} className={`video-side-text ${isTextVisible ? 'visible' : ''}`}>
                 <p className="video-side-text-line1">입어보지 않아도, 느껴지는 설렘</p>
                 <p className="video-side-text-line2">AI가 완성하는 나만의 웨딩드레스 피팅룸</p>
             </div>
-            <button 
+            <button
                 ref={buttonRef}
-                className={`video-fitting-button ${isSticky ? 'sticky' : ''}`} 
+                className={`video-fitting-button ${isSticky ? 'sticky' : ''}`}
                 onClick={onNavigateToFitting}
             >
                 피팅하러 가기
