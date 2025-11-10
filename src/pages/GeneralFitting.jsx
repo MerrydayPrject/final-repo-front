@@ -2,7 +2,8 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import Lottie from 'lottie-react'
 import { MdOutlineDownload } from 'react-icons/md'
 import Modal from '../components/Modal'
-import { autoMatchImage, getDresses, convertTo3D } from '../utils/api'
+import ThreeDViewer from '../components/ThreeDViewer'
+import { autoMatchImage, getDresses } from '../utils/api'
 import '../styles/App.css'
 import '../styles/ImageUpload.css'
 import '../styles/DressSelection.css'
@@ -19,6 +20,8 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection }) => {
     const [is3DImage, setIs3DImage] = useState(false)
     const [isConverting3D, setIsConverting3D] = useState(false)
     const [imageTransition, setImageTransition] = useState(false)
+    const [show3DView, setShow3DView] = useState(false)
+    const [is3DModelReady, setIs3DModelReady] = useState(false)
 
     // ImageUpload 상태
     const [preview, setPreview] = useState(null)
@@ -416,40 +419,10 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection }) => {
     const canDownload = !isProcessing && !!generalResultImage
 
     // 3D 변환 핸들러
-    const handleConvertTo3D = async () => {
+    const handleConvertTo3D = () => {
         if (!generalResultImage) return
-
+        setShow3DView(true)
         setIsConverting3D(true)
-        setImageTransition(true)
-
-        try {
-            // 페이드 아웃 애니메이션
-            await new Promise(resolve => setTimeout(resolve, 300))
-
-            const result = await convertTo3D(generalResultImage)
-
-            if (result.success && result.result_image) {
-                // 페이드 인 애니메이션을 위해 약간의 지연
-                await new Promise(resolve => setTimeout(resolve, 100))
-                setGeneralResultImage(result.result_image)
-                setIs3DImage(true)
-            } else {
-                throw new Error(result.message || '3D 변환에 실패했습니다.')
-            }
-        } catch (error) {
-            console.error('3D 변환 중 오류 발생:', error)
-            const serverMessage = error?.response?.data?.message || error?.response?.data?.error
-            const friendly = serverMessage
-                || (error?.code === 'ERR_NETWORK' ? '백엔드 서버에 연결할 수 없습니다.' : null)
-                || error.message
-            alert(`3D 변환 중 오류가 발생했습니다: ${friendly}`)
-        } finally {
-            setIsConverting3D(false)
-            // 전환 애니메이션 완료 후 상태 리셋
-            setTimeout(() => {
-                setImageTransition(false)
-            }, 500)
-        }
     }
 
     return (
@@ -488,6 +461,53 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection }) => {
                                         <p className="upload-text">전신 또는 얼굴 이미지를 먼저 업로드 해주세요</p>
                                         <p className="upload-subtext">JPG, PNG, JPEG 형식 지원</p>
                                     </div>
+                                ) : show3DView ? (
+                                    <div className="preview-container">
+                                        <ThreeDViewer
+                                            previewImage={generalResultImage}
+                                            autoConvert={true}
+                                            onConvert={(modelUrl) => {
+                                                console.log('3D 모델 변환 완료:', modelUrl)
+                                                setIs3DImage(true)
+                                                setIsConverting3D(false)
+                                            }}
+                                            onModelReady={(ready) => {
+                                                setIs3DModelReady(ready)
+                                            }}
+                                            onError={(error) => {
+                                                console.error('3D 변환 오류:', error)
+                                                setIsConverting3D(false)
+                                                setIs3DModelReady(false)
+                                                alert(`3D 변환 중 오류가 발생했습니다: ${error}`)
+                                            }}
+                                        />
+                                        {is3DModelReady && (
+                                            <button
+                                                className="back-to-2d-button"
+                                                onClick={() => {
+                                                    setShow3DView(false)
+                                                    setIsConverting3D(false)
+                                                    setIs3DModelReady(false)
+                                                }}
+                                                style={{
+                                                    position: 'absolute',
+                                                    top: '10px',
+                                                    right: '10px',
+                                                    zIndex: 100,
+                                                    background: 'rgba(255, 255, 255, 0.9)',
+                                                    border: 'none',
+                                                    padding: '8px 16px',
+                                                    borderRadius: '6px',
+                                                    cursor: 'pointer',
+                                                    fontSize: '14px',
+                                                    fontWeight: '500',
+                                                    color: '#000000'
+                                                }}
+                                            >
+                                                ← 2D로 돌아가기
+                                            </button>
+                                        )}
+                                    </div>
                                 ) : (
                                     <div
                                         className={`preview-container ${isDragging ? 'dragging' : ''} ${imageTransition ? 'transitioning' : ''}`}
@@ -500,12 +520,12 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection }) => {
                                             alt="Preview"
                                             className={`preview-image ${is3DImage ? 'image-3d' : ''} ${imageTransition ? 'fade-transition' : ''}`}
                                         />
-                                        {(isProcessing || isConverting3D) && (
+                                        {isProcessing && (
                                             <div className="processing-overlay">
                                                 {loadingAnimation && (
                                                     <Lottie animationData={loadingAnimation} loop={true} className="spinner-lottie" />
                                                 )}
-                                                <p>{isConverting3D ? '3D 변환 중...' : '매칭 중...'}</p>
+                                                <p>매칭 중...</p>
                                             </div>
                                         )}
                                         {showCheckmark && (
@@ -576,9 +596,9 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection }) => {
                         <button
                             className="convert-3d-button"
                             onClick={handleConvertTo3D}
-                            disabled={!generalResultImage || isConverting3D || isProcessing}
+                            disabled={!generalResultImage || isConverting3D || isProcessing || is3DModelReady}
                         >
-                            {isConverting3D ? '3D 변환 중...' : is3DImage ? '3D 변환 완료' : '3D로 변환'}
+                            {show3DView && !is3DModelReady ? '3D 변환 중...' : is3DModelReady ? '3D 변환 완료' : '3D로 변환'}
                         </button>
                     </div>
 

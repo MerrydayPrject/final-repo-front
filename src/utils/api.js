@@ -233,9 +233,9 @@ export const getDresses = async () => {
 }
 
 /**
- * 3D 변환 API 호출
+ * 3D 변환 API 호출 (Meshy.ai)
  * @param {File|string} image - 변환할 이미지 (File 객체 또는 Base64 문자열)
- * @returns {Promise} 3D 변환된 이미지 결과
+ * @returns {Promise} 3D 변환 작업 정보 (task_id 포함)
  */
 export const convertTo3D = async (image) => {
     try {
@@ -253,23 +253,71 @@ export const convertTo3D = async (image) => {
             throw new Error('지원하지 않는 이미지 형식입니다.')
         }
 
-        const response = await api.post('/api/convert-3d', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        })
+        const response = await api.post('/api/convert-to-3d', formData)
 
         // response.data 형식:
         // {
         //   success: true,
-        //   result_image: "data:image/png;base64,..." (Base64 문자열)
-        //   message: "3D 변환이 완료되었습니다."
+        //   task_id: "task_xxx",
+        //   message: "3D 모델 생성 작업이 시작되었습니다. 2-5분 정도 소요됩니다.",
+        //   processing_time: 1.23
         // }
         return response.data
     } catch (error) {
         console.error('3D 변환 오류:', error)
         throw error
     }
+}
+
+/**
+ * 3D 변환 작업 상태 확인
+ * @param {string} taskId - 작업 ID
+ * @param {boolean} saveToServer - 서버에 자동 저장 여부
+ * @returns {Promise} 작업 상태 정보
+ */
+export const check3DStatus = async (taskId, saveToServer = false) => {
+    try {
+        const response = await api.get(`/api/check-3d-status/${taskId}`, {
+            params: {
+                save_to_server: saveToServer
+            }
+        })
+
+        // response.data 형식:
+        // {
+        //   success: true,
+        //   status: "SUCCEEDED" | "IN_PROGRESS" | "PENDING" | "FAILED",
+        //   progress: 0-100,
+        //   model_urls: {
+        //     glb: "https://...",
+        //     fbx: "https://..."
+        //   },
+        //   thumbnail_url: "https://...",
+        //   message: "상태: SUCCEEDED"
+        // }
+        return response.data
+    } catch (error) {
+        console.error('3D 상태 확인 오류:', error)
+        throw error
+    }
+}
+
+/**
+ * 3D 모델 파일을 프록시를 통해 가져오기 (CORS 해결)
+ * @param {string} modelUrl - Meshy.ai의 GLB/FBX 파일 URL
+ * @returns {string} 백엔드 프록시 URL
+ */
+export const getProxy3DModelUrl = (modelUrl) => {
+    if (!modelUrl) return null
+
+    // 이미 백엔드 URL인 경우 그대로 반환
+    if (modelUrl.startsWith(API_BASE_URL)) {
+        return modelUrl
+    }
+
+    // Meshy.ai URL인 경우 프록시 URL로 변환
+    const proxyUrl = `${API_BASE_URL}/api/proxy-3d-model?model_url=${encodeURIComponent(modelUrl)}`
+    return proxyUrl
 }
 
 export default api
