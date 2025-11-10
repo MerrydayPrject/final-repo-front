@@ -113,7 +113,15 @@ function App() {
                     }}
                 />
             )}
-            {currentPage === 'custom' && <CustomFitting onBackToMain={handleBackToMain} />}
+            {currentPage === 'custom' && (
+                <CustomFitting
+                    onBackToMain={handleBackToMain}
+                    onNavigateToCorrection={(image) => {
+                        setCorrectionImage(image)
+                        setCurrentPage('correction')
+                    }}
+                />
+            )}
             {currentPage === 'analysis' && <BodyAnalysis onBackToMain={handleBackToMain} />}
             {currentPage === 'correction' && (
                 <BodyCorrection

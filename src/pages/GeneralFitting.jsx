@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import Lottie from 'lottie-react'
+import { MdOutlineDownload } from 'react-icons/md'
 import Modal from '../components/Modal'
-import { autoMatchImage, getDresses } from '../utils/api'
+import { autoMatchImage, getDresses, convertTo3D } from '../utils/api'
 import '../styles/App.css'
 import '../styles/ImageUpload.css'
 import '../styles/DressSelection.css'
@@ -15,6 +16,9 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection }) => {
     const [imageUploadModalOpen, setImageUploadModalOpen] = useState(false)
     const [pendingDress, setPendingDress] = useState(null)
     const [loadingAnimation, setLoadingAnimation] = useState(null)
+    const [is3DImage, setIs3DImage] = useState(false)
+    const [isConverting3D, setIsConverting3D] = useState(false)
+    const [imageTransition, setImageTransition] = useState(false)
 
     // ImageUpload 상태
     const [preview, setPreview] = useState(null)
@@ -135,6 +139,7 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection }) => {
     const handleImageUpload = (image) => {
         setUploadedImage(image)
         setGeneralResultImage(null)
+        setIs3DImage(false)
     }
 
     const handleDressSelect = (dress) => {
@@ -152,6 +157,7 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection }) => {
             if (result.success && result.result_image) {
                 setSelectedDress(dress)
                 setGeneralResultImage(result.result_image)
+                setIs3DImage(false) // 새로운 매칭 결과이므로 3D 상태 리셋
             } else {
                 throw new Error(result.message || '매칭에 실패했습니다.')
             }
@@ -409,6 +415,43 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection }) => {
     const imageSrc = generalResultImage || preview
     const canDownload = !isProcessing && !!generalResultImage
 
+    // 3D 변환 핸들러
+    const handleConvertTo3D = async () => {
+        if (!generalResultImage) return
+
+        setIsConverting3D(true)
+        setImageTransition(true)
+
+        try {
+            // 페이드 아웃 애니메이션
+            await new Promise(resolve => setTimeout(resolve, 300))
+
+            const result = await convertTo3D(generalResultImage)
+
+            if (result.success && result.result_image) {
+                // 페이드 인 애니메이션을 위해 약간의 지연
+                await new Promise(resolve => setTimeout(resolve, 100))
+                setGeneralResultImage(result.result_image)
+                setIs3DImage(true)
+            } else {
+                throw new Error(result.message || '3D 변환에 실패했습니다.')
+            }
+        } catch (error) {
+            console.error('3D 변환 중 오류 발생:', error)
+            const serverMessage = error?.response?.data?.message || error?.response?.data?.error
+            const friendly = serverMessage
+                || (error?.code === 'ERR_NETWORK' ? '백엔드 서버에 연결할 수 없습니다.' : null)
+                || error.message
+            alert(`3D 변환 중 오류가 발생했습니다: ${friendly}`)
+        } finally {
+            setIsConverting3D(false)
+            // 전환 애니메이션 완료 후 상태 리셋
+            setTimeout(() => {
+                setImageTransition(false)
+            }, 500)
+        }
+    }
+
     return (
         <main className="main-content">
             <div className="fitting-container">
@@ -447,18 +490,22 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection }) => {
                                     </div>
                                 ) : (
                                     <div
-                                        className={`preview-container ${isDragging ? 'dragging' : ''}`}
+                                        className={`preview-container ${isDragging ? 'dragging' : ''} ${imageTransition ? 'transitioning' : ''}`}
                                         onDragOver={handleDragOver}
                                         onDragLeave={handleDragLeave}
                                         onDrop={handleDrop}
                                     >
-                                        <img src={imageSrc} alt="Preview" className="preview-image" />
-                                        {isProcessing && (
+                                        <img
+                                            src={imageSrc}
+                                            alt="Preview"
+                                            className={`preview-image ${is3DImage ? 'image-3d' : ''} ${imageTransition ? 'fade-transition' : ''}`}
+                                        />
+                                        {(isProcessing || isConverting3D) && (
                                             <div className="processing-overlay">
                                                 {loadingAnimation && (
                                                     <Lottie animationData={loadingAnimation} loop={true} className="spinner-lottie" />
                                                 )}
-                                                <p>매칭 중...</p>
+                                                <p>{isConverting3D ? '3D 변환 중...' : '매칭 중...'}</p>
                                             </div>
                                         )}
                                         {showCheckmark && (
@@ -494,7 +541,7 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection }) => {
                                                     }}
                                                     title="결과 이미지를 다운로드"
                                                 >
-                                                    ⬇ 다운로드
+                                                    <MdOutlineDownload /> 다운로드
                                                 </button>
                                                 <button
                                                     className="correction-button"
@@ -528,13 +575,10 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection }) => {
                         {/* 3D로 변환 버튼 */}
                         <button
                             className="convert-3d-button"
-                            onClick={() => {
-                                // 3D 변환 로직 추가 필요
-                                alert('3D 변환 기능은 준비 중입니다.')
-                            }}
-                            disabled={!generalResultImage}
+                            onClick={handleConvertTo3D}
+                            disabled={!generalResultImage || isConverting3D || isProcessing}
                         >
-                            3D로 변환
+                            {isConverting3D ? '3D 변환 중...' : is3DImage ? '3D 변환 완료' : '3D로 변환'}
                         </button>
                     </div>
 

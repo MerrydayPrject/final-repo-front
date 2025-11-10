@@ -153,6 +153,48 @@
     object-fit: contain;
     border-radius: 0;
     pointer-events: none;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.preview-image.fade-transition {
+    animation: smoothFadeTransition 1s ease-in-out;
+}
+
+@keyframes smoothFadeTransition {
+    0% {
+        opacity: 1;
+        transform: scale(1) translateZ(0);
+    }
+
+    40% {
+        opacity: 0.2;
+        transform: scale(0.95) translateZ(0);
+    }
+
+    60% {
+        opacity: 0.2;
+        transform: scale(0.95) translateZ(0);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1) translateZ(0);
+    }
+}
+
+.preview-image.image-3d {
+    transform: perspective(1200px) rotateY(-3deg) rotateX(1deg) translateZ(20px);
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    filter: drop-shadow(0 25px 50px rgba(0, 0, 0, 0.25));
+    will-change: transform;
+}
+
+.preview-container.transitioning .preview-image {
+    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+}
+
+.preview-container.transitioning {
+    transition: all 0.5s ease-in-out;
 }
 
 .remove-button {
@@ -182,7 +224,7 @@
     left: auto !important;
     top: auto !important;
     transform: none !important;
-    background: #4b4737 !important;
+    background: #70964e !important;
     color: white !important;
     padding: 6px 12px !important;
     border-radius: 6px !important;
@@ -190,16 +232,16 @@
     font-weight: 600 !important;
     transition: var(--transition) !important;
     z-index: 10 !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+    box-shadow: 0 2px 8px #70964e !important;
     border: none !important;
     cursor: pointer !important;
     width: auto !important;
 }
 
 .preview-container .download-button:hover {
-    background: rgba(26, 26, 26, 0.95) !important;
+    background: #70964e !important;
     transform: translateY(-1px) !important;
-    box-shadow: 0 4px 12px #4b4737 !important;
+    box-shadow: 0 4px 12px #70964e !important;
 }
 
 .preview-container .correction-button {

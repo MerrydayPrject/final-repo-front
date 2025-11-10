@@ -5,6 +5,8 @@
 
 .general-fitting-header {
     margin-bottom: 8px !important;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
 }
 
 .correction-content-layout {

@@ -213,5 +213,45 @@ export const getDresses = async () => {
     }
 }
 
+/**
+ * 3D 변환 API 호출
+ * @param {File|string} image - 변환할 이미지 (File 객체 또는 Base64 문자열)
+ * @returns {Promise} 3D 변환된 이미지 결과
+ */
+export const convertTo3D = async (image) => {
+    try {
+        const formData = new FormData()
+
+        // 이미지가 Base64 문자열인 경우 Blob으로 변환
+        if (typeof image === 'string' && image.startsWith('data:')) {
+            const response = await fetch(image)
+            const blob = await response.blob()
+            const file = new File([blob], 'image.png', { type: blob.type })
+            formData.append('image', file)
+        } else if (image instanceof File) {
+            formData.append('image', image)
+        } else {
+            throw new Error('지원하지 않는 이미지 형식입니다.')
+        }
+
+        const response = await api.post('/api/convert-3d', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+
+        // response.data 형식:
+        // {
+        //   success: true,
+        //   result_image: "data:image/png;base64,..." (Base64 문자열)
+        //   message: "3D 변환이 완료되었습니다."
+        // }
+        return response.data
+    } catch (error) {
+        console.error('3D 변환 오류:', error)
+        throw error
+    }
+}
+
 export default api
 
