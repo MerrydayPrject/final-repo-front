@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { HiQuestionMarkCircle } from 'react-icons/hi'
 import '../styles/BodyTypeFitting.css'
 import { analyzeBody } from '../utils/api'
 
@@ -109,8 +110,14 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                     <div className="left-container">
                         <div className="general-fitting-header">
                             <h2 className="general-fitting-title">체형 분석</h2>
-                            <div className="tab-guide-text">
-                                AI가 당신의 체형을 자동으로 분석하고 최적의 드레스를 추천해드립니다
+                            <div className="tab-guide-text-wrapper">
+                                <div className="tab-guide-text">
+                                    AI가 당신의 체형을 자동으로 분석하고 최적의 드레스를 추천해드립니다
+                                </div>
+                                <button className="faq-button">
+                                    <HiQuestionMarkCircle />
+                                    <div className="tooltip">전신사진을 업로드한 후 분석하기 버튼을 눌러주세요</div>
+                                </button>
                             </div>
                         </div>
 

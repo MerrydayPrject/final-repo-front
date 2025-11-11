@@ -133,6 +133,13 @@
     margin-top: 16px;
 }
 
+.modal-buttons-container {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+}
+
 .modal-button.secondary {
     background: #f5f5f5;
     color: var(--text-dark);

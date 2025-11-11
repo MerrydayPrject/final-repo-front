@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import Lottie from 'lottie-react'
 import { MdOutlineDownload } from 'react-icons/md'
+import { HiQuestionMarkCircle } from 'react-icons/hi'
 import Modal from '../components/Modal'
 import ThreeDViewer from '../components/ThreeDViewer'
 import { removeBackground, customMatchImage } from '../utils/api'
@@ -23,6 +24,8 @@ const CustomFitting = ({ onBackToMain, onNavigateToCorrection }) => {
     const [isConverting3D, setIsConverting3D] = useState(false)
     const [imageTransition, setImageTransition] = useState(false)
     const [is3DModelReady, setIs3DModelReady] = useState(false)
+    const [errorModalOpen, setErrorModalOpen] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
 
     // CustomUpload 상태
     const [fullBodyPreview, setFullBodyPreview] = useState(null)
@@ -77,18 +80,21 @@ const CustomFitting = ({ onBackToMain, onNavigateToCorrection }) => {
         } catch (error) {
             console.error('배경 제거 중 오류 발생:', error)
             setIsRemovingBackground(false)
-            alert(`배경 제거 중 오류가 발생했습니다: ${error.message}`)
+            setErrorMessage(`배경 제거 중 오류가 발생했습니다: ${error.message}`)
+            setErrorModalOpen(true)
         }
     }
 
     const handleManualMatch = async () => {
         if (!fullBodyImage) {
-            alert('전신사진을 업로드해주세요')
+            setErrorMessage('전신사진을 업로드해주세요')
+            setErrorModalOpen(true)
             return
         }
 
         if (!customDressImage) {
-            alert('드레스 이미지를 업로드해주세요')
+            setErrorMessage('드레스 이미지를 업로드해주세요')
+            setErrorModalOpen(true)
             return
         }
 
@@ -115,7 +121,8 @@ const CustomFitting = ({ onBackToMain, onNavigateToCorrection }) => {
             } catch (error) {
                 console.error('배경 제거 중 오류 발생:', error)
                 setIsRemovingBackground(false)
-                alert(`배경 제거 중 오류가 발생했습니다: ${error.message}`)
+                setErrorMessage(`배경 제거 중 오류가 발생했습니다: ${error.message}`)
+                setErrorModalOpen(true)
                 return
             } finally {
                 setIsRemovingBackground(false)
@@ -142,7 +149,8 @@ const CustomFitting = ({ onBackToMain, onNavigateToCorrection }) => {
         } catch (error) {
             console.error('커스텀 매칭 중 오류 발생:', error)
             setIsMatching(false)
-            alert(`매칭 중 오류가 발생했습니다: ${error.message}`)
+            setErrorMessage(`매칭 중 오류가 발생했습니다: ${error.message}`)
+            setErrorModalOpen(true)
         }
     }
 
@@ -310,8 +318,14 @@ const CustomFitting = ({ onBackToMain, onNavigateToCorrection }) => {
                 <div className="content-wrapper custom-wrapper">
                     <div className="general-fitting-header">
                         <h2 className="general-fitting-title">커스텀피팅</h2>
-                        <div className="tab-guide-text">
-                            배경 제거부터 피팅까지, AI가 모두 자동으로 도와드립니다
+                        <div className="tab-guide-text-wrapper">
+                            <div className="tab-guide-text">
+                                배경 제거부터 피팅까지, AI가 모두 자동으로 도와드립니다
+                            </div>
+                            <button className="faq-button">
+                                <HiQuestionMarkCircle />
+                                <div className="tooltip">전신사진과 드레스 이미지를 업로드한 후 매칭하기 버튼을 눌러주세요</div>
+                            </button>
                         </div>
                     </div>
 
@@ -354,7 +368,8 @@ const CustomFitting = ({ onBackToMain, onNavigateToCorrection }) => {
                                                     console.error('3D 변환 오류:', error)
                                                     setIsConverting3D(false)
                                                     setIs3DModelReady(false)
-                                                    alert(`3D 변환 중 오류가 발생했습니다: ${error}`)
+                                                    setErrorMessage(`3D 변환 중 오류가 발생했습니다: ${error}`)
+                                                    setErrorModalOpen(true)
                                                 }}
                                             />
                                             {is3DModelReady && (
@@ -427,7 +442,8 @@ const CustomFitting = ({ onBackToMain, onNavigateToCorrection }) => {
                                                         }
                                                     } catch (err) {
                                                         console.error('다운로드 실패:', err)
-                                                        alert('다운로드에 실패했습니다. 다시 시도해주세요.')
+                                                        setErrorMessage('다운로드에 실패했습니다. 다시 시도해주세요.')
+                                                        setErrorModalOpen(true)
                                                     }
                                                 }}
                                                 title="결과 이미지를 다운로드"
@@ -564,6 +580,14 @@ const CustomFitting = ({ onBackToMain, onNavigateToCorrection }) => {
                 isOpen={bgRemovalModalOpen}
                 onClose={() => setBgRemovalModalOpen(false)}
                 message="배경 제거가 완료되었습니다"
+                center
+            />
+
+            {/* 에러 모달 */}
+            <Modal
+                isOpen={errorModalOpen}
+                onClose={() => setErrorModalOpen(false)}
+                message={errorMessage}
                 center
             />
         </main>

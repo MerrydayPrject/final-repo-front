@@ -1,7 +1,15 @@
 import '../styles/Modal.css'
 
-const Modal = ({ isOpen, onClose, message, children, center = false }) => {
+const Modal = ({ isOpen, onClose, message, children, center = false, hideFooter = false, onConfirm }) => {
     if (!isOpen) return null
+
+    const handleConfirm = () => {
+        if (onConfirm) {
+            onConfirm()
+        } else {
+            onClose()
+        }
+    }
 
     return (
         <div className="modal-overlay" onClick={onClose}>
@@ -10,11 +18,13 @@ const Modal = ({ isOpen, onClose, message, children, center = false }) => {
                     <p className="modal-message">{message}</p>
                     {children}
                 </div>
-                <div className="modal-footer">
-                    <button className="modal-button" onClick={onClose}>
-                        확인
-                    </button>
-                </div>
+                {!hideFooter && (
+                    <div className="modal-footer">
+                        <button className="modal-button" onClick={handleConfirm}>
+                            확인
+                        </button>
+                    </div>
+                )}
             </div>
         </div>
     )

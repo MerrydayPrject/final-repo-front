@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import Lottie from 'lottie-react'
+import { HiQuestionMarkCircle } from 'react-icons/hi'
 import '../styles/BodyTypeFitting.css'
 import '../styles/BodyCorrection.css'
 
@@ -84,8 +85,14 @@ const BodyCorrection = ({ onBackToMain, initialImage }) => {
                     <div className="left-container">
                         <div className="general-fitting-header">
                             <h2 className="general-fitting-title">체형 보정</h2>
-                            <div className="tab-guide-text">
-                                원하는 보정 내용을 입력하면 AI가 자연스럽게 체형을 보정합니다
+                            <div className="tab-guide-text-wrapper">
+                                <div className="tab-guide-text">
+                                    원하는 보정 내용을 입력하면 AI가 자연스럽게 체형을 보정합니다
+                                </div>
+                                <button className="faq-button">
+                                    <HiQuestionMarkCircle />
+                                    <div className="tooltip">이미지를 업로드하고 보정 내용을 입력한 후 보정하기 버튼을 눌러주세요</div>
+                                </button>
                             </div>
                         </div>
 

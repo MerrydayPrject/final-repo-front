@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import Lottie from 'lottie-react'
 import { MdOutlineDownload } from 'react-icons/md'
+import { HiQuestionMarkCircle } from 'react-icons/hi'
 import Modal from '../components/Modal'
 import ThreeDViewer from '../components/ThreeDViewer'
 import { autoMatchImage, getDresses } from '../utils/api'
@@ -451,8 +452,14 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection, initialCategory,
                     <div className="left-container">
                         <div className="general-fitting-header">
                             <h2 className="general-fitting-title">일반피팅</h2>
-                            <div className="tab-guide-text">
-                                드래그 한 번으로 웨딩드레스를 자동 피팅해보세요
+                            <div className="tab-guide-text-wrapper">
+                                <div className="tab-guide-text">
+                                    드래그 한 번으로 웨딩드레스를 자동 피팅해보세요
+                                </div>
+                                <button className="faq-button">
+                                    <HiQuestionMarkCircle />
+                                    <div className="tooltip">우측 드레스를 전신 또는 얼굴이미지로 드래그해주세요</div>
+                                </button>
                             </div>
                         </div>
                         {/* ImageUpload 컴포넌트 */}
@@ -749,35 +756,23 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection, initialCategory,
                 onClose={closeImageUploadModal}
                 message="먼저 전신 사진을 업로드해주세요."
                 center
+                onConfirm={() => {
+                    fileInputRef.current?.click()
+                }}
             >
-                <div style={{ marginTop: '20px' }}>
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => {
-                            const file = e.target.files[0]
-                            if (file && file.type.startsWith('image/')) {
-                                handleImageUploadedForDress(file)
-                            }
-                        }}
-                        style={{ display: 'none' }}
-                        id="modal-image-input"
-                    />
-                    <label
-                        htmlFor="modal-image-input"
-                        style={{
-                            display: 'inline-block',
-                            padding: '10px 20px',
-                            backgroundColor: '#2c2c2c',
-                            color: 'white',
-                            borderRadius: '8px',
-                            cursor: 'pointer',
-                            marginTop: '10px'
-                        }}
-                    >
-                        이미지 선택
-                    </label>
-                </div>
+                <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                        const file = e.target.files[0]
+                        if (file && file.type.startsWith('image/')) {
+                            handleImageUploadedForDress(file)
+                        }
+                    }}
+                    style={{ display: 'none' }}
+                    id="modal-image-input"
+                    ref={fileInputRef}
+                />
             </Modal>
         </main>
     )
