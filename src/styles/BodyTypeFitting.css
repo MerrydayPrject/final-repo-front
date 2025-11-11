@@ -169,12 +169,26 @@
     animation: fadeIn 0.3s ease-in-out;
 }
 
+/* 추천 카테고리 섹션 */
+.recommended-categories-section {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 20px 0;
+}
+
+.recommended-categories-section .recommended-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-start;
+}
+
 /* Body Analysis Main Section */
 .analysis-main-section {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 150px;
-    margin-top: 40px;
+    margin-top: 10px;
     /* 이미지 영역을 아래로 이동 */
     margin-bottom: 0;
     width: 100%;
@@ -197,12 +211,14 @@
 
 /* 이미지 영역과 결과 영역의 높이를 동일하게 고정 */
 .upload-area {
-    height: 612px;
+    height: auto;
+    min-height: 500px;
     /* image-container(550px) + 여유 공간 */
 }
 
 .analysis-result-area {
-    height: 612px;
+    height: auto;
+    min-height: 550px;
     /* result-box(550px) + gap(12px) + analyze-button(약 50px) */
 }
 
@@ -235,8 +251,8 @@
 .upload-area .image-container {
     position: relative;
     width: 100%;
-    height: 550px;
-    max-height: 550px;
+    height: 500px;
+    max-height: 500px;
     /* 고정 높이 */
     background: #f5f5f5;
     border-radius: 12px;
@@ -339,6 +355,11 @@
     /* 축소 방지 */
 }
 
+/* 분석 전 가이드 문구가 있을 때는 스크롤 제거 */
+.result-box:has(.result-placeholder) {
+    overflow: hidden;
+}
+
 .result-placeholder {
     height: 100%;
     display: flex;
@@ -358,7 +379,7 @@
 .result-content {
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 15px;
 }
 
 .result-item {
@@ -366,6 +387,24 @@
     background: rgba(255, 255, 255, 0.03);
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* 각 섹션별 구분 스타일 - shadow만 적용 */
+.result-item.recommended-categories-item {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.result-item.body-type-item {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.result-item.measurements-item {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.result-item.analysis-item {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .result-item strong {
@@ -379,8 +418,43 @@
 .analysis-description {
     font-size: 1rem;
     color: #333;
-    line-height: 1.6;
+    line-height: 1.8;
     margin: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: keep-all;
+}
+
+/* 추천 카테고리 뱃지 */
+.recommended-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.category-badge {
+    display: inline-block;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #ad9f41 0%, #b0ab99 100%);
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(173, 159, 65, 0.3);
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.category-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(173, 159, 65, 0.4);
+    background: linear-gradient(135deg, #9e9137 0%, #9e9887 100%);
+}
+
+.category-badge:active {
+    transform: translateY(0);
 }
 
 .analyze-button {

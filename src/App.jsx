@@ -23,6 +23,9 @@ function App() {
     // 보정 페이지로 전달할 이미지
     const [correctionImage, setCorrectionImage] = useState(null)
 
+    // 일반피팅 페이지로 전달할 카테고리
+    const [selectedCategoryForFitting, setSelectedCategoryForFitting] = useState(null)
+
     // 새로고침 시 스크롤을 최상단으로 이동
     useEffect(() => {
         window.scrollTo(0, 0)
@@ -60,6 +63,7 @@ function App() {
     const handleMenuClick = (menuType) => {
         if (menuType === 'general') {
             setCurrentPage('general')
+            setSelectedCategoryForFitting(null) // 메뉴에서 직접 이동 시 카테고리 초기화
         } else if (menuType === 'custom') {
             setCurrentPage('custom')
         } else if (menuType === 'analysis') {
@@ -67,6 +71,12 @@ function App() {
         } else if (menuType === 'correction') {
             setCurrentPage('correction')
         }
+    }
+
+    // 카테고리 선택하여 일반피팅으로 이동
+    const handleNavigateToFittingWithCategory = (category) => {
+        setSelectedCategoryForFitting(category)
+        setCurrentPage('general')
     }
 
     // 모달 열기
@@ -111,6 +121,8 @@ function App() {
                         setCorrectionImage(image)
                         setCurrentPage('correction')
                     }}
+                    initialCategory={selectedCategoryForFitting}
+                    onCategorySet={() => setSelectedCategoryForFitting(null)}
                 />
             )}
             {currentPage === 'custom' && (
@@ -122,7 +134,12 @@ function App() {
                     }}
                 />
             )}
-            {currentPage === 'analysis' && <BodyAnalysis onBackToMain={handleBackToMain} />}
+            {currentPage === 'analysis' && (
+                <BodyAnalysis
+                    onBackToMain={handleBackToMain}
+                    onNavigateToFittingWithCategory={handleNavigateToFittingWithCategory}
+                />
+            )}
             {currentPage === 'correction' && (
                 <BodyCorrection
                     onBackToMain={handleBackToMain}

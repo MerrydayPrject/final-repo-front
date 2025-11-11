@@ -8,7 +8,7 @@ import '../styles/App.css'
 import '../styles/ImageUpload.css'
 import '../styles/DressSelection.css'
 
-const GeneralFitting = ({ onBackToMain, onNavigateToCorrection }) => {
+const GeneralFitting = ({ onBackToMain, onNavigateToCorrection, initialCategory, onCategorySet }) => {
     // General Fitting 상태
     const [uploadedImage, setUploadedImage] = useState(null)
     const [selectedDress, setSelectedDress] = useState(null)
@@ -80,6 +80,25 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection }) => {
         }
         return styleMap[style] || 'all'
     }
+
+    // initialCategory가 전달되면 카테고리 설정
+    useEffect(() => {
+        if (initialCategory) {
+            setSelectedCategory(initialCategory)
+            // 카테고리 인덱스 찾기
+            const categoryIndex = categories.findIndex(cat => cat.id === initialCategory)
+            if (categoryIndex !== -1) {
+                // 카테고리가 보이는 위치로 스크롤
+                const currentMaxStartIndex = Math.max(0, categories.length - categoriesPerView)
+                const newStartIndex = Math.max(0, Math.min(categoryIndex, currentMaxStartIndex))
+                setCategoryStartIndex(newStartIndex)
+            }
+            // 카테고리 설정 완료 후 초기화
+            if (onCategorySet) {
+                onCategorySet()
+            }
+        }
+    }, [initialCategory, categories, categoriesPerView, onCategorySet])
 
     // 드레스 목록 로드
     useEffect(() => {
