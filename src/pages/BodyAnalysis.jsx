@@ -9,6 +9,8 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
     const [analysisResult, setAnalysisResult] = useState(null)
     const [isAnalyzing, setIsAnalyzing] = useState(false)
     const [recommendedCategories, setRecommendedCategories] = useState([])
+    const [height, setHeight] = useState('')
+    const [weight, setWeight] = useState('')
     const fileInputRef = useRef(null)
 
     // 카테고리명을 한글로 변환하는 함수
@@ -56,9 +58,19 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
             return
         }
 
+        // 키와 몸무게가 입력되지 않았을 경우 경고 (선택사항이지만 권장)
+        if (!height || !weight) {
+            const proceed = window.confirm('키와 몸무게를 입력하지 않으면 정확한 BMI 계산이 어려울 수 있습니다. 계속하시겠습니까?')
+            if (!proceed) {
+                return
+            }
+        }
+
         setIsAnalyzing(true)
         try {
-            const result = await analyzeBody(uploadedImage)
+            const heightValue = parseFloat(height) || 0
+            const weightValue = parseFloat(weight) || 0
+            const result = await analyzeBody(uploadedImage, heightValue, weightValue)
 
             if (!result.success) {
                 throw new Error(result.message || '체형 분석에 실패했습니다.')
@@ -134,6 +146,8 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                                 setUploadedImage(null)
                                                 setImagePreview(null)
                                                 setAnalysisResult(null)
+                                                setHeight('')
+                                                setWeight('')
                                             }}>
                                                 ✕
                                             </button>
@@ -154,6 +168,33 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                         onChange={handleFileSelect}
                                         style={{ display: 'none' }}
                                     />
+                                </div>
+                                {/* 키와 몸무게 입력 필드 */}
+                                <div className="body-info-inputs">
+                                    <div className="input-group">
+                                        <label htmlFor="height">키 (cm)</label>
+                                        <input
+                                            id="height"
+                                            type="number"
+                                            placeholder="예: 165"
+                                            value={height}
+                                            onChange={(e) => setHeight(e.target.value)}
+                                            min="0"
+                                            step="0.1"
+                                        />
+                                    </div>
+                                    <div className="input-group">
+                                        <label htmlFor="weight">몸무게 (kg)</label>
+                                        <input
+                                            id="weight"
+                                            type="number"
+                                            placeholder="예: 55"
+                                            value={weight}
+                                            onChange={(e) => setWeight(e.target.value)}
+                                            min="0"
+                                            step="0.1"
+                                        />
+                                    </div>
                                 </div>
                             </div>
 

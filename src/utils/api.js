@@ -168,12 +168,16 @@ export const analyzeImage = async (image) => {
 /**
  * 체형 분석 API 호출 (MediaPipe 기반 체형 분석)
  * @param {File} image - 전신 이미지 파일
+ * @param {number} height - 키 (cm)
+ * @param {number} weight - 몸무게 (kg)
  * @returns {Promise} 체형 분석 결과
  */
-export const analyzeBody = async (image) => {
+export const analyzeBody = async (image, height, weight) => {
     try {
         const formData = new FormData()
         formData.append('file', image)
+        formData.append('height', height || 0)
+        formData.append('weight', weight || 0)
 
         // axios는 FormData를 감지하면 자동으로 multipart/form-data Content-Type을 설정
         const response = await api.post('/api/analyze-body', formData)

@@ -337,6 +337,50 @@
     transform: scale(1.1);
 }
 
+/* 키와 몸무게 입력 필드 스타일 */
+.body-info-inputs {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.input-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.input-group input {
+    padding: 10px 15px;
+    font-size: 1rem;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    background: #fff;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #ad9f41;
+    box-shadow: 0 0 0 3px rgba(173, 159, 65, 0.1);
+}
+
+.input-group input::placeholder {
+    color: #999;
+}
+
 /* Analysis Result Area Styles */
 .result-box {
     width: 100%;
@@ -729,6 +773,17 @@
 
     .result-item strong {
         font-size: 1rem;
+    }
+
+    .body-info-inputs {
+        flex-direction: column;
+        gap: 12px;
+        padding: 12px;
+    }
+
+    .input-group input {
+        padding: 8px 12px;
+        font-size: 0.9rem;
     }
 
     .dress-slider-section {

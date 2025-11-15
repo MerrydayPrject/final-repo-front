@@ -321,6 +321,7 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection, initialCategory,
         e.dataTransfer.effectAllowed = 'copy'
         try { e.dataTransfer.dropEffect = 'copy' } catch { }
         e.dataTransfer.setData('application/json', JSON.stringify(dress))
+        setSelectedDress(dress) // 드래그 시작 시 드레스 선택
         try {
             document.body.classList.add('dragging-dress')
         } catch { }
