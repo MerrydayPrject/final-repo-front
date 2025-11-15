@@ -44,10 +44,10 @@
 
 .sphere-root {
     position: relative;
-    width: min(1400px, 95vw);
+    width: min(1600px, 98vw);
     height: clamp(420px, 60vw, 720px);
     margin: 0 auto;
-    --radius: 520px;
+    --radius: 580px;
     --viewer-pad: 72px;
     --circ: calc(var(--radius) * 3.14);
     --rot-y: calc((360deg / var(--segments-x)) / 2);
@@ -130,7 +130,7 @@ main.sphere-main {
 .item__image {
     position: absolute;
     display: block;
-    inset: 5px;
+    inset: 10px;
     border-radius: var(--tile-radius, 12px);
     background: #ffffff;
     border: 2px solid rgba(0, 0, 0, 0.08);
@@ -264,7 +264,7 @@ main.sphere-main {
     }
 
     .sphere-root {
-        width: min(100%, 92vw);
+        width: min(100%, 95vw);
         height: clamp(360px, 70vw, 560px);
     }
 }
@@ -280,6 +280,7 @@ main.sphere-main {
     }
 
     .sphere-root {
+        width: min(100%, 98vw);
         height: clamp(320px, 85vw, 520px);
     }
 }
