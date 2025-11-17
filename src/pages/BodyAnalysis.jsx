@@ -140,7 +140,6 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                         <div className="analysis-main-section">
                             {/* 좌측: 이미지 업로드 영역 */}
                             <div className="upload-area">
-                                <h3 className="upload-section-title">이미지 업로드</h3>
                                 <div className="image-container">
                                     {imagePreview ? (
                                         <>
@@ -176,7 +175,7 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                 {/* 키와 몸무게 입력 필드 */}
                                 <div className="body-info-inputs">
                                     <div className="input-group">
-                                        <label htmlFor="height">키 (cm)</label>
+                                        <label htmlFor="height">키 (cm) <span className="required-asterisk">*</span></label>
                                         <input
                                             id="height"
                                             type="number"
@@ -189,7 +188,7 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                         />
                                     </div>
                                     <div className="input-group">
-                                        <label htmlFor="weight">몸무게 (kg)</label>
+                                        <label htmlFor="weight">몸무게 (kg) <span className="required-asterisk">*</span></label>
                                         <input
                                             id="weight"
                                             type="number"
@@ -208,9 +207,7 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                     disabled={!uploadedImage || isAnalyzing || analysisResult}
                                 >
                                     {isAnalyzing ? (
-                                        <div className="loader">
-                                            <span>분석중</span>
-                                        </div>
+                                        '분석중'
                                     ) : analysisResult ? (
                                         '분석완료'
                                     ) : (
@@ -223,10 +220,22 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                             <div className="analysis-result-area">
                                 <div className="result-section-header">
                                     <h3 className="result-section-title">분석 결과</h3>
-                                    <p className="result-section-description">AI가 분석한 당신의 체형 정보입니다</p>
+                                    {analysisResult && (
+                                        <p className="result-section-description">카테고리를 선택하면 일반피팅 화면으로 이동됩니다</p>
+                                    )}
                                 </div>
                                 <div className="result-box">
-                                    {!analysisResult ? (
+                                    {isAnalyzing ? (
+                                        <div className="analysis-loading-container">
+                                            <div className="loader">
+                                                <div></div>
+                                                <div></div>
+                                                <div></div>
+                                                <div></div>
+                                                <div></div>
+                                            </div>
+                                        </div>
+                                    ) : !analysisResult ? (
                                         <div className="result-placeholder">
                                             <p className="placeholder-text">
                                                 이미지를 업로드하고<br />

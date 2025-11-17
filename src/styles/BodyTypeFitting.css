@@ -206,6 +206,18 @@
     /* 축소 방지 */
 }
 
+/* 체형분석 영역의 업로드 영역 - 카드 스타일 제거 */
+.analysis-main-section .upload-area {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin-left: 40px !important;
+    box-shadow: none !important;
+    animation: none !important;
+    width: 85% !important;
+    max-width: 85% !important;
+}
+
 .analysis-result-area {
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 12px;
@@ -249,9 +261,9 @@
 
 .upload-section-description,
 .result-section-description {
-    font-size: 0.95rem;
+    font-size: 0.8rem;
     color: #666;
-    margin: 0;
+    margin-top: 2px;
     line-height: 1.5;
 }
 
@@ -319,6 +331,11 @@
 
 .analysis-main-section .empty-image-placeholder {
     animation: none !important;
+    background: #f3f2f2 !important;
+}
+
+.analysis-main-section .empty-image-placeholder:hover {
+    background: #c0c0c0 !important;
 }
 
 .analysis-main-section .empty-image-placeholder .camera-icon {
@@ -338,8 +355,8 @@
 .upload-area .image-container {
     position: relative;
     width: 100%;
-    height: 300px;
-    max-height: 300px;
+    height: 250px;
+    max-height: 250px;
     /* 고정 높이 */
     background: #f5f5f5;
     border-radius: 12px;
@@ -351,6 +368,15 @@
     flex-shrink: 0;
     /* 축소 방지 */
     margin-bottom: 8px;
+}
+
+/* 체형분석 영역의 이미지 컨테이너 - 카드 스타일 제거 */
+.analysis-main-section .upload-area .image-container {
+    background: #f3f2f2 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    height: 450px !important;
+    max-height: 450px !important;
 }
 
 .upload-area .correction-image {
@@ -437,6 +463,15 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* 체형분석 영역의 입력 필드 - 카드 스타일 제거 */
+.analysis-main-section .body-info-inputs {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    margin-top: -20px !important;
+}
+
 .input-group {
     flex: 1;
     display: flex;
@@ -448,6 +483,13 @@
     font-size: 0.9rem;
     font-weight: 600;
     color: #333;
+    margin-top: 10px;
+    text-align: left;
+}
+
+.input-group label .required-asterisk {
+    color: #ff0000;
+    margin-left: 2px;
 }
 
 .input-group input {
@@ -487,8 +529,111 @@
     /* 축소 방지 */
 }
 
+/* 분석 중 로딩 컨테이너 */
+.analysis-loading-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 480px;
+}
+
+/* Heavy Crab Loader - uiverse.io style (체형분석 영역 전용) */
+.analysis-loading-container .loader {
+    height: 30px !important;
+    display: inline-block !important;
+    max-width: none !important;
+    color: inherit !important;
+    font-size: inherit !important;
+    font-family: inherit !important;
+    position: relative !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+}
+
+.analysis-loading-container .loader::before,
+.analysis-loading-container .loader::after {
+    display: none !important;
+}
+
+.analysis-loading-container .loader>div {
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+    box-shadow: 0 0 10px orange;
+    background: #FFECBA;
+    float: left;
+    margin: 5px;
+    transform: scale(2);
+}
+
+.analysis-loading-container .loader>div:nth-child(1) {
+    animation: anm-BL-53-move1 1s infinite linear;
+}
+
+.analysis-loading-container .loader>div:nth-child(2) {
+    animation: anm-BL-53-move2 1s infinite linear;
+    animation-delay: 0.2s;
+}
+
+.analysis-loading-container .loader>div:nth-child(3) {
+    animation: anm-BL-53-move3 1s infinite linear;
+    animation-delay: 0.3s;
+}
+
+.analysis-loading-container .loader>div:nth-child(4) {
+    animation: anm-BL-53-move4 1s infinite linear;
+    animation-delay: 0.4s;
+}
+
+.analysis-loading-container .loader>div:nth-child(5) {
+    animation: anm-BL-53-move5 1s infinite linear;
+    animation-delay: 0.5s;
+}
+
+@keyframes anm-BL-53-move1 {
+    50% {
+        background: #FFBB00;
+        transform: scale(1);
+    }
+}
+
+@keyframes anm-BL-53-move2 {
+    50% {
+        background: #FFBB00;
+        transform: scale(1);
+    }
+}
+
+@keyframes anm-BL-53-move3 {
+    50% {
+        background: #FFBB00;
+        transform: scale(1);
+    }
+}
+
+@keyframes anm-BL-53-move4 {
+    50% {
+        background: #FFBB00;
+        transform: scale(1);
+    }
+}
+
+@keyframes anm-BL-53-move5 {
+    50% {
+        background: #FFBB00;
+        transform: scale(1);
+    }
+}
+
 /* 분석 전 가이드 문구가 있을 때는 스크롤 제거 */
 .result-box:has(.result-placeholder) {
+    overflow: hidden;
+}
+
+/* 분석 중일 때도 스크롤 제거 */
+.result-box:has(.analysis-loading-container) {
     overflow: hidden;
 }
 
@@ -657,10 +802,24 @@
     justify-content: center;
 }
 
+/* 체형분석 영역의 분석하기 버튼 - 더 위로 올리기 */
+.analysis-main-section .upload-area .analyze-button {
+    margin-top: 8px !important;
+    margin-left: 50px !important;
+    width: 110% !important;
+    max-width: 110% !important;
+    transform: translateX(-5%);
+}
+
 .analyze-button:hover:not(:disabled) {
     transform: translateY(-2px);
     box-shadow: 0 5px 20px rgba(173, 159, 65, 0.4);
     background: #9e9137;
+}
+
+/* 체형분석 영역 버튼 hover 시 transform 조정 */
+.analysis-main-section .upload-area .analyze-button:hover:not(:disabled) {
+    transform: translateX(-5%) translateY(-2px);
 }
 
 .analyze-button:disabled {
