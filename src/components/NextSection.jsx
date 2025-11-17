@@ -64,7 +64,7 @@ const NextSection = () => {
                     loop
                     playsInline
                 >
-                    <source src="/Image/video_bn.mp4" type="video/mp4" />
+                    <source src="/Image/Main_bn2.mp4" type="video/mp4" />
                 </video>
                 <div className="next-section-video-overlay"></div>
                 <div className="next-section-video-text">

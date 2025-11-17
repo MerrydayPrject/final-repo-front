@@ -95,7 +95,11 @@ function App() {
             {currentPage === 'main' && (
                 <>
                     <VideoBackground onNavigateToFitting={handleNavigateToFitting} />
-                    <AboutUs />
+                    <AboutUs
+                        onNavigateToGeneral={() => handleMenuClick('general')}
+                        onNavigateToCustom={() => handleMenuClick('custom')}
+                        onNavigateToAnalysis={() => handleMenuClick('analysis')}
+                    />
                     <section className="dome-gallery-section">
                         <div className="dome-gallery-header">
                             <h2 className="dome-gallery-title">다양한 드레스를 피팅해보세요</h2>

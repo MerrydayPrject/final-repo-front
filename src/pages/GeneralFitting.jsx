@@ -3,7 +3,6 @@ import Lottie from 'lottie-react'
 import { MdOutlineDownload } from 'react-icons/md'
 import { HiQuestionMarkCircle } from 'react-icons/hi'
 import Modal from '../components/Modal'
-import ThreeDViewer from '../components/ThreeDViewer'
 import { autoMatchImage, getDresses } from '../utils/api'
 import '../styles/App.css'
 import '../styles/ImageUpload.css'
@@ -18,11 +17,7 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection, initialCategory,
     const [imageUploadModalOpen, setImageUploadModalOpen] = useState(false)
     const [pendingDress, setPendingDress] = useState(null)
     const [loadingAnimation, setLoadingAnimation] = useState(null)
-    const [is3DImage, setIs3DImage] = useState(false)
-    const [isConverting3D, setIsConverting3D] = useState(false)
     const [imageTransition, setImageTransition] = useState(false)
-    const [show3DView, setShow3DView] = useState(false)
-    const [is3DModelReady, setIs3DModelReady] = useState(false)
 
     // ImageUpload 상태
     const [preview, setPreview] = useState(null)
@@ -162,7 +157,6 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection, initialCategory,
     const handleImageUpload = (image) => {
         setUploadedImage(image)
         setGeneralResultImage(null)
-        setIs3DImage(false)
     }
 
     const handleDressSelect = (dress) => {
@@ -180,7 +174,6 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection, initialCategory,
             if (result.success && result.result_image) {
                 setSelectedDress(dress)
                 setGeneralResultImage(result.result_image)
-                setIs3DImage(false) // 새로운 매칭 결과이므로 3D 상태 리셋
             } else {
                 throw new Error(result.message || '매칭에 실패했습니다.')
             }
@@ -439,13 +432,6 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection, initialCategory,
     const imageSrc = generalResultImage || preview
     const canDownload = !isProcessing && !!generalResultImage
 
-    // 3D 변환 핸들러
-    const handleConvertTo3D = () => {
-        if (!generalResultImage) return
-        setShow3DView(true)
-        setIsConverting3D(true)
-    }
-
     return (
         <main className="main-content">
             <div className="fitting-container">
@@ -488,53 +474,6 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection, initialCategory,
                                         <p className="upload-text">전신 또는 얼굴 이미지를 먼저 업로드 해주세요</p>
                                         <p className="upload-subtext">JPG, PNG, JPEG 형식 지원</p>
                                     </div>
-                                ) : show3DView ? (
-                                    <div className="preview-container">
-                                        <ThreeDViewer
-                                            previewImage={generalResultImage}
-                                            autoConvert={true}
-                                            onConvert={(modelUrl) => {
-                                                console.log('3D 모델 변환 완료:', modelUrl)
-                                                setIs3DImage(true)
-                                                setIsConverting3D(false)
-                                            }}
-                                            onModelReady={(ready) => {
-                                                setIs3DModelReady(ready)
-                                            }}
-                                            onError={(error) => {
-                                                console.error('3D 변환 오류:', error)
-                                                setIsConverting3D(false)
-                                                setIs3DModelReady(false)
-                                                alert(`3D 변환 중 오류가 발생했습니다: ${error}`)
-                                            }}
-                                        />
-                                        {is3DModelReady && (
-                                            <button
-                                                className="back-to-2d-button"
-                                                onClick={() => {
-                                                    setShow3DView(false)
-                                                    setIsConverting3D(false)
-                                                    setIs3DModelReady(false)
-                                                }}
-                                                style={{
-                                                    position: 'absolute',
-                                                    top: '10px',
-                                                    right: '10px',
-                                                    zIndex: 100,
-                                                    background: 'rgba(255, 255, 255, 0.9)',
-                                                    border: 'none',
-                                                    padding: '8px 16px',
-                                                    borderRadius: '6px',
-                                                    cursor: 'pointer',
-                                                    fontSize: '14px',
-                                                    fontWeight: '500',
-                                                    color: '#000000'
-                                                }}
-                                            >
-                                                ← 2D로 돌아가기
-                                            </button>
-                                        )}
-                                    </div>
                                 ) : (
                                     <div
                                         className={`preview-container ${isDragging ? 'dragging' : ''} ${imageTransition ? 'transitioning' : ''}`}
@@ -545,7 +484,7 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection, initialCategory,
                                         <img
                                             src={imageSrc}
                                             alt="Preview"
-                                            className={`preview-image ${is3DImage ? 'image-3d' : ''} ${imageTransition ? 'fade-transition' : ''}`}
+                                            className={`preview-image ${imageTransition ? 'fade-transition' : ''}`}
                                         />
                                         {isProcessing && (
                                             <div className="processing-overlay">
@@ -619,14 +558,6 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection, initialCategory,
                                 </div>
                             </div>
                         </div>
-                        {/* 3D로 변환 버튼 */}
-                        <button
-                            className="convert-3d-button"
-                            onClick={handleConvertTo3D}
-                            disabled={!generalResultImage || isConverting3D || isProcessing || is3DModelReady}
-                        >
-                            {show3DView && !is3DModelReady ? '3D 변환 중...' : is3DModelReady ? '3D 변환 완료' : '3D로 변환'}
-                        </button>
                     </div>
 
                     <div className="right-container">

@@ -3,7 +3,6 @@ import Lottie from 'lottie-react'
 import { MdOutlineDownload } from 'react-icons/md'
 import { HiQuestionMarkCircle } from 'react-icons/hi'
 import Modal from '../components/Modal'
-import ThreeDViewer from '../components/ThreeDViewer'
 import { removeBackground, customMatchImage } from '../utils/api'
 import '../styles/App.css'
 import '../styles/CustomUpload.css'
@@ -19,11 +18,7 @@ const CustomFitting = ({ onBackToMain, onNavigateToCorrection }) => {
     const [isBackgroundRemoved, setIsBackgroundRemoved] = useState(false)
     const [loadingAnimation, setLoadingAnimation] = useState(null)
     const [bgRemovalModalOpen, setBgRemovalModalOpen] = useState(false)
-    const [show3DView, setShow3DView] = useState(false)
-    const [is3DImage, setIs3DImage] = useState(false)
-    const [isConverting3D, setIsConverting3D] = useState(false)
     const [imageTransition, setImageTransition] = useState(false)
-    const [is3DModelReady, setIs3DModelReady] = useState(false)
     const [errorModalOpen, setErrorModalOpen] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
 
@@ -142,7 +137,6 @@ const CustomFitting = ({ onBackToMain, onNavigateToCorrection }) => {
             if (result.success && result.result_image) {
                 setCustomResultImage(result.result_image)
                 setIsMatching(false)
-                setIs3DImage(false) // 새로운 매칭 결과이므로 3D 상태 리셋
             } else {
                 throw new Error(result.message || '매칭에 실패했습니다.')
             }
@@ -305,13 +299,6 @@ const CustomFitting = ({ onBackToMain, onNavigateToCorrection }) => {
         prevProcessingRef.current = isMatching
     }, [isMatching, customResultImage])
 
-    // 3D 변환 핸들러
-    const handleConvertTo3D = () => {
-        if (!customResultImage) return
-        setShow3DView(true)
-        setIsConverting3D(true)
-    }
-
     return (
         <main className="main-content">
             <div className="fitting-container">
@@ -350,69 +337,19 @@ const CustomFitting = ({ onBackToMain, onNavigateToCorrection }) => {
                                         <div className="completion-icon">✓</div>
                                         <p className="processing-text">매칭완료</p>
                                     </div>
-                                ) : show3DView ? (
-                                    <div className="result-3d-viewer">
-                                        <div className="result-3d-container">
-                                            <ThreeDViewer
-                                                previewImage={customResultImage}
-                                                autoConvert={true}
-                                                onConvert={(modelUrl) => {
-                                                    console.log('3D 모델 변환 완료:', modelUrl)
-                                                    setIs3DImage(true)
-                                                    setIsConverting3D(false)
-                                                }}
-                                                onModelReady={(ready) => {
-                                                    setIs3DModelReady(ready)
-                                                }}
-                                                onError={(error) => {
-                                                    console.error('3D 변환 오류:', error)
-                                                    setIsConverting3D(false)
-                                                    setIs3DModelReady(false)
-                                                    setErrorMessage(`3D 변환 중 오류가 발생했습니다: ${error}`)
-                                                    setErrorModalOpen(true)
-                                                }}
-                                            />
-                                            {is3DModelReady && (
-                                                <button
-                                                    className="back-to-2d-button"
-                                                    onClick={() => {
-                                                        setShow3DView(false)
-                                                        setIsConverting3D(false)
-                                                        setIs3DModelReady(false)
-                                                    }}
-                                                    style={{
-                                                        position: 'absolute',
-                                                        top: '10px',
-                                                        right: '10px',
-                                                        zIndex: 101,
-                                                        background: 'rgba(255, 255, 255, 0.9)',
-                                                        border: 'none',
-                                                        padding: '8px 16px',
-                                                        borderRadius: '6px',
-                                                        cursor: 'pointer',
-                                                        fontSize: '14px',
-                                                        fontWeight: '500',
-                                                        color: '#000000'
-                                                    }}
-                                                >
-                                                    ← 2D로 돌아가기
-                                                </button>
-                                            )}
-                                        </div>
-                                    </div>
                                 ) : (
                                     <div className={`result-image-wrapper ${imageTransition ? 'transitioning' : ''}`}>
                                         <img
                                             src={customResultImage}
                                             alt="Matching Result"
-                                            className={`result-image ${is3DImage ? 'image-3d' : ''} ${imageTransition ? 'fade-transition' : ''}`}
+                                            className={`result-image ${imageTransition ? 'fade-transition' : ''}`}
                                         />
-                                        {(isMatching || isConverting3D) && (
+                                        {isMatching && (
                                             <div className="processing-overlay">
                                                 {loadingAnimation && (
                                                     <Lottie animationData={loadingAnimation} loop={true} className="spinner-lottie" />
                                                 )}
-                                                <p className="processing-text">{isConverting3D ? '3D 변환 중...' : 'AI 매칭 중...'}</p>
+                                                <p className="processing-text">AI 매칭 중...</p>
                                             </div>
                                         )}
                                         <div className="result-buttons-group">
@@ -465,17 +402,6 @@ const CustomFitting = ({ onBackToMain, onNavigateToCorrection }) => {
                                                 </button>
                                             )}
                                         </div>
-                                        <button
-                                            className="convert-3d-button-result"
-                                            onClick={(e) => {
-                                                e.stopPropagation()
-                                                handleConvertTo3D()
-                                            }}
-                                            disabled={!customResultImage || isConverting3D || isMatching || is3DModelReady}
-                                            title="3D로 변환하기"
-                                        >
-                                            {show3DView && !is3DModelReady ? '3D 변환 중...' : is3DModelReady ? '3D 변환 완료' : '3D로 변환'}
-                                        </button>
                                     </div>
                                 )}
                             </div>
@@ -560,7 +486,7 @@ const CustomFitting = ({ onBackToMain, onNavigateToCorrection }) => {
 
                             {/* 매칭하기 버튼 */}
                             <button
-                                className="convert-3d-button"
+                                className="analyze-button"
                                 onClick={handleManualMatch}
                                 disabled={isMatching || isRemovingBackground || !!customResultImage}
                             >

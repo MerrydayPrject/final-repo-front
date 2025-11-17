@@ -129,6 +129,61 @@
     hyphens: auto;
 }
 
+.about-us-navigate-button {
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #ad9f41;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+    font-family: 'Gowun Batang', 'Noto Sans KR', sans-serif;
+    align-self: flex-end;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    position: relative;
+    overflow: visible;
+}
+
+.about-us-navigate-button span {
+    position: relative;
+    z-index: 1;
+}
+
+.about-us-navigate-button .circle-animation {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.about-us-navigate-button:hover {
+    color: #9e9137;
+}
+
+.about-us-navigate-button:hover .circle-animation {
+    opacity: 1;
+}
+
+.about-us-navigate-button:hover .circle-path {
+    animation: drawCircle 0.8s ease-out forwards;
+}
+
+.about-us-navigate-button:active {
+    transform: translateX(2px);
+}
+
+@keyframes drawCircle {
+    0% {
+        stroke-dashoffset: 400;
+    }
+
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
 .about-us-content-wrapper .right-container {
     flex: 1;
     display: flex;

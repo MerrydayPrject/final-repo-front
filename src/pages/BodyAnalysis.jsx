@@ -233,18 +233,28 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                                 </div>
                                             )}
                                             <div className="result-item body-type-item">
-                                                <strong>체형 유형:</strong> {analysisResult.body_analysis?.body_type || analysisResult.body_analysis?.body_type_category?.type || '분석 중...'}
+                                                <strong>체형 유형:</strong> {analysisResult.body_analysis?.body_type || '분석 중...'}
                                             </div>
-                                            <div className="result-item measurements-item">
-                                                <strong>체형 측정:</strong>
-                                                {analysisResult.body_analysis?.measurements && (
+                                            {analysisResult.body_analysis?.bmi && (
+                                                <div className="result-item bmi-item">
+                                                    <strong>BMI:</strong> {analysisResult.body_analysis.bmi.toFixed(2)}
+                                                </div>
+                                            )}
+                                            {analysisResult.body_analysis?.height && (
+                                                <div className="result-item height-item">
+                                                    <strong>키:</strong> {analysisResult.body_analysis.height}cm
+                                                </div>
+                                            )}
+                                            {analysisResult.body_analysis?.body_features && analysisResult.body_analysis.body_features.length > 0 && (
+                                                <div className="result-item body-features-item">
+                                                    <strong>체형 특징:</strong>
                                                     <ul style={{ marginTop: '5px', paddingLeft: '20px' }}>
-                                                        <li>어깨/엉덩이 비율: {analysisResult.body_analysis.measurements.shoulder_hip_ratio?.toFixed(2) || '-'}</li>
-                                                        <li>허리/어깨 비율: {analysisResult.body_analysis.measurements.waist_shoulder_ratio?.toFixed(2) || '-'}</li>
-                                                        <li>허리/엉덩이 비율: {analysisResult.body_analysis.measurements.waist_hip_ratio?.toFixed(2) || '-'}</li>
+                                                        {analysisResult.body_analysis.body_features.map((feature, index) => (
+                                                            <li key={index}>{feature}</li>
+                                                        ))}
                                                     </ul>
-                                                )}
-                                            </div>
+                                                </div>
+                                            )}
                                             <div className="result-item analysis-item">
                                                 <strong>상세 분석:</strong>
                                                 <p className="analysis-description">

@@ -451,6 +451,18 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+.result-item.bmi-item {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.result-item.height-item {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.result-item.body-features-item {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
 .result-item strong {
     font-size: 1.1rem;
     color: #ad9f41;

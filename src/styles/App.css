@@ -196,63 +196,6 @@
     transition-duration: 0.3s;
 }
 
-.convert-3d-button {
-    width: 80%;
-    padding: 14px 20px;
-    background: #ad9f41;
-    color: white;
-    border: none;
-    border-radius: 20px;
-    font-size: 16px;
-    font-weight: 600;
-    font-family: 'Orbit', 'Static', sans-serif;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 10px;
-    box-shadow: 0 4px 12px rgba(118, 108, 8, 0.3);
-    position: relative;
-    overflow: hidden;
-}
-
-.convert-3d-button:not(:disabled)::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(90deg,
-            transparent,
-            rgba(255, 255, 255, 0.6),
-            transparent);
-    animation: shine 7s infinite;
-}
-
-@keyframes shine {
-    0% {
-        left: -100%;
-    }
-
-    40% {
-        left: 100%;
-    }
-
-    100% {
-        left: 100%;
-    }
-}
-
-.convert-3d-button:hover:not(:disabled) {
-    background: #ad9f41;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(138, 127, 9, 0.4);
-}
-
-.convert-3d-button:disabled {
-    background: #ad9f41;
-    cursor: default;
-    opacity: 0.6;
-}
 
 /* 드레스 드래그 중 전역 커서 강제 */
 body.dragging-dress,
