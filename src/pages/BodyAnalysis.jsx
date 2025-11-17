@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import { HiQuestionMarkCircle } from 'react-icons/hi'
+import Modal from '../components/Modal'
 import '../styles/BodyTypeFitting.css'
 import { analyzeBody } from '../utils/api'
 
@@ -11,6 +12,8 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
     const [recommendedCategories, setRecommendedCategories] = useState([])
     const [height, setHeight] = useState('')
     const [weight, setWeight] = useState('')
+    const [modalOpen, setModalOpen] = useState(false)
+    const [modalMessage, setModalMessage] = useState('')
     const fileInputRef = useRef(null)
 
     // 카테고리명을 한글로 변환하는 함수
@@ -54,16 +57,16 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
     // 분석하기 버튼 핸들러
     const handleAnalyze = async () => {
         if (!uploadedImage) {
-            alert('먼저 이미지를 업로드해주세요!')
+            setModalMessage('먼저 이미지를 업로드해주세요!')
+            setModalOpen(true)
             return
         }
 
-        // 키와 몸무게가 입력되지 않았을 경우 경고 (선택사항이지만 권장)
+        // 키와 몸무게가 입력되지 않았을 경우 모달 표시
         if (!height || !weight) {
-            const proceed = window.confirm('키와 몸무게를 입력하지 않으면 정확한 BMI 계산이 어려울 수 있습니다. 계속하시겠습니까?')
-            if (!proceed) {
-                return
-            }
+            setModalMessage('키와 몸무게를 입력해주세요.')
+            setModalOpen(true)
+            return
         }
 
         setIsAnalyzing(true)
@@ -137,6 +140,7 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                         <div className="analysis-main-section">
                             {/* 좌측: 이미지 업로드 영역 */}
                             <div className="upload-area">
+                                <h3 className="upload-section-title">이미지 업로드</h3>
                                 <div className="image-container">
                                     {imagePreview ? (
                                         <>
@@ -181,6 +185,7 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                             onChange={(e) => setHeight(e.target.value)}
                                             min="0"
                                             step="0.1"
+                                            required
                                         />
                                     </div>
                                     <div className="input-group">
@@ -193,13 +198,33 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                             onChange={(e) => setWeight(e.target.value)}
                                             min="0"
                                             step="0.1"
+                                            required
                                         />
                                     </div>
                                 </div>
+                                <button
+                                    className="analyze-button"
+                                    onClick={handleAnalyze}
+                                    disabled={!uploadedImage || isAnalyzing || analysisResult}
+                                >
+                                    {isAnalyzing ? (
+                                        <div className="loader">
+                                            <span>분석중</span>
+                                        </div>
+                                    ) : analysisResult ? (
+                                        '분석완료'
+                                    ) : (
+                                        '분석하기'
+                                    )}
+                                </button>
                             </div>
 
                             {/* 우측: 분석 결과 영역 */}
                             <div className="analysis-result-area">
+                                <div className="result-section-header">
+                                    <h3 className="result-section-title">분석 결과</h3>
+                                    <p className="result-section-description">AI가 분석한 당신의 체형 정보입니다</p>
+                                </div>
                                 <div className="result-box">
                                     {!analysisResult ? (
                                         <div className="result-placeholder">
@@ -213,38 +238,47 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                             {/* 추천 카테고리 - 맨 위 */}
                                             {recommendedCategories.length > 0 && (
                                                 <div className="result-item recommended-categories-item">
-                                                    <strong>추천 카테고리:</strong>
-                                                    <div className="recommended-categories">
-                                                        {recommendedCategories.map((category, index) => (
-                                                            <span
-                                                                key={index}
-                                                                className="category-badge"
-                                                                onClick={() => {
-                                                                    if (onNavigateToFittingWithCategory) {
-                                                                        onNavigateToFittingWithCategory(category)
-                                                                    }
-                                                                }}
-                                                                style={{ cursor: 'pointer' }}
-                                                            >
-                                                                {getCategoryName(category)}
-                                                            </span>
-                                                        ))}
+                                                    <div className="recommended-categories-header">
+                                                        <strong>추천 카테고리:</strong>
+                                                        <div className="recommended-categories">
+                                                            {recommendedCategories.map((category, index) => (
+                                                                <span
+                                                                    key={index}
+                                                                    className="category-badge"
+                                                                    onClick={() => {
+                                                                        if (onNavigateToFittingWithCategory) {
+                                                                            onNavigateToFittingWithCategory(category)
+                                                                        }
+                                                                    }}
+                                                                    style={{ cursor: 'pointer' }}
+                                                                >
+                                                                    {getCategoryName(category)}
+                                                                </span>
+                                                            ))}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             )}
-                                            <div className="result-item body-type-item">
-                                                <strong>체형 유형:</strong> {analysisResult.body_analysis?.body_type || '분석 중...'}
+                                            <div className="result-item body-info-item">
+                                                <div className="body-info-row">
+                                                    <div className="body-info-item-single">
+                                                        <strong>체형 유형:</strong>
+                                                        <span>{analysisResult.body_analysis?.body_type || '분석 중...'}</span>
+                                                    </div>
+                                                    {analysisResult.body_analysis?.bmi && (
+                                                        <div className="body-info-item-single">
+                                                            <strong>BMI:</strong>
+                                                            <span>{analysisResult.body_analysis.bmi.toFixed(2)}</span>
+                                                        </div>
+                                                    )}
+                                                    {analysisResult.body_analysis?.height && (
+                                                        <div className="body-info-item-single">
+                                                            <strong>키:</strong>
+                                                            <span>{analysisResult.body_analysis.height}cm</span>
+                                                        </div>
+                                                    )}
+                                                </div>
                                             </div>
-                                            {analysisResult.body_analysis?.bmi && (
-                                                <div className="result-item bmi-item">
-                                                    <strong>BMI:</strong> {analysisResult.body_analysis.bmi.toFixed(2)}
-                                                </div>
-                                            )}
-                                            {analysisResult.body_analysis?.height && (
-                                                <div className="result-item height-item">
-                                                    <strong>키:</strong> {analysisResult.body_analysis.height}cm
-                                                </div>
-                                            )}
                                             {analysisResult.body_analysis?.body_features && analysisResult.body_analysis.body_features.length > 0 && (
                                                 <div className="result-item body-features-item">
                                                     <strong>체형 특징:</strong>
@@ -264,18 +298,18 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                         </div>
                                     )}
                                 </div>
-                                <button
-                                    className="analyze-button"
-                                    onClick={handleAnalyze}
-                                    disabled={!uploadedImage || isAnalyzing}
-                                >
-                                    {isAnalyzing ? '분석 중...' : '분석하기'}
-                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <Modal
+                isOpen={modalOpen}
+                onClose={() => setModalOpen(false)}
+                message={modalMessage}
+                center
+            />
         </main>
     )
 }

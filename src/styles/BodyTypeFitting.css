@@ -186,40 +186,127 @@
 /* Body Analysis Main Section */
 .analysis-main-section {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 150px;
+    grid-template-columns: 1fr 2.5fr;
+    gap: 40px;
     margin-top: 10px;
-    /* 이미지 영역을 아래로 이동 */
     margin-bottom: 0;
     width: 100%;
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .upload-area,
 .analysis-result-area {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    max-width: 550px;
+    gap: 6px;
     width: 100%;
-    justify-self: center;
     flex-shrink: 0;
     /* 축소 방지 */
+}
+
+.analysis-result-area {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.02);
+    margin-top: -10px;
+    max-height: 640px;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.upload-section-title,
+.result-section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #333;
+    margin: 0;
+    margin-bottom: 6px;
+}
+
+.result-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.result-section-title {
+    margin-bottom: 0;
+    flex-shrink: 0;
+}
+
+.upload-section-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    margin-top: -20px;
+    text-align: left;
+    align-self: flex-start;
+}
+
+.upload-section-description,
+.result-section-description {
+    font-size: 0.95rem;
+    color: #666;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.result-section-description {
+    margin-bottom: 0;
+    flex: 1;
 }
 
 /* 이미지 영역과 결과 영역의 높이를 동일하게 고정 */
 .upload-area {
     height: auto;
-    min-height: 500px;
-    /* image-container(550px) + 여유 공간 */
+    min-height: auto;
+}
+
+/* 분석 팁 영역 */
+.analysis-tips {
+    margin-top: 8px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.tips-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 6px 0;
+    text-align: left;
+}
+
+.tips-list {
+    margin: 0;
+    padding-left: 16px;
+    list-style-type: disc;
+    text-align: left;
+}
+
+.tips-list li {
+    font-size: 0.75rem;
+    color: #666;
+    line-height: 1.4;
+    margin-bottom: 3px;
+    text-align: left;
+}
+
+.tips-list li:last-child {
+    margin-bottom: 0;
 }
 
 .analysis-result-area {
     height: auto;
-    min-height: 550px;
-    /* result-box(550px) + gap(12px) + analyze-button(약 50px) */
+    min-height: auto;
 }
 
 .analysis-main-section .upload-area {
@@ -251,8 +338,8 @@
 .upload-area .image-container {
     position: relative;
     width: 100%;
-    height: 500px;
-    max-height: 500px;
+    height: 300px;
+    max-height: 300px;
     /* 고정 높이 */
     background: #f5f5f5;
     border-radius: 12px;
@@ -263,6 +350,7 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     flex-shrink: 0;
     /* 축소 방지 */
+    margin-bottom: 8px;
 }
 
 .upload-area .correction-image {
@@ -340,9 +428,10 @@
 /* 키와 몸무게 입력 필드 스타일 */
 .body-info-inputs {
     display: flex;
-    gap: 15px;
-    margin-top: 15px;
-    padding: 15px;
+    gap: 10px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    padding: 10px;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -384,14 +473,13 @@
 /* Analysis Result Area Styles */
 .result-box {
     width: 100%;
-    height: 550px;
+    height: 520px;
     /* 고정 높이로 이미지 컨테이너와 동일하게 */
-    max-height: 550px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 20px;
-    padding: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
+    max-height: 520px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 12px;
+    padding: 20px;
+
     overflow-y: auto;
     /* 내용이 많으면 스크롤 */
     box-sizing: border-box;
@@ -439,7 +527,7 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.result-item.body-type-item {
+.result-item.body-info-item {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -451,16 +539,38 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.result-item.bmi-item {
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.result-item.height-item {
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
 .result-item.body-features-item {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.body-info-row {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.body-info-item-single {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    white-space: nowrap;
+}
+
+.body-info-item-single strong {
+    font-size: 1rem;
+    color: #ad9f41;
+    display: inline;
+    margin-bottom: 0;
+    line-height: 1.5;
+}
+
+.body-info-item-single span {
+    font-size: 1rem;
+    color: #333;
+    line-height: 1.5;
+    display: inline-block;
+    vertical-align: baseline;
 }
 
 .result-item strong {
@@ -481,12 +591,25 @@
     word-break: keep-all;
 }
 
+/* 추천 카테고리 헤더 */
+.recommended-categories-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.recommended-categories-header strong {
+    margin-bottom: 0;
+    flex-shrink: 0;
+}
+
 /* 추천 카테고리 뱃지 */
 .recommended-categories {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    margin-top: 10px;
+    margin-top: 0;
 }
 
 .category-badge {
@@ -513,12 +636,12 @@
     transform: translateY(0);
 }
 
-.analyze-button {
+.upload-area .analyze-button {
     width: 100%;
-    padding: 15px;
-    margin-top: 0;
-    /* gap으로 간격 조정 */
-    font-size: 1.1rem;
+    padding: 12px;
+    margin-top: 10px;
+    margin-bottom: 8px;
+    font-size: 1rem;
     font-weight: 600;
     color: #fff;
     background: #ad9f41;
@@ -529,6 +652,9 @@
     box-shadow: 0 4px 12px rgba(173, 159, 65, 0.3);
     flex-shrink: 0;
     /* 버튼 크기 고정 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .analyze-button:hover:not(:disabled) {
@@ -540,6 +666,92 @@
 .analyze-button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+/* Loader Animation Styles */
+.loader {
+    max-width: fit-content;
+    color: rgb(242, 255, 240);
+    font-size: 1rem;
+    font-family: inherit;
+    position: relative;
+    font-style: italic;
+    font-weight: 600;
+}
+
+.loader span {
+    animation: cut 2s infinite;
+    transition: 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.loader:hover {
+    color: #fcffdf;
+}
+
+.loader::after {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 6px;
+    border-radius: 4px;
+    background-color: #ff828291;
+    top: 0px;
+    filter: blur(10px);
+    animation: scan 2s infinite;
+    left: 0;
+    z-index: 0;
+    transition: 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.loader::before {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 5px;
+    border-radius: 4px;
+    background-color: #ff8282;
+    top: 0px;
+    animation: scan 2s infinite;
+    left: 0;
+    z-index: 1;
+    filter: opacity(0.9);
+    transition: 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes scan {
+    0% {
+        top: 0px;
+    }
+
+    25% {
+        top: 54px;
+    }
+
+    50% {
+        top: 0px;
+    }
+
+    75% {
+        top: 54px;
+    }
+}
+
+@keyframes cut {
+    0% {
+        clip-path: inset(0 0 0 0);
+    }
+
+    25% {
+        clip-path: inset(100% 0 0 0);
+    }
+
+    50% {
+        clip-path: inset(0 0 100% 0);
+    }
+
+    75% {
+        clip-path: inset(0 0 0 0);
+    }
 }
 
 /* Dress Slider Section */
@@ -771,7 +983,7 @@
     }
 
     .result-box {
-        min-height: 300px;
+        min-height: 00px;
         padding: 20px;
     }
 
