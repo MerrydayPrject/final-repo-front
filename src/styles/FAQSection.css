@@ -55,6 +55,7 @@
     transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 .faq-item.active {
@@ -64,18 +65,20 @@
 
 .faq-question {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     font-size: 1rem;
     font-weight: 600;
     color: #2c2c2c;
-    gap: 12px;
+    padding-right: 40px;
 }
 
 .faq-toggle-icon {
-    width: 38px;
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    width: 32px;
     height: 32px;
-    min-width: 40px;
+    min-width: 32px;
     min-height: 32px;
     flex-shrink: 0;
     border-radius: 50%;
@@ -90,9 +93,9 @@
 }
 
 .faq-item.active .faq-toggle-icon {
-    width: 38px;
+    width: 32px;
     height: 32px;
-    min-width: 40px;
+    min-width: 32px;
     min-height: 32px;
     flex-shrink: 0;
     background: #ad9f41;

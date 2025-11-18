@@ -6,8 +6,14 @@ const ScrollToTop = () => {
 
     useEffect(() => {
         const toggleVisibility = () => {
-            // 페이지 하단 300px 이내에 도달하면 버튼 표시
-            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 300) {
+            // 메인 페이지 최하단(NextSection 이후)에서만 버튼 표시
+            // document.body.offsetHeight 대신 실제 메인 콘텐츠의 끝을 확인
+            const scrollHeight = document.documentElement.scrollHeight
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+            const clientHeight = document.documentElement.clientHeight
+
+            // 페이지 하단 200px 이내에 도달하면 버튼 표시
+            if (scrollTop + clientHeight >= scrollHeight - 200) {
                 setIsVisible(true)
             } else {
                 setIsVisible(false)
@@ -15,6 +21,9 @@ const ScrollToTop = () => {
         }
 
         window.addEventListener('scroll', toggleVisibility)
+
+        // 초기 상태 확인
+        toggleVisibility()
 
         return () => {
             window.removeEventListener('scroll', toggleVisibility)

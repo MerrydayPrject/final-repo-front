@@ -120,7 +120,7 @@ function App() {
                 onMenuClick={handleMenuClick}
                 onLogoClick={handleLogoClick}
             />
-            <ScrollToTop />
+            {currentPage === 'main' && <ScrollToTop />}
 
             {currentPage === 'general' && (
                 <GeneralFitting

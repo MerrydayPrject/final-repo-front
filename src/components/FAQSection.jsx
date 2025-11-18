@@ -44,8 +44,8 @@ const FAQSection = () => {
                         >
                             <div className="faq-question">
                                 <span>{faq.question}</span>
-                                <span className="faq-toggle-icon">{activeIndex === index ? '−' : '+'}</span>
                             </div>
+                            <span className="faq-toggle-icon">{activeIndex === index ? '−' : '+'}</span>
                             <div className="faq-answer" style={{ maxHeight: activeIndex === index ? '200px' : '0px' }}>
                                 <p>{faq.answer}</p>
                             </div>
