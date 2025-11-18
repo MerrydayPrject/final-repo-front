@@ -398,7 +398,8 @@ const CustomFitting = ({ onBackToMain, onNavigateToCorrection }) => {
                                                     }}
                                                     title="체형 보정 페이지로 이동"
                                                 >
-                                                    ✨ 보정하러 가기
+                                                    <img src="/Image/tuning_icon.png" alt="보정 아이콘" className="tuning-icon" />
+                                                    보정하러 가기
                                                 </button>
                                             )}
                                         </div>

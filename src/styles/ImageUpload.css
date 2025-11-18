@@ -281,6 +281,16 @@
     border: none !important;
     cursor: pointer !important;
     width: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+}
+
+.preview-container .correction-button .tuning-icon {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
 }
 
 .preview-container .correction-button:hover {

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import Lottie from 'lottie-react'
 import '../styles/UsageGuideSection.css'
 
 const UsageGuideSection = () => {
@@ -6,6 +7,10 @@ const UsageGuideSection = () => {
     const [ratio, setRatio] = useState(0.5)
     const [dragging, setDragging] = useState(false)
     const animationFrameRef = useRef(null)
+    const [uploadAnimation, setUploadAnimation] = useState(null)
+    const [fittingAnimation, setFittingAnimation] = useState(null)
+    const [successAnimation, setSuccessAnimation] = useState(null)
+    const successLottieRef = useRef(null)
 
     const updateRatioFromClientX = (clientX) => {
         if (!containerRef.current) return
@@ -63,10 +68,75 @@ const UsageGuideSection = () => {
         updateRatioFromClientX(event.clientX)
     }
 
+    useEffect(() => {
+        // Lottie 애니메이션 로드
+        fetch('/Image/upload files loader.json')
+            .then(response => response.json())
+            .then(data => setUploadAnimation(data))
+            .catch(error => console.error('Lottie 로드 실패:', error))
+
+        fetch('/Image/fitting.json')
+            .then(response => response.json())
+            .then(data => setFittingAnimation(data))
+            .catch(error => console.error('Lottie 로드 실패:', error))
+
+        fetch('/Image/success.json')
+            .then(response => response.json())
+            .then(data => setSuccessAnimation(data))
+            .catch(error => console.error('Lottie 로드 실패:', error))
+    }, [])
+
+    useEffect(() => {
+        if (successLottieRef.current && successAnimation) {
+            successLottieRef.current.setSpeed(0.3)
+        }
+    }, [successAnimation])
+
     return (
         <section className="usage-guide-section">
             <div className="usage-guide-container">
                 <div className="usage-guide-label">간편한 드레스 매칭</div>
+                <div className="usage-guide-steps">
+                    <div className="usage-step">
+                        <div className="step-circle">
+                            {uploadAnimation && (
+                                <Lottie
+                                    animationData={uploadAnimation}
+                                    loop={true}
+                                    className="step-icon-lottie"
+                                />
+                            )}
+                        </div>
+                        <div className="step-label">사용자의 이미지<br /> 업로드</div>
+                    </div>
+                    <div className="step-arrow">→</div>
+                    <div className="usage-step">
+                        <div className="step-circle">
+                            {fittingAnimation && (
+                                <Lottie
+                                    animationData={fittingAnimation}
+                                    loop={true}
+                                    className="step-icon-lottie"
+                                />
+                            )}
+                        </div>
+                        <div className="step-label">원하는 드레스를<br /> 드레그</div>
+                    </div>
+                    <div className="step-arrow">→</div>
+                    <div className="usage-step">
+                        <div className="step-circle">
+                            {successAnimation && (
+                                <Lottie
+                                    lottieRef={successLottieRef}
+                                    animationData={successAnimation}
+                                    loop={true}
+                                    className="step-icon-lottie"
+                                />
+                            )}
+                        </div>
+                        <div className="step-label">매칭완료</div>
+                    </div>
+                </div>
                 <div
                     ref={containerRef}
                     className="usage-guide-slider"
@@ -104,7 +174,7 @@ const UsageGuideSection = () => {
                     </div>
                 </div>
                 <p className="usage-guide-hint">
-                    핸들을 드래그해 전, 후 이미지를 비교해 보세요.
+                    핸들을 드래그해서 전, 후 이미지를 비교해 보세요.
                 </p>
             </div>
         </section>

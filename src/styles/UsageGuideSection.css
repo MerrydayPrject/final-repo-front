@@ -1,6 +1,6 @@
 .usage-guide-section {
     width: 100%;
-    padding: 80px 0 40px;
+    padding: 80px 0 190px;
     background: linear-gradient(180deg, #ffffff 0%, #f7f3ed 100%);
 }
 
@@ -16,15 +16,73 @@
     flex-direction: column;
 }
 
+.usage-guide-steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 60px;
+    margin-bottom: 100px;
+    margin-left: -100px;
+}
+
+.usage-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.step-circle {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(173, 159, 65, 0.3);
+    transition: all 0.3s ease;
+}
+
+.step-circle:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(173, 159, 65, 0.4);
+}
+
+.step-icon {
+    font-size: 40px;
+    line-height: 1;
+}
+
+.step-icon-lottie {
+    width: 130px;
+    height: 130px;
+}
+
+.step-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #2c2c2c;
+    text-align: center;
+    max-width: 120px;
+}
+
+.step-arrow {
+    font-size: 32px;
+    color: #ad9f41;
+    font-weight: 300;
+    margin-top: -30px;
+}
+
 .usage-guide-label {
     display: inline-block;
-    padding: 8px 22px;
+    padding: 12px 32px;
     border-radius: 999px;
     background: rgba(173, 159, 65, 0.1);
     color: #a3874c;
     font-weight: 600;
-    font-size: 0.95rem;
-    margin: 100px -10px 50px -70px;
+    font-size: 1.3rem;
+    margin: 40px -10px 150px -150px;
 }
 
 .usage-guide-slider {
@@ -178,6 +236,30 @@
 @media (max-width: 768px) {
     .usage-guide-section {
         padding: 60px 0 40px;
+    }
+
+    .usage-guide-steps {
+        gap: 15px;
+        margin-left: 0;
+    }
+
+    .step-circle {
+        width: 70px;
+        height: 70px;
+    }
+
+    .step-icon {
+        font-size: 28px;
+    }
+
+    .step-label {
+        font-size: 0.75rem;
+        max-width: 80px;
+    }
+
+    .step-arrow {
+        font-size: 24px;
+        margin-top: -20px;
     }
 
     .usage-guide-slider {
