@@ -5,13 +5,22 @@ const UsageGuideSection = () => {
     const containerRef = useRef(null)
     const [ratio, setRatio] = useState(0.5)
     const [dragging, setDragging] = useState(false)
+    const animationFrameRef = useRef(null)
 
     const updateRatioFromClientX = (clientX) => {
         if (!containerRef.current) return
         const rect = containerRef.current.getBoundingClientRect()
         let pos = clientX - rect.left
         pos = Math.max(0, Math.min(rect.width, pos))
-        setRatio(pos / rect.width)
+        const newRatio = pos / rect.width
+
+        if (animationFrameRef.current) {
+            cancelAnimationFrame(animationFrameRef.current)
+        }
+
+        animationFrameRef.current = requestAnimationFrame(() => {
+            setRatio(newRatio)
+        })
     }
 
     useEffect(() => {
@@ -24,13 +33,22 @@ const UsageGuideSection = () => {
         const handlePointerUp = () => {
             if (!dragging) return
             setDragging(false)
+            if (animationFrameRef.current) {
+                cancelAnimationFrame(animationFrameRef.current)
+            }
         }
 
-        window.addEventListener('pointermove', handlePointerMove)
-        window.addEventListener('pointerup', handlePointerUp)
+        if (dragging) {
+            window.addEventListener('pointermove', handlePointerMove, { passive: false })
+            window.addEventListener('pointerup', handlePointerUp)
+        }
+
         return () => {
             window.removeEventListener('pointermove', handlePointerMove)
             window.removeEventListener('pointerup', handlePointerUp)
+            if (animationFrameRef.current) {
+                cancelAnimationFrame(animationFrameRef.current)
+            }
         }
     }, [dragging])
 
@@ -68,13 +86,13 @@ const UsageGuideSection = () => {
                     </div>
 
                     <div
-                        className="slider-bar"
+                        className={`slider-bar ${dragging ? 'dragging' : ''}`}
                         style={{
                             left: `${ratio * 100}%`
                         }}
                     />
                     <div
-                        className="slider-handle"
+                        className={`slider-handle ${dragging ? 'dragging' : ''}`}
                         style={{
                             left: `${ratio * 100}%`,
                             transform: `translate(-50%, -50%)`
