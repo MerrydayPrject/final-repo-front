@@ -2,15 +2,276 @@
     width: 100%;
     flex: 1;
     min-height: 0;
-    max-height: 85%;
     background: white;
     padding: 12px 0;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     box-sizing: border-box;
-    overflow: hidden;
+    overflow: visible;
     position: relative;
+}
+
+.step-progress {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    padding: 0 24px 16px;
+    box-sizing: border-box;
+}
+
+.step-progress-item {
+    background: rgba(240, 240, 240, 0.8);
+    border-radius: 999px;
+    padding: 8px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #8b8b8b;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.step-progress-item.completed {
+    background: rgba(186, 169, 120, 0.15);
+    color: #b08968;
+}
+
+.step-progress-item.active {
+    background: linear-gradient(135deg, #b08968 0%, #ddb892 100%);
+    color: white;
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 8px 18px rgba(176, 137, 104, 0.25);
+}
+
+.step-progress-number {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.step-progress-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.step-guide-panel {
+    width: 100%;
+    flex: 1;
+    background: linear-gradient(145deg, #ffffff 0%, #f8f6f4 100%);
+    border-radius: 24px;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    padding: 52px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+    gap: 16px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.08);
+}
+
+.step-badge {
+    font-size: 14px;
+    font-weight: 700;
+    color: #b08968;
+    background: rgba(176, 137, 104, 0.12);
+    padding: 6px 18px;
+    border-radius: 999px;
+    letter-spacing: 0.08em;
+}
+
+.step-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #2c2c2c;
+}
+
+.step-description {
+    margin: 0;
+    font-size: 15px;
+    color: #6b6b6b;
+    line-height: 1.5;
+}
+
+.step-tip {
+    font-size: 13px;
+    color: #9a7b57;
+    margin-top: 8px;
+}
+
+.step-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.step-actions button,
+.step-link-button {
+    border: none;
+    background: rgba(176, 137, 104, 0.12);
+    color: #b08968;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.step-actions button:hover,
+.step-link-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(176, 137, 104, 0.25);
+}
+
+.step-link-button {
+    background: transparent;
+    color: #8a7968;
+    text-decoration: underline;
+    padding: 6px 12px;
+}
+
+.step-result-actions {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.step-guide-panel-step3 .step-result-actions {
+    margin-top: auto;
+}
+
+.step-guide-panel .image-upload-wrapper {
+    width: 100%;
+    max-width: 540px;
+}
+
+.step-guide-panel .upload-area,
+.step-guide-panel .preview-container {
+    width: 100%;
+    max-width: 380px;
+    height: 496px;
+    max-height: 496px;
+    aspect-ratio: 380 / 496;
+    flex: 0 0 auto;
+}
+
+.step-guide-panel-step3 {
+    padding-top: 36px;
+}
+
+.step-guide-panel-step3 .step-3-header {
+    margin-top: -12px;
+}
+
+.step-guide-panel-step3 .image-upload-wrapper {
+    margin-top: -8px;
+}
+
+.step-guide-panel-step2 {
+    padding-top: 32px;
+    margin-top: -24px;
+}
+
+.step-guide-panel-step2 .step-panel-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+    align-items: flex-end;
+}
+
+.step-guide-panel-step2 .step-panel-content .step-link-button {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 0;
+}
+
+.step-guide-panel-step2 .step-panel-content .image-upload-wrapper {
+    margin-top: -5px;
+    align-self: flex-end;
+    transform: translateX(-150px);
+    margin-bottom: -10px;
+}
+
+.step-2-header {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 16px;
+}
+
+.step-2-text {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: left;
+}
+
+.step-guide-panel-step2 .step-title,
+.step-guide-panel-step2 .step-description {
+    text-align: left;
+}
+
+.step-guide-panel-step2 .step-description {
+    margin-top: 0;
+}
+
+.step-3-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+}
+
+.step-3-message {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #2c2c2c;
+    text-align: left;
+}
+
+@media (max-width: 768px) {
+    .step-3-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .step-3-message {
+        text-align: left;
+        width: 100%;
+    }
+
+    .step-2-header {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .step-2-text {
+        width: 100%;
+    }
+
+    .step-guide-panel-step2 .step-panel-content .step-link-button {
+        position: static;
+        align-self: flex-end;
+    }
+
+    .step-guide-panel-step2 .step-panel-content .image-upload-wrapper {
+        margin-top: 16px;
+    }
 }
 
 .image-upload-wrapper {
@@ -146,6 +407,16 @@
     box-sizing: border-box;
 }
 
+.fitting-container .step-guide-panel .preview-container {
+    height: 496px;
+}
+
+.fitting-container .step-guide-panel .preview-container .preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
 /* 일반피팅에서 preview-container 크기 키우기 */
 .fitting-container .image-upload-wrapper {
     width: 80%;
@@ -256,6 +527,13 @@
     width: auto !important;
 }
 
+.step-result-actions .download-button {
+    position: static !important;
+    right: auto !important;
+    bottom: auto !important;
+    box-shadow: 0 2px 8px #70964e !important;
+}
+
 .preview-container .download-button:hover {
     background: #70964e !important;
     transform: translateY(-1px) !important;
@@ -284,6 +562,13 @@
     display: flex !important;
     align-items: center !important;
     gap: 6px !important;
+}
+
+.step-result-actions .correction-button {
+    position: static !important;
+    right: auto !important;
+    bottom: auto !important;
+    box-shadow: 0 2px 8px rgba(176, 137, 104, 0.3) !important;
 }
 
 .preview-container .correction-button .tuning-icon {
@@ -482,6 +767,7 @@
     padding: 0;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    position: relative;
 }
 
 .background-button:hover {
@@ -523,4 +809,55 @@
 .background-button:disabled:hover {
     transform: none;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.background-hover-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.2;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+    border-radius: inherit;
+}
+
+.background-button:hover .background-hover-label,
+.background-button.active .background-hover-label {
+    opacity: 1;
+}
+
+.step-background-selector {
+    position: static;
+    right: auto;
+    top: auto;
+    transform: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    width: 100%;
+    margin-top: 16px;
+}
+
+.step-background-selector .background-button {
+    width: 90px;
+    height: 90px;
+    border-radius: 16px;
+}
+
+.step-background-selector .background-button img {
+    border-radius: 16px;
+}
+
+.step-background-selector .background-hover-label {
+    border-radius: 16px;
 }

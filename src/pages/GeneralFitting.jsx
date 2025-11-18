@@ -18,10 +18,12 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection, initialCategory,
     const [pendingDress, setPendingDress] = useState(null)
     const [loadingAnimation, setLoadingAnimation] = useState(null)
     const [imageTransition, setImageTransition] = useState(false)
-    
+    const [currentStep, setCurrentStep] = useState(1)
+
     // 배경 선택 상태
     const [selectedBackgroundIndex, setSelectedBackgroundIndex] = useState(0)
     const backgroundImages = [
+        '/Image/background4.jpg',
         '/Image/background1.jpg',
         '/Image/background2.jpg',
         '/Image/background3.jpg'
@@ -165,6 +167,11 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection, initialCategory,
     const handleImageUpload = (image) => {
         setUploadedImage(image)
         setGeneralResultImage(null)
+        if (image) {
+            setCurrentStep(3)
+        } else if (currentStep > 1) {
+            setCurrentStep(2)
+        }
     }
 
     const handleDressSelect = (dress) => {
@@ -177,10 +184,10 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection, initialCategory,
             const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
             // 로컬 이미지 경로인 경우 그대로 사용, 외부 URL인 경우 프록시 사용
             const isExternalUrl = url.startsWith('http://') || url.startsWith('https://')
-            const proxyUrl = isExternalUrl 
+            const proxyUrl = isExternalUrl
                 ? `${apiBaseUrl}/api/proxy-image?url=${encodeURIComponent(url)}`
                 : url
-            
+
             const response = await fetch(proxyUrl)
             if (!response.ok) {
                 throw new Error(`배경 이미지를 가져올 수 없습니다: ${response.statusText}`)
@@ -196,6 +203,9 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection, initialCategory,
     // 배경 선택 핸들러
     const handleBackgroundSelect = (index) => {
         setSelectedBackgroundIndex(index)
+        if (currentStep < 2) {
+            setCurrentStep(2)
+        }
     }
 
     const handleDressDropped = async (dress) => {
@@ -240,7 +250,9 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection, initialCategory,
     }
 
     const handleImageUploadedForDress = (image) => {
-        setUploadedImage(image)
+        if (image) {
+            handleFile(image)
+        }
         closeImageUploadModal()
 
         if (pendingDress) {
@@ -470,6 +482,185 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection, initialCategory,
 
     const imageSrc = generalResultImage || preview
     const canDownload = !isProcessing && !!generalResultImage
+    const steps = [
+        { id: 1, label: '배경 선택' },
+        { id: 2, label: '이미지 업로드' },
+        { id: 3, label: '드레스 드래그' }
+    ]
+
+    const backgroundLabels = ['회색 스튜디오', '야외 홀', '웨딩홀', '정원']
+
+    const renderBackgroundButtons = () => (
+        <div className="background-selector step-background-selector">
+            {backgroundImages.map((bgImage, index) => (
+                <button
+                    key={index}
+                    className={`background-button ${selectedBackgroundIndex === index ? 'active' : ''}`}
+                    onClick={() => handleBackgroundSelect(index)}
+                    disabled={isProcessing}
+                    title={`배경 ${index + 1} 선택`}
+                >
+                    {bgImage ? (
+                        <img src={bgImage} alt={`배경 ${index + 1}`} />
+                    ) : (
+                        <span className="background-dot"></span>
+                    )}
+                    {backgroundLabels[index] && (
+                        <span className="background-hover-label">{backgroundLabels[index]}</span>
+                    )}
+                </button>
+            ))}
+        </div>
+    )
+
+    const renderUploadArea = () => (
+        <div className="image-upload-wrapper">
+            {!preview ? (
+                <div
+                    className={`upload-area ${isDragging ? 'dragging' : ''}`}
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDrop}
+                    onClick={handleClick}
+                >
+                    <div className="upload-icon">
+                        <img src="/Image/body_icon.png" alt="전신사진 아이콘" />
+                    </div>
+                    <p className="upload-text">전신 또는 얼굴 이미지를 먼저 업로드 해주세요</p>
+                    <p className="upload-subtext">JPG, PNG, JPEG 형식 지원</p>
+                </div>
+            ) : (
+                <div
+                    className={`preview-container ${isDragging ? 'dragging' : ''} ${imageTransition ? 'transitioning' : ''}`}
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDrop}
+                >
+                    <img
+                        src={imageSrc}
+                        alt="Preview"
+                        className={`preview-image ${imageTransition ? 'fade-transition' : ''}`}
+                    />
+                    {isProcessing && (
+                        <div className="processing-overlay">
+                            {loadingAnimation && (
+                                <Lottie animationData={loadingAnimation} loop={true} className="spinner-lottie" />
+                            )}
+                            <p>매칭 중...</p>
+                        </div>
+                    )}
+                    {showCheckmark && (
+                        <div className="processing-overlay">
+                            <div className="completion-icon">✓</div>
+                            <p>매칭완료</p>
+                        </div>
+                    )}
+                    {isDragging && (
+                        <div className="drop-overlay">
+                            <p>드레스를 여기에 드롭하세요</p>
+                        </div>
+                    )}
+                    <button className="remove-button" onClick={handleRemove}>
+                        ✕
+                    </button>
+                </div>
+            )}
+        </div>
+    )
+
+    const renderResultActions = () => {
+        if (!canDownload || !imageSrc || isProcessing) return null
+
+        return (
+            <div className="step-result-actions">
+                <button
+                    className="download-button"
+                    onClick={(e) => {
+                        e.stopPropagation()
+                        try {
+                            const link = document.createElement('a')
+                            link.href = imageSrc
+                            link.download = 'match_result.png'
+                            document.body.appendChild(link)
+                            link.click()
+                            document.body.removeChild(link)
+                        } catch (err) {
+                            console.error('다운로드 실패:', err)
+                        }
+                    }}
+                    title="결과 이미지를 다운로드"
+                >
+                    <MdOutlineDownload /> 다운로드
+                </button>
+                <button
+                    className="correction-button"
+                    onClick={(e) => {
+                        e.stopPropagation()
+                        if (onNavigateToCorrection) {
+                            onNavigateToCorrection(generalResultImage)
+                        }
+                    }}
+                    title="체형 보정 페이지로 이동"
+                >
+                    <img src="/Image/tuning_icon.png" alt="보정 아이콘" className="tuning-icon" />
+                    보정하러 가기
+                </button>
+            </div>
+        )
+    }
+
+    const renderStepContent = () => {
+        if (currentStep === 1) {
+            return (
+                <div className="step-guide-panel">
+                    <div className="step-badge">STEP 1</div>
+                    <h3 className="step-title">피팅 배경을 먼저 선택해보세요</h3>
+                    <p className="step-description">아래 배경 버튼을 눌러 웨딩 피팅 공간의 무드를 선택하면 STEP 2로 이동합니다.</p>
+                    {renderBackgroundButtons()}
+                    <p className="step-tip">배경을 선택하면 자동으로 다음 단계가 열려요.</p>
+                </div>
+            )
+        }
+
+        if (currentStep === 2) {
+            return (
+                <div className="step-guide-panel step-guide-panel-step2">
+                    <div className="step-2-header">
+                        <div className="step-badge">STEP 2</div>
+                        <div className="step-2-text">
+                            <h3 className="step-title">전신 또는 얼굴 이미지를 업로드해주세요</h3>
+                            <p className="step-description">드래그하거나 클릭해서 업로드하면 STEP 3로 이동합니다.</p>
+                        </div>
+                    </div>
+                    <div className="step-panel-content">
+                        <button type="button" className="step-link-button" onClick={() => setCurrentStep(1)}>
+                            STEP 1 · 배경 다시 선택
+                        </button>
+                        {renderUploadArea()}
+                    </div>
+                </div>
+            )
+        }
+
+        return (
+            <div className="step-guide-panel step-guide-panel-step3">
+                <div className="step-3-header">
+                    <div className="step-badge">STEP 3</div>
+                    <p className="step-3-message">오른쪽 드레스에서 원하는 스타일을 드래그하세요</p>
+                </div>
+                {renderUploadArea()}
+                {renderResultActions()}
+                <div className="step-actions">
+                    <button type="button" onClick={() => setCurrentStep(1)}>
+                        STEP 1
+                    </button>
+                    <button type="button" onClick={() => setCurrentStep(2)}>
+                        STEP 2
+                    </button>
+                </div>
+            </div>
+        )
+    }
 
     return (
         <main className="main-content">
@@ -498,111 +689,7 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection, initialCategory,
                                 style={{ display: 'none' }}
                             />
 
-                            <div className="image-upload-wrapper">
-                                {!preview ? (
-                                    <div
-                                        className={`upload-area ${isDragging ? 'dragging' : ''}`}
-                                        onDragOver={handleDragOver}
-                                        onDragLeave={handleDragLeave}
-                                        onDrop={handleDrop}
-                                        onClick={handleClick}
-                                    >
-                                        <div className="upload-icon">
-                                            <img src="/Image/body_icon.png" alt="전신사진 아이콘" />
-                                        </div>
-                                        <p className="upload-text">전신 또는 얼굴 이미지를 먼저 업로드 해주세요</p>
-                                        <p className="upload-subtext">JPG, PNG, JPEG 형식 지원</p>
-                                    </div>
-                                ) : (
-                                    <div
-                                        className={`preview-container ${isDragging ? 'dragging' : ''} ${imageTransition ? 'transitioning' : ''}`}
-                                        onDragOver={handleDragOver}
-                                        onDragLeave={handleDragLeave}
-                                        onDrop={handleDrop}
-                                    >
-                                        <img
-                                            src={imageSrc}
-                                            alt="Preview"
-                                            className={`preview-image ${imageTransition ? 'fade-transition' : ''}`}
-                                        />
-                                        {isProcessing && (
-                                            <div className="processing-overlay">
-                                                {loadingAnimation && (
-                                                    <Lottie animationData={loadingAnimation} loop={true} className="spinner-lottie" />
-                                                )}
-                                                <p>매칭 중...</p>
-                                            </div>
-                                        )}
-                                        {showCheckmark && (
-                                            <div className="processing-overlay">
-                                                <div className="completion-icon">✓</div>
-                                                <p>매칭완료</p>
-                                            </div>
-                                        )}
-                                        {isDragging && (
-                                            <div className="drop-overlay">
-                                                <p>드레스를 여기에 드롭하세요</p>
-                                            </div>
-                                        )}
-                                        <button className="remove-button" onClick={handleRemove}>
-                                            ✕
-                                        </button>
-                                        {canDownload && imageSrc && !isProcessing && (
-                                            <>
-                                                <button
-                                                    className="download-button"
-                                                    onClick={(e) => {
-                                                        e.stopPropagation()
-                                                        try {
-                                                            const link = document.createElement('a')
-                                                            link.href = imageSrc
-                                                            link.download = 'match_result.png'
-                                                            document.body.appendChild(link)
-                                                            link.click()
-                                                            document.body.removeChild(link)
-                                                        } catch (err) {
-                                                            console.error('다운로드 실패:', err)
-                                                        }
-                                                    }}
-                                                    title="결과 이미지를 다운로드"
-                                                >
-                                                    <MdOutlineDownload /> 다운로드
-                                                </button>
-                                                <button
-                                                    className="correction-button"
-                                                    onClick={(e) => {
-                                                        e.stopPropagation()
-                                                        if (onNavigateToCorrection) {
-                                                            onNavigateToCorrection(generalResultImage)
-                                                        }
-                                                    }}
-                                                    title="체형 보정 페이지로 이동"
-                                                >
-                                                    <img src="/Image/tuning_icon.png" alt="보정 아이콘" className="tuning-icon" />
-                                                    보정하러 가기
-                                                </button>
-                                            </>
-                                        )}
-                                    </div>
-                                )}
-                                <div className="background-selector">
-                                    {backgroundImages.map((bgImage, index) => (
-                                        <button
-                                            key={index}
-                                            className={`background-button ${selectedBackgroundIndex === index ? 'active' : ''}`}
-                                            onClick={() => handleBackgroundSelect(index)}
-                                            disabled={isProcessing}
-                                            title={`배경 ${index + 1} 선택`}
-                                        >
-                                            {bgImage ? (
-                                                <img src={bgImage} alt={`배경 ${index + 1}`} />
-                                            ) : (
-                                                <span className="background-dot"></span>
-                                            )}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
+                            {renderStepContent()}
                         </div>
                     </div>
 
