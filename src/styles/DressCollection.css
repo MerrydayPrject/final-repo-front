@@ -1,7 +1,8 @@
 .dress-collection-section {
     width: 100%;
     padding: 20px 20px 120px;
-    background: white;
+    margin-top: 140px;
+    background: linear-gradient(180deg, #f7f3ed 0%, #ffffff 100%);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -188,6 +189,7 @@
 @media (max-width: 768px) {
     .dress-collection-section {
         padding: 40px 20px 100px;
+        margin-top: 100px;
     }
 
     .dress-collection-content {
@@ -224,6 +226,10 @@
 }
 
 @media (max-width: 480px) {
+    .dress-collection-section {
+        margin-top: 80px;
+    }
+
     .count-number {
         font-size: 60px;
     }

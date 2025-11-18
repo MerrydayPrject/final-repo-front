@@ -1,0 +1,180 @@
+.usage-guide-section {
+    width: 100%;
+    padding: 80px 0 40px;
+    background: linear-gradient(180deg, #ffffff 0%, #f7f3ed 100%);
+}
+
+.usage-guide-container {
+    width: 800px;
+    min-height: 500px;
+    height: 700px;
+    margin: 80px auto 400px 620px;
+    padding: 24px;
+    text-align: center;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.usage-guide-label {
+    display: inline-block;
+    padding: 8px 22px;
+    border-radius: 999px;
+    background: rgba(173, 159, 65, 0.1);
+    color: #a3874c;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin: 100px -10px 50px -70px;
+}
+
+.usage-guide-slider {
+    width: min(640px, 100%);
+    min-height: 600px;
+    height: 600px;
+    border-radius: 28px;
+    background: #000;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.08);
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+    touch-action: none;
+}
+
+.slider-image {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+}
+
+.slider-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* ex_B 이미지 (좌측) 위치 조정 */
+.slider-image-ex-b {
+    z-index: 1;
+}
+
+.slider-img-ex-b {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    display: block;
+}
+
+/* ex_A 이미지 (우측) 위치 조정 */
+.slider-image-ex-a {
+    z-index: 2;
+    pointer-events: none;
+}
+
+.slider-img-ex-a {
+    width: 100%;
+    height: 100%;
+    margin-top: 2px;
+    object-fit: cover;
+    object-position: center center;
+    display: block;
+}
+
+.slider-before {
+    z-index: 1;
+}
+
+.slider-after {
+    z-index: 2;
+    pointer-events: none;
+}
+
+.slider-after-clip {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    clip-path: inset(0 var(--clip-right, 50%) 0 0);
+    border-right: 2px solid rgba(255, 255, 255, 0.95);
+}
+
+.slider-handle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    transform: translate(-50%, -50%);
+    cursor: ew-resize;
+    z-index: 4;
+}
+
+.slider-bar {
+    position: absolute;
+    width: 4px;
+    height: 100%;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ad9f41;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+    z-index: 3;
+    pointer-events: none;
+}
+
+.slider-knob {
+    position: absolute;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #ad9f41;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid #fff;
+    font-size: 1.2rem;
+    color: #fff;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.image-tag {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    z-index: 4;
+}
+
+.image-tag.tag-right {
+    left: auto;
+    right: 16px;
+}
+
+.usage-guide-hint {
+    margin-top: 18px;
+    margin-left: -100px;
+    font-size: 0.9rem;
+    color: #7a6a52;
+}
+
+@media (max-width: 768px) {
+    .usage-guide-section {
+        padding: 60px 0 40px;
+    }
+
+    .usage-guide-slider {
+        min-height: 400px;
+        height: 400px;
+        width: 100%;
+    }
+}

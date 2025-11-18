@@ -121,24 +121,10 @@ const AboutUs = ({ onNavigateToGeneral, onNavigateToCustom, onNavigateToAnalysis
                             </p>
                             {onNavigateToGeneral && (
                                 <button
-                                    className="about-us-navigate-button"
+                                    className="about-us-navigate-button type1"
                                     onClick={onNavigateToGeneral}
                                 >
-                                    <span>일반피팅 바로가기 →</span>
-                                    <svg className="circle-animation" width="180" height="80" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', pointerEvents: 'none' }}>
-                                        <ellipse
-                                            cx="90"
-                                            cy="40"
-                                            rx="88"
-                                            ry="38"
-                                            fill="none"
-                                            stroke="#ad9f41"
-                                            strokeWidth="2"
-                                            strokeDasharray="400"
-                                            strokeDashoffset="400"
-                                            className="circle-path"
-                                        />
-                                    </svg>
+                                    <span className="btn-txt">일반피팅 바로가기 →</span>
                                 </button>
                             )}
                         </div>
@@ -156,24 +142,10 @@ const AboutUs = ({ onNavigateToGeneral, onNavigateToCustom, onNavigateToAnalysis
                             </p>
                             {onNavigateToCustom && (
                                 <button
-                                    className="about-us-navigate-button"
+                                    className="about-us-navigate-button type1"
                                     onClick={onNavigateToCustom}
                                 >
-                                    <span>커스텀 피팅 바로가기 →</span>
-                                    <svg className="circle-animation" width="180" height="80" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', pointerEvents: 'none' }}>
-                                        <ellipse
-                                            cx="90"
-                                            cy="40"
-                                            rx="88"
-                                            ry="38"
-                                            fill="none"
-                                            stroke="#ad9f41"
-                                            strokeWidth="2"
-                                            strokeDasharray="400"
-                                            strokeDashoffset="400"
-                                            className="circle-path"
-                                        />
-                                    </svg>
+                                    <span className="btn-txt">커스텀 피팅 바로가기 →</span>
                                 </button>
                             )}
                         </div>
@@ -190,24 +162,10 @@ const AboutUs = ({ onNavigateToGeneral, onNavigateToCustom, onNavigateToAnalysis
                             </p>
                             {onNavigateToAnalysis && (
                                 <button
-                                    className="about-us-navigate-button"
+                                    className="about-us-navigate-button type1"
                                     onClick={onNavigateToAnalysis}
                                 >
-                                    <span>체형분석 바로가기 →</span>
-                                    <svg className="circle-animation" width="180" height="80" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', pointerEvents: 'none' }}>
-                                        <ellipse
-                                            cx="90"
-                                            cy="40"
-                                            rx="88"
-                                            ry="38"
-                                            fill="none"
-                                            stroke="#ad9f41"
-                                            strokeWidth="2"
-                                            strokeDasharray="400"
-                                            strokeDashoffset="400"
-                                            className="circle-path"
-                                        />
-                                    </svg>
+                                    <span className="btn-txt">체형분석 바로가기 →</span>
                                 </button>
                             )}
                         </div>

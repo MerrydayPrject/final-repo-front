@@ -3,8 +3,10 @@ import Header from './components/Header'
 import VideoBackground from './components/VideoBackground'
 import DomeGallery from './components/DomeGallery'
 import DressCollection from './components/DressCollection'
+import UsageGuideSection from './components/UsageGuideSection'
 import AboutUs from './components/AboutUs'
 import NextSection from './components/NextSection'
+import FAQSection from './components/FAQSection'
 import ScrollToTop from './components/ScrollToTop'
 import Modal from './components/Modal'
 import GeneralFitting from './pages/GeneralFitting'
@@ -107,6 +109,8 @@ function App() {
                         <DomeGallery />
                     </section>
                     <DressCollection />
+                    <UsageGuideSection />
+                    <FAQSection />
                     <NextSection />
                 </>
             )}
