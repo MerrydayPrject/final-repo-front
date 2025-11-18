@@ -130,7 +130,7 @@ main.sphere-main {
 .item__image {
     position: absolute;
     display: block;
-    inset: 10px;
+    inset: 0;
     border-radius: var(--tile-radius, 12px);
     background: #ffffff;
     border: 2px solid rgba(0, 0, 0, 0.08);
