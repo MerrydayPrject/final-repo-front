@@ -88,7 +88,7 @@ const UsageGuideSection = () => {
 
     useEffect(() => {
         if (successLottieRef.current && successAnimation) {
-            successLottieRef.current.setSpeed(0.3)
+            successLottieRef.current.setSpeed(0.35)
         }
     }, [successAnimation])
 
