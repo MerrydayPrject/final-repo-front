@@ -593,6 +593,30 @@
     animation-delay: 0.5s;
 }
 
+.measurements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.measurement-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.measurement-label {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.measurement-value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+}
+
 @keyframes anm-BL-53-move1 {
     50% {
         background: #FFBB00;
@@ -737,6 +761,20 @@
     word-break: keep-all;
 }
 
+.analysis-description-line {
+    margin-bottom: 12px;
+    display: block;
+    line-height: 1.7;
+}
+
+.analysis-description-line:last-child {
+    margin-bottom: 0;
+}
+
+.analysis-description-line strong {
+    color: #8a8472;
+}
+
 /* 추천 카테고리 헤더 */
 .recommended-categories-header {
     display: flex;
@@ -776,6 +814,17 @@
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(173, 159, 65, 0.4);
     background: linear-gradient(135deg, #9e9137 0%, #9e9887 100%);
+}
+
+.category-badge.avoid-category {
+    background: linear-gradient(135deg, #f38b8b 0%, #f3c0c0 100%);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(243, 139, 139, 0.4);
+}
+
+.category-badge.avoid-category:hover {
+    box-shadow: 0 4px 12px rgba(243, 139, 139, 0.5);
+    background: linear-gradient(135deg, #e26767 0%, #f3a0a0 100%);
 }
 
 .category-badge:active {

@@ -4,12 +4,141 @@ import Modal from '../components/Modal'
 import '../styles/BodyTypeFitting.css'
 import { analyzeBody } from '../utils/api'
 
+const DRESS_CATEGORY_LABELS = {
+    ballgown: '벨라인',
+    mermaid: '머메이드',
+    princess: '프린세스',
+    aline: 'A라인',
+    slim: '슬림',
+    trumpet: '트럼펫',
+    mini: '미니드레스',
+    squareneck: '스퀘어넥',
+    hanbok: '한복'
+}
+
+const DRESS_CATEGORY_KEYWORDS = {
+    ballgown: ['벨라인', '벨트', '하이웨이스트', '벨티드', 'belt', 'bell line'],
+    mermaid: ['머메이드', 'mermaid', '물고기', '피쉬', 'fish'],
+    princess: ['프린세스', 'princess', '프린세스라인', 'princess line'],
+    aline: ['a라인', 'aline', '에이라인', '에이 라인', '에이-라인', 'a-line'],
+    slim: ['슬림', '스트레이트', 'straight', 'h라인', 'h-line', '슬림핏', '슬림 핏'],
+    trumpet: ['트럼펫', 'trumpet', '플레어', 'flare'],
+    mini: ['미니드레스', '미니 드레스', '미니', 'mini'],
+    squareneck: ['스퀘어넥', 'square neck'],
+    hanbok: ['한복']
+}
+
+const SOFT_FEATURE_MAP = {
+    '키가 작은 체형': '키가 작으신 체형',
+    '키가 큰 체형': '키가 크신 체형',
+    '허리가 짧은 체형': '허리 비율이 짧으신 체형',
+    '어깨가 넓은 체형': '균형잡힌 상체 체형',
+    '어깨가 좁은 체형': '어깨라인이 슬림한 체형',
+    '마른 체형': '슬림한 체형',
+    '글래머러스한 체형': '곡선미가 돋보이는 체형',
+    '팔 라인이 신경 쓰이는 체형': '팔라인이 신경 쓰이는 체형',
+    '복부가 신경 쓰이는 체형': ''
+}
+
+const extractDressCategories = (text = '') => {
+    if (!text) return []
+
+    const lowerText = text.toLowerCase()
+    const matches = []
+
+    Object.entries(DRESS_CATEGORY_KEYWORDS).forEach(([categoryId, keywords]) => {
+        let firstIndex = -1
+        keywords.forEach((keyword) => {
+            const index = lowerText.indexOf(keyword.toLowerCase())
+            if (index !== -1 && (firstIndex === -1 || index < firstIndex)) {
+                firstIndex = index
+            }
+        })
+
+        if (firstIndex !== -1) {
+            matches.push({ categoryId, index: firstIndex })
+        }
+    })
+
+    matches.sort((a, b) => a.index - b.index)
+    return matches.map((match) => match.categoryId)
+}
+
+const formatAnalysisText = (text = '') => {
+    if (!text) return []
+
+    const lines = text
+        .split('\n')
+        .map((line) => line.trim())
+        .filter(Boolean)
+
+    return lines.map((line) => {
+        const bulletNormalized = line.replace(/\*\s+/g, '• ')
+        const segments = []
+        const boldRegex = /\*\*(.*?)\*\*/g
+        let lastIndex = 0
+        let match
+
+        while ((match = boldRegex.exec(bulletNormalized)) !== null) {
+            if (match.index > lastIndex) {
+                segments.push({
+                    text: bulletNormalized.slice(lastIndex, match.index),
+                    bold: false
+                })
+            }
+            segments.push({
+                text: match[1],
+                bold: true
+            })
+            lastIndex = match.index + match[0].length
+        }
+
+        if (lastIndex < bulletNormalized.length) {
+            segments.push({
+                text: bulletNormalized.slice(lastIndex),
+                bold: false
+            })
+        }
+
+        return segments
+    })
+}
+
+const parseGeminiAnalysis = (analysisText = '') => {
+    if (!analysisText) {
+        return {
+            recommended: [],
+            avoid: [],
+            paragraphs: []
+        }
+    }
+
+    const lowerText = analysisText.toLowerCase()
+    const avoidIndex = lowerText.indexOf('피해야')
+
+    const recommendationSection =
+        avoidIndex !== -1 ? analysisText.slice(0, avoidIndex) : analysisText
+    const avoidSection = avoidIndex !== -1 ? analysisText.slice(avoidIndex) : ''
+
+    const recommended = extractDressCategories(recommendationSection)
+    const avoid = extractDressCategories(avoidSection)
+    const filteredRecommended = recommended.filter((cat) => !avoid.includes(cat)).slice(0, 2)
+
+    return {
+        recommended: filteredRecommended,
+        avoid,
+        paragraphs: formatAnalysisText(analysisText)
+    }
+}
+
 const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
     const [uploadedImage, setUploadedImage] = useState(null)
     const [imagePreview, setImagePreview] = useState(null)
     const [analysisResult, setAnalysisResult] = useState(null)
     const [isAnalyzing, setIsAnalyzing] = useState(false)
     const [recommendedCategories, setRecommendedCategories] = useState([])
+    const [avoidCategories, setAvoidCategories] = useState([])
+    const [analysisParagraphs, setAnalysisParagraphs] = useState([])
     const [height, setHeight] = useState('')
     const [weight, setWeight] = useState('')
     const [modalOpen, setModalOpen] = useState(false)
@@ -17,20 +146,7 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
     const fileInputRef = useRef(null)
 
     // 카테고리명을 한글로 변환하는 함수
-    const getCategoryName = (category) => {
-        const categoryNames = {
-            'ballgown': '벨라인',
-            'mermaid': '머메이드',
-            'princess': '프린세스',
-            'aline': 'A라인',
-            'slim': '슬림',
-            'trumpet': '트럼펫',
-            'mini': '미니드레스',
-            'squareneck': '스퀘어넥',
-            'hanbok': '한복'
-        }
-        return categoryNames[category.toLowerCase()] || category
-    }
+    const getCategoryName = (category) => DRESS_CATEGORY_LABELS[category.toLowerCase()] || category
 
 
     // 파일 선택 핸들러
@@ -46,6 +162,8 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
             // 이전 분석 결과 초기화
             setAnalysisResult(null)
             setRecommendedCategories([])
+            setAvoidCategories([])
+            setAnalysisParagraphs([])
         }
     }
 
@@ -69,10 +187,23 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
             return
         }
 
+        const heightValue = parseFloat(height)
+        const weightValue = parseFloat(weight)
+
+        if (Number.isNaN(heightValue) || heightValue < 100 || heightValue > 250) {
+            setModalMessage('키는 100cm 이상 250cm 이하로 입력해주세요.')
+            setModalOpen(true)
+            return
+        }
+
+        if (Number.isNaN(weightValue) || weightValue < 30 || weightValue > 200) {
+            setModalMessage('몸무게는 30kg 이상 200kg 이하로 입력해주세요.')
+            setModalOpen(true)
+            return
+        }
+
         setIsAnalyzing(true)
         try {
-            const heightValue = parseFloat(height) || 0
-            const weightValue = parseFloat(weight) || 0
             const result = await analyzeBody(uploadedImage, heightValue, weightValue)
 
             if (!result.success) {
@@ -81,37 +212,15 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
 
             setAnalysisResult(result)
 
-            // Gemini 분석에서 추천 카테고리 추출 (Gemini 응답에서 카테고리명 찾기)
-            let extractedCategories = []
-            if (result.gemini_analysis?.detailed_analysis) {
-                const analysisText = result.gemini_analysis.detailed_analysis.toLowerCase()
-                const categories = ['벨라인', '머메이드', '프린세스', 'aline', 'a라인', '슬림', '트럼펫']
-                const categoryMap = {
-                    '벨라인': 'ballgown',
-                    '머메이드': 'mermaid',
-                    '프린세스': 'princess',
-                    'aline': 'aline',
-                    'a라인': 'aline',
-                    '슬림': 'slim',
-                    '트럼펫': 'trumpet'
-                }
-
-                categories.forEach(cat => {
-                    if (analysisText.includes(cat.toLowerCase())) {
-                        const mapped = categoryMap[cat] || cat
-                        if (!extractedCategories.includes(mapped)) {
-                            extractedCategories.push(mapped)
-                        }
-                    }
-                })
-            }
-
-            // 추천 카테고리 state 업데이트
-            setRecommendedCategories(extractedCategories)
+            const parsedGemini = parseGeminiAnalysis(result.gemini_analysis?.detailed_analysis || '')
+            setRecommendedCategories(parsedGemini.recommended)
+            setAvoidCategories(parsedGemini.avoid)
+            setAnalysisParagraphs(parsedGemini.paragraphs)
         } catch (error) {
             console.error('분석 오류:', error)
             const errorMessage = error.response?.data?.message || error.message || '이미지 분석 중 오류가 발생했습니다.'
-            alert(errorMessage)
+            setModalMessage(errorMessage)
+            setModalOpen(true)
         } finally {
             setIsAnalyzing(false)
         }
@@ -149,6 +258,9 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                                 setUploadedImage(null)
                                                 setImagePreview(null)
                                                 setAnalysisResult(null)
+                                                setRecommendedCategories([])
+                                                setAvoidCategories([])
+                                                setAnalysisParagraphs([])
                                                 setHeight('')
                                                 setWeight('')
                                             }}>
@@ -268,16 +380,33 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                                     </div>
                                                 </div>
                                             )}
+                                            {avoidCategories.length > 0 && (
+                                                <div className="result-item avoid-categories-item">
+                                                    <div className="recommended-categories-header">
+                                                        <strong>주의할 카테고리:</strong>
+                                                        <div className="recommended-categories">
+                                                            {avoidCategories.map((category, index) => (
+                                                                <span
+                                                                    key={`${category}-${index}`}
+                                                                    className="category-badge avoid-category"
+                                                                >
+                                                                    {getCategoryName(category)}
+                                                                </span>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
                                             <div className="result-item body-info-item">
                                                 <div className="body-info-row">
                                                     <div className="body-info-item-single">
                                                         <strong>체형 유형:</strong>
                                                         <span>{analysisResult.body_analysis?.body_type || '분석 중...'}</span>
                                                     </div>
-                                                    {analysisResult.body_analysis?.bmi && (
+                                                    {Number.isFinite(Number(analysisResult.body_analysis?.bmi)) && (
                                                         <div className="body-info-item-single">
                                                             <strong>BMI:</strong>
-                                                            <span>{analysisResult.body_analysis.bmi.toFixed(2)}</span>
+                                                            <span>{Number(analysisResult.body_analysis.bmi).toFixed(1)}</span>
                                                         </div>
                                                     )}
                                                     {analysisResult.body_analysis?.height && (
@@ -292,17 +421,70 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                                 <div className="result-item body-features-item">
                                                     <strong>체형 특징:</strong>
                                                     <ul style={{ marginTop: '5px', paddingLeft: '20px' }}>
-                                                        {analysisResult.body_analysis.body_features.map((feature, index) => (
+                                                        {Array.from(new Set(
+                                                            analysisResult.body_analysis.body_features
+                                                                .map((feature) => {
+                                                                    const friendly = SOFT_FEATURE_MAP[feature]
+                                                                    if (friendly === undefined) return feature
+                                                                    return friendly
+                                                                })
+                                                                .filter((feature) => feature && feature.trim())
+                                                        )).map((feature, index) => (
                                                             <li key={index}>{feature}</li>
                                                         ))}
                                                     </ul>
                                                 </div>
                                             )}
+                                            {analysisResult.body_analysis?.measurements && (
+                                                <div className="result-item measurements-item">
+                                                    <strong>측정 지표:</strong>
+                                                    <div className="measurements-grid">
+                                                        {Number.isFinite(Number(analysisResult.body_analysis.measurements.shoulder_hip_ratio)) && (
+                                                            <div className="measurement-item">
+                                                                <span className="measurement-label">어깨·엉덩이 비율</span>
+                                                                <span className="measurement-value">
+                                                                    {Number(analysisResult.body_analysis.measurements.shoulder_hip_ratio).toFixed(2)}
+                                                                </span>
+                                                            </div>
+                                                        )}
+                                                        {Number.isFinite(Number(analysisResult.body_analysis.measurements.waist_shoulder_ratio)) && (
+                                                            <div className="measurement-item">
+                                                                <span className="measurement-label">허리·어깨 비율</span>
+                                                                <span className="measurement-value">
+                                                                    {Number(analysisResult.body_analysis.measurements.waist_shoulder_ratio).toFixed(2)}
+                                                                </span>
+                                                            </div>
+                                                        )}
+                                                        {Number.isFinite(Number(analysisResult.body_analysis.measurements.waist_hip_ratio)) && (
+                                                            <div className="measurement-item">
+                                                                <span className="measurement-label">허리·엉덩이 비율</span>
+                                                                <span className="measurement-value">
+                                                                    {Number(analysisResult.body_analysis.measurements.waist_hip_ratio).toFixed(2)}
+                                                                </span>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            )}
                                             <div className="result-item analysis-item">
                                                 <strong>상세 분석:</strong>
-                                                <p className="analysis-description">
-                                                    {analysisResult.gemini_analysis?.detailed_analysis || analysisResult.message || '체형 분석이 완료되었습니다.'}
-                                                </p>
+                                                <div className="analysis-description">
+                                                    {analysisParagraphs.length > 0 ? (
+                                                        analysisParagraphs.map((segments, lineIndex) => (
+                                                            <p key={lineIndex} className="analysis-description-line">
+                                                                {segments.map((segment, segmentIndex) => (
+                                                                    segment.bold ? (
+                                                                        <strong key={segmentIndex}>{segment.text}</strong>
+                                                                    ) : (
+                                                                        <span key={segmentIndex}>{segment.text}</span>
+                                                                    )
+                                                                ))}
+                                                            </p>
+                                                        ))
+                                                    ) : (
+                                                        <p>{analysisResult.gemini_analysis?.detailed_analysis || analysisResult.message || '체형 분석이 완료되었습니다.'}</p>
+                                                    )}
+                                                </div>
                                             </div>
                                         </div>
                                     )}
