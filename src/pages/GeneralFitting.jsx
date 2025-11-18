@@ -23,9 +23,9 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection, initialCategory,
     // 배경 선택 상태
     const [selectedBackgroundIndex, setSelectedBackgroundIndex] = useState(0)
     const backgroundImages = [
-        '/Image/background4.jpg',
+        '/Image/background4.png',
         '/Image/background1.jpg',
-        '/Image/background2.jpg',
+        '/Image/background2.png',
         '/Image/background3.jpg'
     ]
 
@@ -488,7 +488,7 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection, initialCategory,
         { id: 3, label: '드레스 드래그' }
     ]
 
-    const backgroundLabels = ['회색 스튜디오', '야외 홀', '웨딩홀', '정원']
+    const backgroundLabels = ['피팅 룸', '야외 홀', '회색 스튜디오', '정원']
 
     const renderBackgroundButtons = () => (
         <div className="background-selector step-background-selector">
