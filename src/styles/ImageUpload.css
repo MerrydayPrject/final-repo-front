@@ -144,6 +144,7 @@
     align-items: center;
     gap: 12px;
     margin-top: -40px;
+    margin-left: 40px;
     transform: translateY(-20px);
 }
 
