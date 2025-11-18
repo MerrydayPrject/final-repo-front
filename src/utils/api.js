@@ -9,38 +9,57 @@ const api = axios.create({
 })
 
 /**
- * URL에서 이미지를 다운로드하여 File 객체로 변환
- * @param {string} url - 이미지 URL
+ * URL에서 이미지를 다운로드하여 File 객체로 변환 (CORS 문제 해결을 위해 프록시 사용)
+ * @param {string} url - 이미지 URL (S3 URL인 경우 프록시를 통해 가져옴)
  * @param {string} filename - 파일명
  * @returns {Promise<File>} File 객체
  */
 const urlToFile = async (url, filename = 'dress.jpg') => {
-    const response = await fetch(url)
+    // S3 URL이거나 외부 URL인 경우 백엔드 프록시를 통해 가져오기
+    const isExternalUrl = url.startsWith('http://') || url.startsWith('https://')
+    const proxyUrl = isExternalUrl 
+        ? `${API_BASE_URL}/api/proxy-image?url=${encodeURIComponent(url)}`
+        : url
+    
+    const response = await fetch(proxyUrl)
+    if (!response.ok) {
+        throw new Error(`이미지를 가져올 수 없습니다: ${response.statusText}`)
+    }
     const blob = await response.blob()
     return new File([blob], filename, { type: blob.type })
 }
 
 /**
- * 자동 매칭 API 호출 (일반 탭: 사람 + 드레스)
+ * 자동 매칭 API 호출 (일반 탭: 사람 + 드레스 + 배경) - X.AI + Gemini 2.5 V2
  * @param {File} personImage - 사용자 사진
- * @param {Object} dressData - 드레스 데이터 (id, name, image)
+ * @param {Object|File} dressData - 드레스 데이터 (id, name, image, originalUrl) 또는 File 객체
+ * @param {File} backgroundImage - 배경 이미지 파일
  * @returns {Promise} 매칭된 이미지 결과
  */
-export const autoMatchImage = async (personImage, dressData) => {
+export const autoMatchImage = async (personImage, dressData, backgroundImage) => {
     try {
         const formData = new FormData()
         formData.append('person_image', personImage)
 
-        // 드레스 이미지가 파일인 경우
+        // 드레스 이미지 처리
         if (dressData instanceof File) {
-            formData.append('dress_image', dressData)
+            formData.append('garment_image', dressData)
         } else if (dressData.originalUrl || dressData.image) {
-            // 드레스 URL이 있는 경우 백엔드에서 다운로드하도록 URL 전달
-            // originalUrl이 있으면 원본 S3 URL 사용, 없으면 image 사용
-            formData.append('dress_url', dressData.originalUrl || dressData.image)
+            // 드레스 URL이 있는 경우 File 객체로 변환
+            const dressUrl = dressData.originalUrl || dressData.image
+            const dressFile = await urlToFile(dressUrl, 'dress.jpg')
+            formData.append('garment_image', dressFile)
+        } else {
+            throw new Error('드레스 이미지가 필요합니다.')
         }
 
-        const response = await api.post('/api/compose-dress', formData, {
+        // 배경 이미지 추가
+        if (!backgroundImage) {
+            throw new Error('배경 이미지가 필요합니다.')
+        }
+        formData.append('background_image', backgroundImage)
+
+        const response = await api.post('/api/compose_xai_gemini_v2', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },

@@ -18,6 +18,14 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection, initialCategory,
     const [pendingDress, setPendingDress] = useState(null)
     const [loadingAnimation, setLoadingAnimation] = useState(null)
     const [imageTransition, setImageTransition] = useState(false)
+    
+    // 배경 선택 상태
+    const [selectedBackgroundIndex, setSelectedBackgroundIndex] = useState(0)
+    const backgroundImages = [
+        '/Image/background1.jpg',
+        '/Image/background2.jpg',
+        '/Image/background3.jpg'
+    ]
 
     // ImageUpload 상태
     const [preview, setPreview] = useState(null)
@@ -163,13 +171,44 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection, initialCategory,
         setSelectedDress(dress)
     }
 
+    // 배경 이미지 URL을 File 객체로 변환하는 함수 (CORS 문제 해결을 위해 프록시 사용)
+    const urlToFile = async (url, filename = 'background.jpg') => {
+        try {
+            const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+            // 로컬 이미지 경로인 경우 그대로 사용, 외부 URL인 경우 프록시 사용
+            const isExternalUrl = url.startsWith('http://') || url.startsWith('https://')
+            const proxyUrl = isExternalUrl 
+                ? `${apiBaseUrl}/api/proxy-image?url=${encodeURIComponent(url)}`
+                : url
+            
+            const response = await fetch(proxyUrl)
+            if (!response.ok) {
+                throw new Error(`배경 이미지를 가져올 수 없습니다: ${response.statusText}`)
+            }
+            const blob = await response.blob()
+            return new File([blob], filename, { type: blob.type })
+        } catch (error) {
+            console.error('배경 이미지 변환 오류:', error)
+            throw error
+        }
+    }
+
+    // 배경 선택 핸들러
+    const handleBackgroundSelect = (index) => {
+        setSelectedBackgroundIndex(index)
+    }
+
     const handleDressDropped = async (dress) => {
         if (!uploadedImage || !dress) return
 
         setIsProcessing(true)
 
         try {
-            const result = await autoMatchImage(uploadedImage, dress)
+            // 선택된 배경 이미지를 File 객체로 변환
+            const backgroundImageUrl = backgroundImages[selectedBackgroundIndex]
+            const backgroundFile = await urlToFile(backgroundImageUrl, `background${selectedBackgroundIndex + 1}.jpg`)
+
+            const result = await autoMatchImage(uploadedImage, dress, backgroundFile)
 
             if (result.success && result.result_image) {
                 setSelectedDress(dress)
@@ -547,15 +586,21 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection, initialCategory,
                                     </div>
                                 )}
                                 <div className="background-selector">
-                                    <button className="background-button active" disabled={!generalResultImage}>
-                                        <img src="/Image/background1.jpg" alt="배경 1" />
-                                    </button>
-                                    <button className="background-button" disabled={!generalResultImage}>
-                                        <span className="background-dot"></span>
-                                    </button>
-                                    <button className="background-button" disabled={!generalResultImage}>
-                                        <span className="background-dot"></span>
-                                    </button>
+                                    {backgroundImages.map((bgImage, index) => (
+                                        <button
+                                            key={index}
+                                            className={`background-button ${selectedBackgroundIndex === index ? 'active' : ''}`}
+                                            onClick={() => handleBackgroundSelect(index)}
+                                            disabled={isProcessing}
+                                            title={`배경 ${index + 1} 선택`}
+                                        >
+                                            {bgImage ? (
+                                                <img src={bgImage} alt={`배경 ${index + 1}`} />
+                                            ) : (
+                                                <span className="background-dot"></span>
+                                            )}
+                                        </button>
+                                    ))}
                                 </div>
                             </div>
                         </div>
