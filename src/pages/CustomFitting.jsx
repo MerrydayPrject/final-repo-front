@@ -9,7 +9,7 @@ import '../styles/ImageUpload.css'
 import '../styles/CustomUpload.css'
 import '../styles/CustomResult.css'
 
-const CustomFitting = ({ onBackToMain, onNavigateToCorrection }) => {
+const CustomFitting = ({ onBackToMain }) => {
     // Custom Fitting 상태
     const [fullBodyImage, setFullBodyImage] = useState(null)
     const [customDressImage, setCustomDressImage] = useState(null)
@@ -479,21 +479,6 @@ const CustomFitting = ({ onBackToMain, onNavigateToCorrection }) => {
                 >
                     <MdOutlineDownload /> 다운로드
                 </button>
-                {onNavigateToCorrection && (
-                    <button
-                        className="correction-button"
-                        onClick={(e) => {
-                            e.stopPropagation()
-                            if (onNavigateToCorrection) {
-                                onNavigateToCorrection(customResultImage)
-                            }
-                        }}
-                        title="체형 보정 페이지로 이동"
-                    >
-                        <img src="/Image/tuning_icon.png" alt="보정 아이콘" className="tuning-icon" />
-                        보정하러 가기
-                    </button>
-                )}
             </div>
         )
     }

@@ -43,12 +43,6 @@ const Header = ({ onBackToMain, onMenuClick, onLogoClick, currentPage }) => {
                     >
                         체형 분석
                     </button>
-                    <button
-                        className="menu-item"
-                        onClick={() => onMenuClick && onMenuClick('correction')}
-                    >
-                        체형 보정
-                    </button>
                 </nav>
             </div>
         </header>

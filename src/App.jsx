@@ -12,18 +12,14 @@ import Modal from './components/Modal'
 import GeneralFitting from './pages/GeneralFitting'
 import CustomFitting from './pages/CustomFitting'
 import BodyAnalysis from './pages/BodyAnalysis'
-import BodyCorrection from './pages/BodyCorrection'
 import './styles/App.css'
 
 function App() {
-    const [currentPage, setCurrentPage] = useState('main') // 'main', 'general', 'custom', 'analysis', 'correction'
+    const [currentPage, setCurrentPage] = useState('main') // 'main', 'general', 'custom', 'analysis'
 
     // 모달 상태
     const [modalOpen, setModalOpen] = useState(false)
     const [modalMessage, setModalMessage] = useState('')
-
-    // 보정 페이지로 전달할 이미지
-    const [correctionImage, setCorrectionImage] = useState(null)
 
     // 일반피팅 페이지로 전달할 카테고리
     const [selectedCategoryForFitting, setSelectedCategoryForFitting] = useState(null)
@@ -70,8 +66,6 @@ function App() {
             setCurrentPage('custom')
         } else if (menuType === 'analysis') {
             setCurrentPage('analysis')
-        } else if (menuType === 'correction') {
-            setCurrentPage('correction')
         }
     }
 
@@ -125,10 +119,6 @@ function App() {
             {currentPage === 'general' && (
                 <GeneralFitting
                     onBackToMain={handleBackToMain}
-                    onNavigateToCorrection={(image) => {
-                        setCorrectionImage(image)
-                        setCurrentPage('correction')
-                    }}
                     initialCategory={selectedCategoryForFitting}
                     onCategorySet={() => setSelectedCategoryForFitting(null)}
                 />
@@ -136,22 +126,12 @@ function App() {
             {currentPage === 'custom' && (
                 <CustomFitting
                     onBackToMain={handleBackToMain}
-                    onNavigateToCorrection={(image) => {
-                        setCorrectionImage(image)
-                        setCurrentPage('correction')
-                    }}
                 />
             )}
             {currentPage === 'analysis' && (
                 <BodyAnalysis
                     onBackToMain={handleBackToMain}
                     onNavigateToFittingWithCategory={handleNavigateToFittingWithCategory}
-                />
-            )}
-            {currentPage === 'correction' && (
-                <BodyCorrection
-                    onBackToMain={handleBackToMain}
-                    initialImage={correctionImage}
                 />
             )}
 

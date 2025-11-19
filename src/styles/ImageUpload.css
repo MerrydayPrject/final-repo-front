@@ -585,72 +585,7 @@
     box-shadow: 0 4px 12px #70964e !important;
 }
 
-.step-result-actions .correction-button:hover {
-    background: linear-gradient(135deg, #c9a077 0%, #e6ccb2 100%) !important;
-    transform: translateY(-1px) !important;
-    box-shadow: 0 4px 12px rgba(176, 137, 104, 0.5) !important;
-}
 
-.preview-container .correction-button {
-    position: absolute !important;
-    right: 8px !important;
-    bottom: 8px !important;
-    left: auto !important;
-    top: auto !important;
-    transform: none !important;
-    background: linear-gradient(135deg, #b08968 0%, #ddb892 100%) !important;
-    color: white !important;
-    padding: 6px 12px !important;
-    border-radius: 6px !important;
-    font-size: 12px !important;
-    font-weight: 600 !important;
-    transition: var(--transition) !important;
-    z-index: 10 !important;
-    box-shadow: 0 2px 8px rgba(176, 137, 104, 0.3) !important;
-    border: none !important;
-    cursor: pointer !important;
-    width: auto !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 6px !important;
-}
-
-.step-result-actions .correction-button {
-    position: static !important;
-    right: auto !important;
-    bottom: auto !important;
-    left: auto !important;
-    top: auto !important;
-    transform: none !important;
-    background: linear-gradient(135deg, #b08968 0%, #ddb892 100%) !important;
-    color: white !important;
-    padding: 6px 12px !important;
-    border-radius: 6px !important;
-    font-size: 12px !important;
-    font-weight: 600 !important;
-    box-shadow: 0 2px 8px rgba(176, 137, 104, 0.3) !important;
-    border: none !important;
-    cursor: pointer !important;
-    width: auto !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 6px !important;
-    margin-top: 0 !important;
-}
-
-.preview-container .correction-button .tuning-icon,
-.step-result-actions .correction-button .tuning-icon {
-    width: 14px;
-    height: 14px;
-    object-fit: contain;
-    filter: brightness(0) invert(1);
-}
-
-.preview-container .correction-button:hover {
-    background: linear-gradient(135deg, #c9a077 0%, #e6ccb2 100%) !important;
-    transform: translateY(-1px) !important;
-    box-shadow: 0 4px 12px rgba(176, 137, 104, 0.5) !important;
-}
 
 .remove-button:hover {
     background: rgba(255, 99, 99, 1);
