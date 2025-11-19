@@ -103,13 +103,11 @@ main.sphere-main {
 }
 
 .overlay {
-    background-image: radial-gradient(rgba(235, 235, 235, 0) 65%, var(--overlay-blur-color, #ffffff) 100%);
+    background-image: none;
 }
 
 .overlay--blur {
-    -webkit-mask-image: radial-gradient(rgba(235, 235, 235, 0) 70%, var(--overlay-blur-color, #ffffff) 90%);
-    mask-image: radial-gradient(rgba(235, 235, 235, 0) 70%, var(--overlay-blur-color, #ffffff) 90%);
-    backdrop-filter: blur(3px);
+    display: none;
 }
 
 .item {
@@ -255,23 +253,36 @@ main.sphere-main {
 
 @media (max-width: 768px) {
     .dome-gallery-section {
-        padding: 80px 0 140px;
+        padding: 40px 0 100px;
+    }
+
+    .dome-gallery-header {
+        margin-bottom: 30px;
     }
 
     .dome-gallery-title::before,
     .dome-gallery-title::after {
-        width: 70px;
+        width: 50px;
+    }
+
+    .dome-gallery-title {
+        font-size: clamp(22px, 5vw, 30px);
+        margin-bottom: 6px;
     }
 
     .sphere-root {
-        width: min(100%, 95vw);
-        height: clamp(360px, 70vw, 560px);
+        width: min(95%, 92vw);
+        height: clamp(300px, 60vw, 480px);
     }
 }
 
 @media (max-width: 480px) {
     .dome-gallery-section {
-        padding: 60px 0 120px;
+        padding: 50px 0 100px;
+    }
+
+    .dome-gallery-header {
+        margin-bottom: 24px;
     }
 
     .dome-gallery-title::before,
@@ -280,7 +291,7 @@ main.sphere-main {
     }
 
     .sphere-root {
-        width: min(100%, 98vw);
-        height: clamp(320px, 85vw, 520px);
+        width: min(95%, 95vw);
+        height: clamp(260px, 75vw, 420px);
     }
 }

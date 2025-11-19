@@ -341,10 +341,6 @@ export default function DomeGallery({
                     </div>
                 </div>
 
-                <div className="overlay" />
-                <div className="overlay overlay--blur" />
-                <div className="edge-fade edge-fade--top" />
-                <div className="edge-fade edge-fade--bottom" />
             </main>
         </div>
     )

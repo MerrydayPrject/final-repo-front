@@ -15,6 +15,7 @@
     opacity: 0;
     transition: transform 0.8s ease-out, opacity 0.8s ease-out;
     position: relative;
+    --about-us-description-shift: 0;
 }
 
 .about-us-section.visible {
@@ -127,6 +128,14 @@
     word-break: keep-all;
     word-wrap: break-word;
     hyphens: auto;
+    position: relative;
+    left: calc(var(--about-us-description-shift) * -1);
+    width: 100%;
+    max-width: none;
+    padding-left: 0;
+    padding-right: 1.5rem;
+    margin: 0;
+    box-sizing: border-box;
 }
 
 /* From Uiverse.io by Gaurav-WebDev */
@@ -258,25 +267,118 @@
 }
 
 @media (max-width: 768px) {
+    .about-us-section {
+        min-height: auto;
+        padding-top: 60px;
+        padding-bottom: 150px;
+        transform: none;
+        margin-bottom: 0;
+        --about-us-description-shift: 120px;
+    }
+
     .about-us-title {
         font-size: 48px;
     }
 
+    .about-us-content-wrapper {
+        gap: 4px;
+    }
+
     .about-us-main-text {
         font-size: 28px;
+        text-align: left;
+        align-self: flex-start;
     }
 
     .about-us-description {
         font-size: 15px;
+        text-align: left;
+        align-self: flex-start;
+        left: -25px;
+        width: 100%;
+        max-width: 100%;
+        padding: 0 1.5rem;
+        margin: 0;
     }
 
     .about-us-text-content {
-        gap: 20px;
-        padding: 20px 0;
+        gap: 32px;
+        padding: 40px 0 20px;
+    }
+
+    .about-us-text-item {
+        min-height: auto;
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .about-us-text-item:last-child.visible {
+        position: static;
+        margin-top: 0;
+    }
+
+    .about-us-text-item .about-us-navigate-button {
+        width: 180px;
+        height: 42px;
+        font-size: 0.8rem;
+        margin-top: -10px;
+        margin-left: 80px;
+        align-self: flex-start;
+    }
+
+    .about-us-text-item.mobile-hidden {
+        display: none !important;
+    }
+
+    .about-us-text-item.mobile-active {
+        display: flex;
+    }
+
+    .about-us-slider-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-top: 8px;
+        margin-left: 60px;
+        align-self: flex-start;
+    }
+
+    .about-us-text-item:nth-child(2) .about-us-slider-controls {
+        margin-top: -16px;
+    }
+
+    .about-us-slider-button {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1px solid #333;
+        background: transparent;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .about-us-slider-button:hover {
+        background: #333;
+        color: #fff;
+    }
+
+    .about-us-slider-indicator {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .about-us-content-wrapper .right-container {
+        display: none;
     }
 
     .about-us-image-container {
-        min-height: 400px;
+        display: none;
     }
 }
 
