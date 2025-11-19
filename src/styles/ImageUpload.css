@@ -209,6 +209,17 @@
     align-self: flex-end;
     transform: translateX(-150px);
     margin-bottom: -10px;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.step-guide-panel-step2 .step-panel-content .preview-container,
+.step-guide-panel-step2 .step-panel-content .upload-area {
+    width: 100% !important;
+    max-width: 450px !important;
+    height: 540px !important;
+    max-height: 550px !important;
+    margin-left: 250px !important;
 }
 
 .step-2-header {
@@ -424,7 +435,7 @@
 }
 
 .fitting-container .step-guide-panel .preview-container .preview-image {
-    width: 110% !important;
+    width: 500px !important;
     max-width: none !important;
     height: 100% !important;
     object-fit: contain;

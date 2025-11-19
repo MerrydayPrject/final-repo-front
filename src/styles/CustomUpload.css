@@ -3,6 +3,46 @@
     flex-direction: column;
 }
 
+/* 커스텀 피팅에서 preview-container 내부 이미지 width 넓히기 */
+.fitting-container .content-wrapper.custom-wrapper .step-guide-panel .preview-container .preview-image {
+    width: 110% !important;
+}
+
+/* 커스텀 피팅에서 preview-container 위치 위로 올리기 */
+.fitting-container .content-wrapper.custom-wrapper .step-guide-panel .preview-container {
+    margin-top: -50px;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 600px !important;
+    max-height: 600px !important;
+    padding: 0 !important;
+    border-width: 10px !important;
+}
+
+/* 커스텀 피팅에서 step-guide-panel 전체 영역 위로 올리기 */
+.content-wrapper.custom-wrapper .step-guide-panel {
+    margin-top: -60px;
+}
+
+/* 커스텀 피팅 STEP 2 문구와 라벨 중앙 정렬 */
+.content-wrapper.custom-wrapper .step-guide-panel-step2 .step-2-header {
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    margin-top: 150px;
+}
+
+.content-wrapper.custom-wrapper .step-guide-panel-step2 .step-2-text {
+    text-align: center;
+    align-items: center;
+}
+
+.content-wrapper.custom-wrapper .step-guide-panel-step2 .step-title,
+.content-wrapper.custom-wrapper .step-guide-panel-step2 .step-description {
+    text-align: center;
+}
+
 .content-wrapper.custom-wrapper>.general-fitting-header {
     width: 100%;
     margin-left: 40px;
