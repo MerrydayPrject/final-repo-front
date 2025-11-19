@@ -189,7 +189,11 @@ const CustomFitting = ({ onBackToMain }) => {
         setIsMatching(true)
 
         try {
-            const result = await customMatchImage(fullBody, dress)
+            // 선택된 배경 이미지를 File 객체로 변환
+            const backgroundImageUrl = backgroundImages[selectedBackgroundIndex]
+            const backgroundFile = await urlToFile(backgroundImageUrl, `background${selectedBackgroundIndex + 1}.jpg`)
+
+            const result = await customMatchImage(fullBody, dress, backgroundFile)
 
             if (result.success && result.result_image) {
                 setCustomResultImage(result.result_image)
@@ -359,7 +363,8 @@ const CustomFitting = ({ onBackToMain }) => {
 
     // CustomResult 매칭 완료 감지
     useEffect(() => {
-        if (prevProcessingRef.current && !isMatching && customResultImage) {
+        // 필터 적용 중일 때는 완료 아이콘 표시하지 않음
+        if (prevProcessingRef.current && !isMatching && customResultImage && !isApplyingFilter) {
             setShowCheckmark(true)
             const timer = setTimeout(() => {
                 setShowCheckmark(false)
@@ -367,7 +372,7 @@ const CustomFitting = ({ onBackToMain }) => {
             return () => clearTimeout(timer)
         }
         prevProcessingRef.current = isMatching
-    }, [isMatching, customResultImage])
+    }, [isMatching, customResultImage, isApplyingFilter])
 
     const renderBackgroundButtons = () => (
         <div className="background-selector step-background-selector">
@@ -493,13 +498,13 @@ const CustomFitting = ({ onBackToMain }) => {
                 {originalResultImage && (
                     <div className="filter-buttons-container">
                         <span className="filter-label">
-                            <i className="ri-color-filter-ai-line"></i> 필터
+                            <i className="ri-filter-3-line"></i> 필터
                         </span>
                         <div className="filter-buttons">
                             {filterPresets.map((preset) => (
                                 <button
                                     key={preset.value}
-                                    className={`filter-button button ${selectedFilter === preset.value ? 'active' : ''}`}
+                                    className={`filter-button ${selectedFilter === preset.value ? 'active' : ''}`}
                                     onClick={(e) => {
                                         e.stopPropagation()
                                         handleFilterChange(preset.value)
@@ -507,10 +512,120 @@ const CustomFitting = ({ onBackToMain }) => {
                                     disabled={isApplyingFilter}
                                     title={preset.label}
                                 >
-                                    <div className="button-outer">
-                                        <div className="button-inner">
-                                            <span>{preset.label}</span>
-                                        </div>
+                                    {preset.label}
+                                    <div className="star-1">
+                                        <svg
+                                            xmlnsXlink="http://www.w3.org/1999/xlink"
+                                            viewBox="0 0 784.11 815.53"
+                                            style={{ shapeRendering: 'geometricPrecision', textRendering: 'geometricPrecision', imageRendering: 'optimizeQuality', fillRule: 'evenodd', clipRule: 'evenodd' }}
+                                            version="1.1"
+                                            xmlSpace="preserve"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <defs></defs>
+                                            <g id="Layer_x0020_1">
+                                                <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                                                <path
+                                                    d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
+                                                    className="fil0"
+                                                ></path>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                    <div className="star-2">
+                                        <svg
+                                            xmlnsXlink="http://www.w3.org/1999/xlink"
+                                            viewBox="0 0 784.11 815.53"
+                                            style={{ shapeRendering: 'geometricPrecision', textRendering: 'geometricPrecision', imageRendering: 'optimizeQuality', fillRule: 'evenodd', clipRule: 'evenodd' }}
+                                            version="1.1"
+                                            xmlSpace="preserve"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <defs></defs>
+                                            <g id="Layer_x0020_1">
+                                                <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                                                <path
+                                                    d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
+                                                    className="fil0"
+                                                ></path>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                    <div className="star-3">
+                                        <svg
+                                            xmlnsXlink="http://www.w3.org/1999/xlink"
+                                            viewBox="0 0 784.11 815.53"
+                                            style={{ shapeRendering: 'geometricPrecision', textRendering: 'geometricPrecision', imageRendering: 'optimizeQuality', fillRule: 'evenodd', clipRule: 'evenodd' }}
+                                            version="1.1"
+                                            xmlSpace="preserve"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <defs></defs>
+                                            <g id="Layer_x0020_1">
+                                                <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                                                <path
+                                                    d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
+                                                    className="fil0"
+                                                ></path>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                    <div className="star-4">
+                                        <svg
+                                            xmlnsXlink="http://www.w3.org/1999/xlink"
+                                            viewBox="0 0 784.11 815.53"
+                                            style={{ shapeRendering: 'geometricPrecision', textRendering: 'geometricPrecision', imageRendering: 'optimizeQuality', fillRule: 'evenodd', clipRule: 'evenodd' }}
+                                            version="1.1"
+                                            xmlSpace="preserve"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <defs></defs>
+                                            <g id="Layer_x0020_1">
+                                                <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                                                <path
+                                                    d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
+                                                    className="fil0"
+                                                ></path>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                    <div className="star-5">
+                                        <svg
+                                            xmlnsXlink="http://www.w3.org/1999/xlink"
+                                            viewBox="0 0 784.11 815.53"
+                                            style={{ shapeRendering: 'geometricPrecision', textRendering: 'geometricPrecision', imageRendering: 'optimizeQuality', fillRule: 'evenodd', clipRule: 'evenodd' }}
+                                            version="1.1"
+                                            xmlSpace="preserve"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <defs></defs>
+                                            <g id="Layer_x0020_1">
+                                                <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                                                <path
+                                                    d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
+                                                    className="fil0"
+                                                ></path>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                    <div className="star-6">
+                                        <svg
+                                            xmlnsXlink="http://www.w3.org/1999/xlink"
+                                            viewBox="0 0 784.11 815.53"
+                                            style={{ shapeRendering: 'geometricPrecision', textRendering: 'geometricPrecision', imageRendering: 'optimizeQuality', fillRule: 'evenodd', clipRule: 'evenodd' }}
+                                            version="1.1"
+                                            xmlSpace="preserve"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <defs></defs>
+                                            <g id="Layer_x0020_1">
+                                                <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                                                <path
+                                                    d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
+                                                    className="fil0"
+                                                ></path>
+                                            </g>
+                                        </svg>
                                     </div>
                                 </button>
                             ))}
@@ -632,7 +747,7 @@ const CustomFitting = ({ onBackToMain }) => {
                             </div>
                         </div>
 
-                        <div className="left-container custom-left">
+                        <div className={`left-container custom-left ${currentStep === 1 ? 'disabled' : ''}`}>
                             {/* 사용자 이미지 업로드 영역 */}
                             <div className="custom-upload-card">
                                 <input

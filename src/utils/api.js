@@ -111,15 +111,23 @@ export const removeBackground = async (image) => {
  * 커스텀 매칭 API 호출 (전신사진 + 드레스 이미지 합성)
  * @param {File} fullBodyImage - 전신 사진
  * @param {File} dressImage - 드레스 이미지
+ * @param {File} backgroundImage - 배경 이미지 (선택사항)
  * @returns {Promise} 매칭된 결과 이미지
  */
-export const customMatchImage = async (fullBodyImage, dressImage) => {
+export const customMatchImage = async (fullBodyImage, dressImage, backgroundImage = null) => {
     try {
         const formData = new FormData()
         formData.append('person_image', fullBodyImage)
-        formData.append('dress_image', dressImage)
+        formData.append('garment_image', dressImage)
 
-        const response = await api.post('/api/compose-dress', formData, {
+        // 배경 이미지가 제공된 경우 추가
+        if (backgroundImage) {
+            formData.append('background_image', backgroundImage)
+        } else {
+            throw new Error('배경 이미지가 필요합니다.')
+        }
+
+        const response = await api.post('/api/compose_xai_gemini_v2', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
