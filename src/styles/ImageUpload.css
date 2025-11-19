@@ -179,6 +179,10 @@
     margin-top: -8px;
 }
 
+.step-guide-panel-step3 .step-actions {
+    display: none;
+}
+
 .step-guide-panel-step2 {
     padding-top: 32px;
     margin-top: -24px;
@@ -195,7 +199,7 @@
 
 .step-guide-panel-step2 .step-panel-content .step-link-button {
     position: absolute;
-    bottom: 0;
+    top: 460px;
     right: 0;
     margin: 0;
 }
@@ -410,14 +414,22 @@
     box-sizing: border-box;
 }
 
+.fitting-container .step-guide-panel {
+    margin-top: -40px;
+}
+
 .fitting-container .step-guide-panel .preview-container {
-    height: 496px;
+    height: 580px;
+    margin-top: -20px;
 }
 
 .fitting-container .step-guide-panel .preview-container .preview-image {
-    width: 100%;
-    height: 100%;
+    width: 110% !important;
+    max-width: none !important;
+    height: 100% !important;
     object-fit: contain;
+    transform: scale(1.1) !important;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out !important;
 }
 
 /* 일반피팅에서 preview-container 크기 키우기 */

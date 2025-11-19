@@ -25,7 +25,7 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection, initialCategory,
     const backgroundImages = [
         '/Image/background4.png',
         '/Image/background1.jpg',
-        '/Image/background2.png',
+        '/Image/background2 (2).png',
         '/Image/background3.jpg'
     ]
 
@@ -629,7 +629,7 @@ const GeneralFitting = ({ onBackToMain, onNavigateToCorrection, initialCategory,
                         <div className="step-badge">STEP 2</div>
                         <div className="step-2-text">
                             <h3 className="step-title">전신 또는 얼굴 이미지를 업로드해주세요</h3>
-                            <p className="step-description">드래그하거나 클릭해서 업로드하면 STEP 3로 이동합니다.</p>
+                            <p className="step-description"> 클릭해서 업로드하면 STEP 3로 이동합니다.</p>
                         </div>
                     </div>
                     <div className="step-panel-content">
