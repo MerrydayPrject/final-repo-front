@@ -356,11 +356,54 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                         </div>
                                     ) : (
                                         <div className="result-content">
-                                            {/* 추천 카테고리 - 맨 위 */}
+                                            {/* 1. 체형 타입 (맨 위) */}
+                                            <div className="result-item body-info-item">
+                                                <div className="body-info-row">
+                                                    <div className="body-info-item-single">
+                                                        <strong>체형 타입:</strong>
+                                                        <span>{analysisResult.body_analysis?.body_type || '분석 중...'}의 체형에 가깝습니다</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            {/* 2. 체형 특징 */}
+                                            {analysisResult.body_analysis?.body_features && analysisResult.body_analysis.body_features.length > 0 && (
+                                                <div className="result-item body-features-item">
+                                                    <strong>체형 특징:</strong>
+                                                    <div style={{ marginTop: '8px', display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                                                        {Array.from(new Set(
+                                                            analysisResult.body_analysis.body_features
+                                                                .map((feature) => {
+                                                                    const friendly = SOFT_FEATURE_MAP[feature]
+                                                                    if (friendly === undefined) return feature
+                                                                    return friendly
+                                                                })
+                                                                .filter((feature) => feature && feature.trim())
+                                                        )).map((feature, index) => (
+                                                            <span 
+                                                                key={index}
+                                                                style={{
+                                                                    display: 'inline-block',
+                                                                    padding: '6px 14px',
+                                                                    background: '#e3f2fd',
+                                                                    color: '#1976d2',
+                                                                    borderRadius: '20px',
+                                                                    fontSize: '14px',
+                                                                    fontWeight: '600'
+                                                                }}
+                                                            >
+                                                                {feature}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
+                                            
+                                            {/* 3. 추천 드레스 스타일 (분석글 위) */}
                                             {recommendedCategories.length > 0 && (
                                                 <div className="result-item recommended-categories-item">
                                                     <div className="recommended-categories-header">
-                                                        <strong>추천 카테고리:</strong>
+                                                        <strong>추천 드레스 스타일:</strong>
                                                         <div className="recommended-categories">
                                                             {recommendedCategories.map((category, index) => (
                                                                 <span
@@ -380,107 +423,167 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                                     </div>
                                                 </div>
                                             )}
-                                            {avoidCategories.length > 0 && (
-                                                <div className="result-item avoid-categories-item">
-                                                    <div className="recommended-categories-header">
-                                                        <strong>주의할 카테고리:</strong>
-                                                        <div className="recommended-categories">
-                                                            {avoidCategories.map((category, index) => (
-                                                                <span
-                                                                    key={`${category}-${index}`}
-                                                                    className="category-badge avoid-category"
-                                                                >
-                                                                    {getCategoryName(category)}
-                                                                </span>
-                                                            ))}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )}
-                                            <div className="result-item body-info-item">
-                                                <div className="body-info-row">
-                                                    <div className="body-info-item-single">
-                                                        <strong>체형 유형:</strong>
-                                                        <span>{analysisResult.body_analysis?.body_type || '분석 중...'}</span>
-                                                    </div>
-                                                    {Number.isFinite(Number(analysisResult.body_analysis?.bmi)) && (
-                                                        <div className="body-info-item-single">
-                                                            <strong>BMI:</strong>
-                                                            <span>{Number(analysisResult.body_analysis.bmi).toFixed(1)}</span>
-                                                        </div>
-                                                    )}
-                                                    {analysisResult.body_analysis?.height && (
-                                                        <div className="body-info-item-single">
-                                                            <strong>키:</strong>
-                                                            <span>{analysisResult.body_analysis.height}cm</span>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            </div>
-                                            {analysisResult.body_analysis?.body_features && analysisResult.body_analysis.body_features.length > 0 && (
-                                                <div className="result-item body-features-item">
-                                                    <strong>체형 특징:</strong>
-                                                    <ul style={{ marginTop: '5px', paddingLeft: '20px' }}>
-                                                        {Array.from(new Set(
-                                                            analysisResult.body_analysis.body_features
-                                                                .map((feature) => {
-                                                                    const friendly = SOFT_FEATURE_MAP[feature]
-                                                                    if (friendly === undefined) return feature
-                                                                    return friendly
-                                                                })
-                                                                .filter((feature) => feature && feature.trim())
-                                                        )).map((feature, index) => (
-                                                            <li key={index}>{feature}</li>
-                                                        ))}
-                                                    </ul>
-                                                </div>
-                                            )}
-                                            {analysisResult.body_analysis?.measurements && (
-                                                <div className="result-item measurements-item">
-                                                    <strong>측정 지표:</strong>
-                                                    <div className="measurements-grid">
-                                                        {Number.isFinite(Number(analysisResult.body_analysis.measurements.shoulder_hip_ratio)) && (
-                                                            <div className="measurement-item">
-                                                                <span className="measurement-label">어깨·엉덩이 비율</span>
-                                                                <span className="measurement-value">
-                                                                    {Number(analysisResult.body_analysis.measurements.shoulder_hip_ratio).toFixed(2)}
-                                                                </span>
-                                                            </div>
-                                                        )}
-                                                        {Number.isFinite(Number(analysisResult.body_analysis.measurements.waist_shoulder_ratio)) && (
-                                                            <div className="measurement-item">
-                                                                <span className="measurement-label">허리·어깨 비율</span>
-                                                                <span className="measurement-value">
-                                                                    {Number(analysisResult.body_analysis.measurements.waist_shoulder_ratio).toFixed(2)}
-                                                                </span>
-                                                            </div>
-                                                        )}
-                                                        {Number.isFinite(Number(analysisResult.body_analysis.measurements.waist_hip_ratio)) && (
-                                                            <div className="measurement-item">
-                                                                <span className="measurement-label">허리·엉덩이 비율</span>
-                                                                <span className="measurement-value">
-                                                                    {Number(analysisResult.body_analysis.measurements.waist_hip_ratio).toFixed(2)}
-                                                                </span>
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            )}
+                                            {/* 4. AI 상세 분석 */}
                                             <div className="result-item analysis-item">
-                                                <strong>상세 분석:</strong>
+                                                <strong>AI 상세 분석:</strong>
                                                 <div className="analysis-description">
                                                     {analysisParagraphs.length > 0 ? (
-                                                        analysisParagraphs.map((segments, lineIndex) => (
-                                                            <p key={lineIndex} className="analysis-description-line">
-                                                                {segments.map((segment, segmentIndex) => (
-                                                                    segment.bold ? (
-                                                                        <strong key={segmentIndex}>{segment.text}</strong>
-                                                                    ) : (
-                                                                        <span key={segmentIndex}>{segment.text}</span>
-                                                                    )
-                                                                ))}
-                                                            </p>
-                                                        ))
+                                                        (() => {
+                                                            // 전체 텍스트를 하나로 합치기
+                                                            const fullText = analysisParagraphs.map(segments => 
+                                                                segments.map(s => s.text).join('')
+                                                            ).join(' ');
+                                                            
+                                                            // 체형 설명 부분 찾기 (첫 문장에서 "~체형입니다" 패턴만)
+                                                            const firstSentence = fullText.split(/[\.。]/)[0];
+                                                            // "전체적으로 슬림하고 비율이 좋은 체형입니다" 같은 패턴 찾기
+                                                            // "이미지를 직접 관찰했을 때" 같은 앞부분은 제외하고 체형 설명 부분만
+                                                            // "전체적으로"로 시작하는 부분을 찾아서 하이라이트 (앞에 "이미지를 직접 관찰"이 있어도 "전체적으로"부터만 하이라이트)
+                                                            let bodyTypeMatch = null;
+                                                            
+                                                            // 패턴 1: "전체적으로"로 시작하는 부분 찾기 (가장 우선)
+                                                            const bodyTypePattern1 = /전체적으로[^\.]*(?:슬림|늘씬|균형|단정|좋은|우아|세련)[^\.]*(?:체형|비율)[입니다\.]*/;
+                                                            const match1 = firstSentence.match(bodyTypePattern1);
+                                                            if (match1 && match1[0]) {
+                                                                // "전체적으로"부터만 하이라이트 (앞에 "이미지를 직접 관찰"이 있어도 상관없음)
+                                                                bodyTypeMatch = { 1: match1[0] };
+                                                            }
+                                                            
+                                                            // 패턴 2: "전체적으로"로 시작하지 않지만 체형 설명 부분 찾기
+                                                            if (!bodyTypeMatch) {
+                                                                const bodyTypePattern2 = /([^\.]*(?:슬림|늘씬|균형|단정|좋은|우아|세련)[^\.]*(?:체형|비율)[입니다\.]*)/;
+                                                                const match2 = firstSentence.match(bodyTypePattern2);
+                                                                if (match2 && match2[1] && !match2[1].includes('이미지를 직접 관찰')) {
+                                                                    bodyTypeMatch = match2;
+                                                                }
+                                                            }
+                                                            
+                                                            // 드레스 키워드 찾기 (전체 텍스트에서 2개만)
+                                                            const styleKeywords = [
+                                                                '슬림', '프린세스', 'A라인', '벨라인', '머메이드', '트럼펫', '미니드레스',
+                                                                '스트레이트', 'H라인', '에이라인', '플레어', '하이웨이스트', '벨트라인'
+                                                            ];
+                                                            
+                                                            // 전체 텍스트에서 하이라이트할 키워드 위치 찾기
+                                                            const highlightedKeywords = [];
+                                                            let dressHighlightCount = 0;
+                                                            const maxDressHighlights = 2;
+                                                            const sortedKeywords = [...styleKeywords].sort((a, b) => b.length - a.length);
+                                                            
+                                                            sortedKeywords.forEach(keyword => {
+                                                                if (dressHighlightCount >= maxDressHighlights) return;
+                                                                
+                                                                const regex = new RegExp(keyword, 'gi');
+                                                                const match = regex.exec(fullText);
+                                                                if (match) {
+                                                                    highlightedKeywords.push({
+                                                                        keyword: keyword,
+                                                                        index: match.index,
+                                                                        length: match[0].length
+                                                                    });
+                                                                    dressHighlightCount++;
+                                                                }
+                                                            });
+                                                            
+                                                            return analysisParagraphs.map((segments, lineIndex) => {
+                                                                const lineText = segments.map(s => s.text).join('');
+                                                                let processedText = lineText;
+                                                                
+                                                                // 현재 줄의 시작 위치 계산 (원본 텍스트 기준)
+                                                                let lineStartIndex = 0;
+                                                                for (let i = 0; i < lineIndex; i++) {
+                                                                    lineStartIndex += analysisParagraphs[i].map(s => s.text).join('').length + 1;
+                                                                }
+                                                                const lineEndIndex = lineStartIndex + lineText.length;
+                                                                
+                                                                // 먼저 드레스 키워드 하이라이트 (원본 텍스트 기준으로 정확한 위치, 역순으로 처리)
+                                                                // 역순으로 처리하여 인덱스가 변경되지 않도록
+                                                                const keywordsInLine = highlightedKeywords
+                                                                    .filter(({ index }) => index >= lineStartIndex && index < lineEndIndex)
+                                                                    .map(({ keyword, index, length }) => ({
+                                                                        keyword,
+                                                                        localIndex: index - lineStartIndex,
+                                                                        length
+                                                                    }))
+                                                                    .sort((a, b) => b.localIndex - a.localIndex); // 역순 정렬
+                                                                
+                                                                keywordsInLine.forEach(({ keyword, localIndex, length }) => {
+                                                                    // 원본 텍스트에서 정확한 위치의 키워드만 하이라이트
+                                                                    if (processedText.substring(localIndex, localIndex + length) === keyword) {
+                                                                        const before = processedText.substring(0, localIndex);
+                                                                        const after = processedText.substring(localIndex + length);
+                                                                        // 이미 하이라이트되지 않은 경우만
+                                                                        if (!before.includes('<span') && !processedText.substring(localIndex, localIndex + length).includes('highlight')) {
+                                                                            processedText = before + `<span class="highlight">${keyword}</span>` + after;
+                                                                        }
+                                                                    }
+                                                                });
+                                                                
+                                                                // 체형 설명 부분 하이라이트 (첫 줄에만, 드레스 키워드 하이라이트 이후)
+                                                                if (lineIndex === 0 && bodyTypeMatch && bodyTypeMatch[1]) {
+                                                                    const bodyTypeText = bodyTypeMatch[1].trim();
+                                                                    if (bodyTypeText && bodyTypeText.length > 5) {
+                                                                        const escaped = bodyTypeText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                                                                        const regex = new RegExp(`(${escaped})`, 'g');
+                                                                        processedText = processedText.replace(regex, (match) => {
+                                                                            if (!match.includes('highlight')) {
+                                                                                return `<span class="highlight">${match}</span>`;
+                                                                            }
+                                                                            return match;
+                                                                        });
+                                                                    }
+                                                                }
+                                                                
+                                                                // 하이라이트된 텍스트 파싱
+                                                                const parts = [];
+                                                                let currentIndex = 0;
+                                                                const highlightRegex = /<span class="highlight">(.*?)<\/span>/g;
+                                                                let match;
+                                                                
+                                                                while ((match = highlightRegex.exec(processedText)) !== null) {
+                                                                    if (match.index > currentIndex) {
+                                                                        parts.push({
+                                                                            text: processedText.substring(currentIndex, match.index),
+                                                                            highlight: false
+                                                                        });
+                                                                    }
+                                                                    parts.push({
+                                                                        text: match[1],
+                                                                        highlight: true
+                                                                    });
+                                                                    currentIndex = match.index + match[0].length;
+                                                                }
+                                                                
+                                                                if (currentIndex < processedText.length) {
+                                                                    parts.push({
+                                                                        text: processedText.substring(currentIndex),
+                                                                        highlight: false
+                                                                    });
+                                                                }
+                                                                
+                                                                return (
+                                                                    <p key={lineIndex} className="analysis-description-line">
+                                                                        {parts.length > 0 ? (
+                                                                            parts.map((part, partIndex) => (
+                                                                                part.highlight ? (
+                                                                                    <span key={partIndex} className="highlight">{part.text}</span>
+                                                                                ) : (
+                                                                                    <span key={partIndex}>{part.text}</span>
+                                                                                )
+                                                                            ))
+                                                                        ) : (
+                                                                            segments.map((segment, segmentIndex) => (
+                                                                                segment.bold ? (
+                                                                                    <strong key={segmentIndex}>{segment.text}</strong>
+                                                                                ) : (
+                                                                                    <span key={segmentIndex}>{segment.text}</span>
+                                                                                )
+                                                                            ))
+                                                                        )}
+                                                                    </p>
+                                                                );
+                                                            });
+                                                        })()
                                                     ) : (
                                                         <p>{analysisResult.gemini_analysis?.detailed_analysis || analysisResult.message || '체형 분석이 완료되었습니다.'}</p>
                                                     )}
