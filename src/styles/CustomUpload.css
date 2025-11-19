@@ -21,7 +21,79 @@
 
 /* 커스텀 피팅에서 step-guide-panel 전체 영역 위로 올리기 */
 .content-wrapper.custom-wrapper .step-guide-panel {
-    margin-top: -60px;
+    margin-top: -80px;
+}
+
+/* 커스텀 피팅 step3에서 필터 버튼들을 우측에 세로 배치 */
+.content-wrapper.custom-wrapper .step-guide-panel-step3 {
+    position: relative;
+}
+
+.content-wrapper.custom-wrapper .step-guide-panel-step3 .step-result-actions {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+    margin-top: 0;
+    margin-left: 0;
+    width: auto;
+}
+
+.content-wrapper.custom-wrapper .step-guide-panel-step3 .step-result-actions .filter-buttons-container {
+    margin-bottom: 0;
+}
+
+.content-wrapper.custom-wrapper .step-guide-panel-step3 .step-result-actions .download-button {
+    margin-top: 170px !important;
+    margin-right: 250px !important;
+}
+
+.content-wrapper.custom-wrapper .step-guide-panel-step3 .filter-buttons-container {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    gap: 8px !important;
+    margin-right: 50px !important;
+}
+
+.content-wrapper.custom-wrapper .step-guide-panel-step3 .filter-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    white-space: nowrap;
+    margin-bottom: 4px;
+    margin-right: 220px !important;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.content-wrapper.custom-wrapper .step-guide-panel-step3 .filter-label i {
+    font-size: 16px;
+}
+
+.content-wrapper.custom-wrapper .step-guide-panel-step3 .filter-buttons {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 15px !important;
+    margin-right: 150px !important;
+}
+
+.content-wrapper.custom-wrapper .step-guide-panel-step3 .filter-button {
+    min-width: 120px;
+    text-align: center;
+}
+
+.content-wrapper.custom-wrapper .step-guide-panel-step3 .filter-button .button-inner {
+    padding: 0.6em 1.2em !important;
+}
+
+.content-wrapper.custom-wrapper .step-guide-panel-step3 .filter-button .button-inner span {
+    font-size: 14px !important;
 }
 
 /* 커스텀 피팅 STEP 2 문구와 라벨 중앙 정렬 */

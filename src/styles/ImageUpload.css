@@ -154,7 +154,7 @@
 
 .step-guide-panel .image-upload-wrapper {
     width: 100%;
-    max-width: 540px;
+    max-width: 520px;
 }
 
 .step-guide-panel .upload-area,
@@ -167,8 +167,14 @@
     flex: 0 0 auto;
 }
 
+/* 일반피팅에서 preview-container 오버라이드 */
+.fitting-container .step-guide-panel .preview-container {
+    max-width: 600px !important;
+}
+
 .step-guide-panel-step3 {
     padding-top: 36px;
+    position: relative;
 }
 
 .step-guide-panel-step3 .step-3-header {
@@ -181,6 +187,66 @@
 
 .step-guide-panel-step3 .step-actions {
     display: none;
+}
+
+/* step3에서 필터 버튼들을 우측에 세로 배치 */
+.step-guide-panel-step3 .step-result-actions {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+    margin-top: 0;
+    margin-left: 0;
+    width: auto;
+}
+
+.step-guide-panel-step3 .step-result-actions .filter-buttons-container {
+    margin-bottom: 0;
+}
+
+.step-guide-panel-step3 .step-result-actions .download-button {
+    margin-top: 200px !important;
+    margin-right: 50px !important;
+}
+
+.step-guide-panel-step3 .filter-buttons-container {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    gap: 8px !important;
+    margin-right: 30px !important;
+}
+
+.step-guide-panel-step3 .filter-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #333;
+    white-space: nowrap;
+    margin-bottom: 4px;
+    margin-right: 80px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.step-guide-panel-step3 .filter-label i {
+    font-size: 14px;
+}
+
+.step-guide-panel-step3 .filter-buttons {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    margin-right: 30px !important;
+}
+
+.step-guide-panel-step3 .filter-button {
+    min-width: 100px;
+    text-align: center;
 }
 
 .step-guide-panel-step2 {
@@ -217,8 +283,8 @@
 .step-guide-panel-step2 .step-panel-content .upload-area {
     width: 100% !important;
     max-width: 450px !important;
-    height: 540px !important;
-    max-height: 550px !important;
+    height: 520px !important;
+    max-height: 520px !important;
     margin-left: 250px !important;
 }
 
@@ -426,20 +492,23 @@
 }
 
 .fitting-container .step-guide-panel {
-    margin-top: -40px;
+    margin-top: -70px;
 }
 
 .fitting-container .step-guide-panel .preview-container {
-    height: 580px;
-    margin-top: -20px;
+    width: 100% !important;
+    max-width: 700px !important;
+    height: 700px !important;
+    max-height: 520px !important;
+    margin-top: 10px;
+    margin-left: -30px !important;
 }
 
 .fitting-container .step-guide-panel .preview-container .preview-image {
-    width: 500px !important;
-    max-width: none !important;
-    height: 100% !important;
+    width: 100% !important;
+    height: 99% !important;
     object-fit: contain;
-    transform: scale(1.1) !important;
+    transform: none !important;
     transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out !important;
 }
 
@@ -534,7 +603,7 @@
 
 .preview-container .download-button {
     position: absolute !important;
-    right: 140px !important;
+    right: 4px !important;
     bottom: 8px !important;
     left: auto !important;
     top: auto !important;
@@ -551,6 +620,14 @@
     border: none !important;
     cursor: pointer !important;
     width: auto !important;
+}
+
+
+.step-result-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
 }
 
 .step-result-actions .download-button {
@@ -590,6 +667,180 @@
 .remove-button:hover {
     background: rgba(255, 99, 99, 1);
     transform: scale(1.1);
+}
+
+/* 필터 버튼 스타일 - 가로 배치 */
+.filter-buttons-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.filter-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    white-space: nowrap;
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* From Uiverse.io by FColombati */
+.filter-button.button {
+    all: unset;
+    cursor: pointer;
+    -webkit-tap-highlight-color: rgba(49, 48, 48, 0);
+    position: relative;
+    border-radius: 100em;
+    background-color: rgba(223, 216, 216, 0.75);
+    box-shadow:
+        -0.08em -0.08em 0.08em -0.04em rgba(5, 5, 5, 0.25),
+        0.02em 0.02em 0.04em 0 rgba(5, 5, 5, 0.1);
+}
+
+.filter-button.button::after {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    width: calc(100% + 0.15em);
+    height: calc(100% + 0.15em);
+    top: -0.08em;
+    left: -0.08em;
+    border-radius: inherit;
+    background: linear-gradient(-135deg,
+            rgba(121, 118, 118, 0.5),
+            transparent 20%,
+            transparent 100%);
+    filter: blur(0.0125em);
+    opacity: 0.25;
+    mix-blend-mode: multiply;
+}
+
+.filter-button.button .button-outer {
+    position: relative;
+    z-index: 1;
+    border-radius: inherit;
+    transition: box-shadow 300ms ease;
+    will-change: box-shadow;
+    box-shadow:
+        0 0.025em 0.025em -0.005em rgb(199, 194, 194),
+        0 0.005em 0.005em -0.005em rgba(5, 5, 5, 0.5),
+        0.08em 0.15em 0.05em -0.005em rgba(5, 5, 5, 0.25);
+}
+
+.filter-button.button:hover .button-outer {
+    box-shadow:
+        0 0 0 0 rgba(5, 5, 5, 1),
+        0 0 0 0 rgba(5, 5, 5, 0.5),
+        0 0 0 0 rgba(5, 5, 5, 0.25);
+}
+
+.filter-button.button .button-inner {
+    --inset: 0.035em;
+    position: relative;
+    z-index: 1;
+    border-radius: inherit;
+    padding: 0.5em 1em;
+    background-image: linear-gradient(135deg,
+            rgba(250, 250, 250, 1),
+            rgba(240, 240, 240, 1));
+    transition:
+        box-shadow 300ms ease,
+        clip-path 250ms ease,
+        background-image 250ms ease,
+        transform 250ms ease;
+    will-change: box-shadow, clip-path, background-image, transform;
+    overflow: clip;
+    clip-path: inset(0 0 0 0 round 100em);
+    box-shadow:
+        /* 1 */
+        0 0 0 0 inset rgba(5, 5, 5, 0.1),
+        /* 2 */
+        -0.05em -0.05em 0.05em 0 inset rgba(5, 5, 5, 0.25),
+        /* 3 */
+        0 0 0 0 inset rgba(5, 5, 5, 0.1),
+        /* 4 */
+        0 0 0.05em 0.2em inset rgba(255, 254, 254, 0.25),
+        /* 5 */
+        0.025em 0.05em 0.1em 0 inset rgba(255, 255, 255, 1),
+        /* 6 */
+        0.12em 0.12em 0.12em inset rgba(243, 240, 240, 0.25),
+        /* 7 */
+        -0.075em -0.25em 0.25em 0.1em inset rgba(5, 5, 5, 0.25);
+}
+
+.filter-button.button:hover .button-inner {
+    clip-path: inset(clamp(1px, 0.0625em, 2px) clamp(1px, 0.0625em, 2px) clamp(1px, 0.0625em, 2px) clamp(1px, 0.0625em, 2px) round 100em);
+    box-shadow:
+        /* 1 */
+        0.1em 0.15em 0.05em 0 inset rgba(5, 5, 5, 0.75),
+        /* 2 */
+        -0.025em -0.03em 0.05em 0.025em inset rgba(5, 5, 5, 0.5),
+        /* 3 */
+        0.25em 0.25em 0.2em 0 inset rgba(5, 5, 5, 0.5),
+        /* 4 */
+        0 0 0.05em 0.5em inset rgba(240, 239, 239, 0.15),
+        /* 5 */
+        0 0 0 0 inset rgba(255, 255, 255, 1),
+        /* 6 */
+        0.12em 0.12em 0.12em inset rgba(255, 255, 255, 0.25),
+        /* 7 */
+        -0.075em -0.12em 0.2em 0.1em inset rgba(5, 5, 5, 0.25);
+}
+
+.filter-button.button.active .button-inner {
+    background-image: linear-gradient(135deg,
+            rgba(176, 137, 104, 1),
+            rgba(221, 184, 146, 1));
+}
+
+.filter-button.button .button-inner span {
+    position: relative;
+    z-index: 4;
+    font-family: "Inter", sans-serif;
+    letter-spacing: -0.05em;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0);
+    background-image: linear-gradient(135deg,
+            rgba(25, 25, 25, 1),
+            rgb(63, 62, 62));
+    -webkit-background-clip: text;
+    background-clip: text;
+    transition: transform 250ms ease;
+    display: block;
+    will-change: transform;
+    text-shadow: rgba(0, 0, 0, 0.1) 0 0 0.1em;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.filter-button.button.active .button-inner span {
+    background-image: linear-gradient(135deg,
+            rgba(255, 255, 255, 1),
+            rgba(255, 255, 255, 0.9));
+}
+
+.filter-button.button:hover .button-inner span {
+    transform: scale(0.975);
+}
+
+.filter-button.button:active .button-inner {
+    transform: scale(0.975);
+}
+
+.filter-button.button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
 }
 
 .processing-overlay {

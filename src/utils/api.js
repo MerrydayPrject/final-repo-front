@@ -17,10 +17,10 @@ const api = axios.create({
 const urlToFile = async (url, filename = 'dress.jpg') => {
     // S3 URL이거나 외부 URL인 경우 백엔드 프록시를 통해 가져오기
     const isExternalUrl = url.startsWith('http://') || url.startsWith('https://')
-    const proxyUrl = isExternalUrl 
+    const proxyUrl = isExternalUrl
         ? `${API_BASE_URL}/api/proxy-image?url=${encodeURIComponent(url)}`
         : url
-    
+
     const response = await fetch(proxyUrl)
     if (!response.ok) {
         throw new Error(`이미지를 가져올 수 없습니다: ${response.statusText}`)
@@ -240,6 +240,60 @@ export const fileToBase64 = (file) => {
  * 드레스 목록 조회 (전체)
  * @returns {Promise} 드레스 목록
  */
+/**
+ * 이미지에 필터 적용
+ * @param {File|string} image - 이미지 파일 또는 이미지 URL/Data URL
+ * @param {string} filterPreset - 필터 프리셋 (none, grayscale, vintage, warm, cool, high_contrast)
+ * @returns {Promise} 필터가 적용된 이미지 결과
+ */
+export const applyImageFilter = async (image, filterPreset = 'none') => {
+    try {
+        const formData = new FormData()
+
+        // 이미지가 File 객체인지 URL/Data URL인지 확인
+        if (image instanceof File) {
+            formData.append('file', image)
+        } else if (typeof image === 'string') {
+            // Data URL 또는 URL인 경우 File 객체로 변환
+            let imageFile
+            if (image.startsWith('data:')) {
+                // Data URL인 경우
+                const response = await fetch(image)
+                const blob = await response.blob()
+                imageFile = new File([blob], 'image.png', { type: blob.type })
+            } else {
+                // URL인 경우
+                imageFile = await urlToFile(image, 'image.png')
+            }
+            formData.append('file', imageFile)
+        } else {
+            throw new Error('이미지 형식이 올바르지 않습니다.')
+        }
+
+        formData.append('filter_preset', filterPreset)
+
+        const response = await api.post('/api/apply-image-filters', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+
+        if (response.data.success) {
+            return {
+                success: true,
+                resultImage: response.data.result_image,
+                filterPreset: response.data.filter_preset,
+                message: response.data.message,
+            }
+        } else {
+            throw new Error(response.data.message || '필터 적용에 실패했습니다.')
+        }
+    } catch (error) {
+        console.error('필터 적용 중 오류 발생:', error)
+        throw error
+    }
+}
+
 export const getDresses = async () => {
     try {
         // limit를 크게 설정하여 모든 드레스 가져오기

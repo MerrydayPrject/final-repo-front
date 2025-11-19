@@ -3,7 +3,7 @@ import Lottie from 'lottie-react'
 import { MdOutlineDownload } from 'react-icons/md'
 import { HiQuestionMarkCircle } from 'react-icons/hi'
 import Modal from '../components/Modal'
-import { removeBackground, customMatchImage } from '../utils/api'
+import { removeBackground, customMatchImage, applyImageFilter } from '../utils/api'
 import '../styles/App.css'
 import '../styles/ImageUpload.css'
 import '../styles/CustomUpload.css'
@@ -14,6 +14,9 @@ const CustomFitting = ({ onBackToMain }) => {
     const [fullBodyImage, setFullBodyImage] = useState(null)
     const [customDressImage, setCustomDressImage] = useState(null)
     const [customResultImage, setCustomResultImage] = useState(null)
+    const [originalResultImage, setOriginalResultImage] = useState(null) // 원본 결과 이미지 저장
+    const [selectedFilter, setSelectedFilter] = useState('none')
+    const [isApplyingFilter, setIsApplyingFilter] = useState(false)
     const [isMatching, setIsMatching] = useState(false)
     const [isRemovingBackground, setIsRemovingBackground] = useState(false)
     const [isBackgroundRemoved, setIsBackgroundRemoved] = useState(false)
@@ -190,6 +193,8 @@ const CustomFitting = ({ onBackToMain }) => {
 
             if (result.success && result.result_image) {
                 setCustomResultImage(result.result_image)
+                setOriginalResultImage(result.result_image) // 원본 이미지 저장
+                setSelectedFilter('none') // 필터 초기화
                 setIsMatching(false)
                 setCurrentStep(3)
             } else {
@@ -440,11 +445,78 @@ const CustomFitting = ({ onBackToMain }) => {
         return null
     }
 
+    // 필터 적용 핸들러
+    const handleFilterChange = async (filterPreset) => {
+        if (!originalResultImage) return
+
+        setSelectedFilter(filterPreset)
+
+        if (filterPreset === 'none') {
+            // 원본 이미지로 복원
+            setCustomResultImage(originalResultImage)
+            return
+        }
+
+        setIsApplyingFilter(true)
+        try {
+            const result = await applyImageFilter(originalResultImage, filterPreset)
+            if (result.success) {
+                setCustomResultImage(result.resultImage)
+            } else {
+                throw new Error(result.message || '필터 적용에 실패했습니다.')
+            }
+        } catch (error) {
+            console.error('필터 적용 중 오류 발생:', error)
+            setSelectedFilter('none')
+            setCustomResultImage(originalResultImage)
+            setErrorMessage('필터 적용에 실패했습니다. 다시 시도해주세요.')
+            setErrorModalOpen(true)
+        } finally {
+            setIsApplyingFilter(false)
+        }
+    }
+
     const renderResultActions = () => {
         if (!customResultImage || isMatching) return null
 
+        const filterPresets = [
+            { value: 'none', label: '원본' },
+            { value: 'grayscale', label: '흑백' },
+            { value: 'vintage', label: '빈티지' },
+            { value: 'warm', label: '따뜻한 톤' },
+            { value: 'cool', label: '차가운 톤' },
+            { value: 'high_contrast', label: '고대비' },
+        ]
+
         return (
             <div className="step-result-actions">
+                {originalResultImage && (
+                    <div className="filter-buttons-container">
+                        <span className="filter-label">
+                            <i className="ri-color-filter-ai-line"></i> 필터
+                        </span>
+                        <div className="filter-buttons">
+                            {filterPresets.map((preset) => (
+                                <button
+                                    key={preset.value}
+                                    className={`filter-button button ${selectedFilter === preset.value ? 'active' : ''}`}
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        handleFilterChange(preset.value)
+                                    }}
+                                    disabled={isApplyingFilter}
+                                    title={preset.label}
+                                >
+                                    <div className="button-outer">
+                                        <div className="button-inner">
+                                            <span>{preset.label}</span>
+                                        </div>
+                                    </div>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                )}
                 <button
                     className="download-button"
                     onClick={async (e) => {
