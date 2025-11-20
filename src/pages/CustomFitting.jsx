@@ -3,7 +3,7 @@ import Lottie from 'lottie-react'
 import { MdOutlineDownload } from 'react-icons/md'
 import { HiQuestionMarkCircle } from 'react-icons/hi'
 import Modal from '../components/Modal'
-import { removeBackground, customMatchImage, applyImageFilter } from '../utils/api'
+import { customMatchImage, applyImageFilter } from '../utils/api'
 import '../styles/App.css'
 import '../styles/General/ImageUpload.css'
 import '../styles/Custom/CustomUpload.css'
@@ -18,10 +18,7 @@ const CustomFitting = ({ onBackToMain }) => {
     const [selectedFilter, setSelectedFilter] = useState('none')
     const [isApplyingFilter, setIsApplyingFilter] = useState(false)
     const [isMatching, setIsMatching] = useState(false)
-    const [isRemovingBackground, setIsRemovingBackground] = useState(false)
-    const [isBackgroundRemoved, setIsBackgroundRemoved] = useState(false)
     const [loadingAnimation, setLoadingAnimation] = useState(null)
-    const [bgRemovalModalOpen, setBgRemovalModalOpen] = useState(false)
     const [imageTransition, setImageTransition] = useState(false)
     const [errorModalOpen, setErrorModalOpen] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
@@ -124,39 +121,10 @@ const CustomFitting = ({ onBackToMain }) => {
 
     const handleCustomDressUpload = (image) => {
         setCustomDressImage(image)
-        setIsBackgroundRemoved(false)
         // 이미지가 변경되면 기존 매칭 결과 초기화 및 STEP 2로 이동
         if (image && customResultImage) {
             setCustomResultImage(null)
             setCurrentStep(2)
-        }
-    }
-
-    const handleRemoveBackground = async () => {
-        if (!customDressImage) return
-
-        setIsRemovingBackground(true)
-
-        try {
-            const result = await removeBackground(customDressImage)
-
-            if (result.success && result.image) {
-                const response = await fetch(result.image)
-                const blob = await response.blob()
-                const file = new File([blob], 'dress_no_bg.png', { type: 'image/png' })
-
-                setCustomDressImage(file)
-                setIsBackgroundRemoved(true)
-                setIsRemovingBackground(false)
-                setBgRemovalModalOpen(true)
-            } else {
-                throw new Error(result.message || '배경 제거에 실패했습니다.')
-            }
-        } catch (error) {
-            console.error('배경 제거 중 오류 발생:', error)
-            setIsRemovingBackground(false)
-            setErrorMessage(`배경 제거 중 오류가 발생했습니다: ${error.message}`)
-            setErrorModalOpen(true)
         }
     }
 
@@ -176,39 +144,8 @@ const CustomFitting = ({ onBackToMain }) => {
         // STEP 3로 이동
         setCurrentStep(3)
 
-        // 자동으로 배경 제거 후 매칭
-        let dressImageToMatch = customDressImage
-
-        // 배경이 제거되지 않았다면 자동으로 제거
-        if (!isBackgroundRemoved) {
-            setIsRemovingBackground(true)
-            try {
-                const result = await removeBackground(customDressImage)
-
-                if (result.success && result.image) {
-                    const response = await fetch(result.image)
-                    const blob = await response.blob()
-                    const file = new File([blob], 'dress_no_bg.png', { type: 'image/png' })
-
-                    dressImageToMatch = file
-                    setCustomDressImage(file)
-                    setIsBackgroundRemoved(true)
-                } else {
-                    throw new Error(result.message || '배경 제거에 실패했습니다.')
-                }
-            } catch (error) {
-                console.error('배경 제거 중 오류 발생:', error)
-                setIsRemovingBackground(false)
-                setErrorMessage(`배경 제거 중 오류가 발생했습니다: ${error.message}`)
-                setErrorModalOpen(true)
-                return
-            } finally {
-                setIsRemovingBackground(false)
-            }
-        }
-
-        // 배경 제거 완료 후 매칭 진행
-        handleCustomMatch(fullBodyImage, dressImageToMatch)
+        // 원본 드레스 이미지를 직접 사용하여 매칭 진행
+        handleCustomMatch(fullBodyImage, customDressImage)
     }
 
     const handleCustomMatch = async (fullBody, dress) => {
@@ -862,10 +799,10 @@ const CustomFitting = ({ onBackToMain }) => {
                             <button
                                 className="analyze-button"
                                 onClick={handleManualMatch}
-                                disabled={isMatching || isRemovingBackground || !fullBodyImage || !customDressImage || !!customResultImage}
+                                disabled={isMatching || !fullBodyImage || !customDressImage || !!customResultImage}
                             >
-                                {isMatching || isRemovingBackground
-                                    ? (isRemovingBackground ? '배경 제거 중...' : '매칭 중...')
+                                {isMatching
+                                    ? '매칭 중...'
                                     : customResultImage
                                         ? '매칭완료'
                                         : '매칭하기'}
@@ -874,14 +811,6 @@ const CustomFitting = ({ onBackToMain }) => {
                     </div>
                 </div>
             </div>
-
-            {/* 배경 제거 완료 모달 */}
-            <Modal
-                isOpen={bgRemovalModalOpen}
-                onClose={() => setBgRemovalModalOpen(false)}
-                message="배경 제거가 완료되었습니다"
-                center
-            />
 
             {/* 에러 모달 */}
             <Modal
