@@ -68,6 +68,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
     // DressSelection 상태
     const [selectedCategory, setSelectedCategory] = useState('all')
     const [scrollPosition, setScrollPosition] = useState(0)
+    const [sliderHandleTop, setSliderHandleTop] = useState(0)
     const [displayCount, setDisplayCount] = useState(6)
     const [categoryStartIndex, setCategoryStartIndex] = useState(0)
     const [dresses, setDresses] = useState([])
@@ -75,8 +76,11 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
     const [error, setError] = useState(null)
     const isDraggingRef = useRef(false)
     const isScrollingFromSlider = useRef(false)
+    const loadingMoreRef = useRef(false)
     const containerRef = useRef(null)
     const contentRef = useRef(null)
+    const sliderTrackRef = useRef(null)
+    const sliderHandleRef = useRef(null)
 
     // 카테고리 정의
     const categories = [
@@ -448,9 +452,15 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                 const percentage = (currentScroll / maxScroll) * 100
                 setScrollPosition(percentage)
 
-                if (percentage > 80 && displayCount < filteredDresses.length) {
+                const nearBottom = maxScroll - currentScroll <= container.clientHeight * 0.2
+                if (nearBottom && displayCount < filteredDresses.length && !loadingMoreRef.current) {
+                    loadingMoreRef.current = true
                     setDisplayCount(prev => Math.min(prev + 6, filteredDresses.length))
+                } else if (!nearBottom) {
+                    loadingMoreRef.current = false
                 }
+            } else {
+                setScrollPosition(0)
             }
         }
 
@@ -460,15 +470,55 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
         }
     }, [displayCount, filteredDresses.length])
 
-    const updateSliderPosition = useCallback((clientY) => {
-        const track = document.querySelector('.slider-track')
-        if (track) {
-            const rect = track.getBoundingClientRect()
-            const y = clientY - rect.top
-            const percentage = Math.max(0, Math.min(100, (y / rect.height) * 100))
-            setScrollPosition(percentage)
+    const updateSliderHandleTop = useCallback((percentage) => {
+        const track = sliderTrackRef.current
+        const handle = sliderHandleRef.current
+        if (!track || !handle) return
+        const trackHeight = track.clientHeight
+        const handleHeight = handle.clientHeight
+        if (trackHeight <= handleHeight) {
+            setSliderHandleTop(0)
+            return
         }
+        const maxTop = trackHeight - handleHeight
+        const newTop = (percentage / 100) * maxTop
+        setSliderHandleTop(newTop)
     }, [])
+
+    const updateSliderPosition = useCallback((clientY) => {
+        const track = sliderTrackRef.current
+        const handle = sliderHandleRef.current
+        if (!track || !handle) return
+        const rect = track.getBoundingClientRect()
+        const trackHeight = rect.height
+        const handleHeight = handle.clientHeight
+        const maxTop = trackHeight - handleHeight
+        if (maxTop <= 0) {
+            setScrollPosition(0)
+            return
+        }
+        const offsetY = clientY - rect.top - handleHeight / 2
+        const clamped = Math.max(0, Math.min(maxTop, offsetY))
+        const percentage = (clamped / maxTop) * 100
+        setScrollPosition(percentage)
+    }, [])
+
+    useEffect(() => {
+        updateSliderHandleTop(scrollPosition)
+    }, [scrollPosition, updateSliderHandleTop])
+
+    useEffect(() => {
+        const container = contentRef.current
+        if (!container) return
+        const maxScroll = container.scrollHeight - container.clientHeight
+        if (maxScroll > 0) {
+            const percentage = (container.scrollTop / maxScroll) * 100
+            setScrollPosition(percentage)
+        } else {
+            setScrollPosition(0)
+        }
+        loadingMoreRef.current = false
+    }, [displayCount, filteredDresses.length])
 
     const handleSliderMouseMove = useCallback((e) => {
         if (isDraggingRef.current) {
@@ -1019,10 +1069,11 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                                         >
                                             ▲
                                         </button>
-                                        <div className="slider-track">
+                                        <div className="slider-track" ref={sliderTrackRef}>
                                             <div
                                                 className="slider-handle"
-                                                style={{ top: `${scrollPosition}%` }}
+                                                ref={sliderHandleRef}
+                                                style={{ top: `${sliderHandleTop}px` }}
                                                 onMouseDown={handleSliderMouseDown}
                                             />
                                         </div>
