@@ -30,7 +30,7 @@ const urlToFile = async (url, filename = 'dress.jpg') => {
 }
 
 /**
- * 자동 매칭 API 호출 (일반 탭: 사람 + 드레스 + 배경) - X.AI + Gemini 2.5 V2
+ * 자동 매칭 API 호출 (일반 탭: 사람 + 드레스 + 배경) - X.AI + Gemini 2.5 V3
  * @param {File} personImage - 사용자 사진
  * @param {Object|File} dressData - 드레스 데이터 (id, name, image, originalUrl) 또는 File 객체
  * @param {File} backgroundImage - 배경 이미지 파일
@@ -59,7 +59,7 @@ export const autoMatchImage = async (personImage, dressData, backgroundImage) =>
         }
         formData.append('background_image', backgroundImage)
 
-        const response = await api.post('/api/compose_xai_gemini_v2', formData, {
+        const response = await api.post('/fit/v3/compose', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
@@ -108,10 +108,10 @@ export const removeBackground = async (image) => {
 }
 
 /**
- * 커스텀 매칭 API 호출 (전신사진 + 드레스 이미지 합성)
+ * 커스텀 매칭 API 호출 (전신사진 + 드레스 이미지 합성) - X.AI + Gemini 2.5 V3
  * @param {File} fullBodyImage - 전신 사진
  * @param {File} dressImage - 드레스 이미지
- * @param {File} backgroundImage - 배경 이미지 (선택사항)
+ * @param {File} backgroundImage - 배경 이미지 (필수)
  * @returns {Promise} 매칭된 결과 이미지
  */
 export const customMatchImage = async (fullBodyImage, dressImage, backgroundImage = null) => {
@@ -127,7 +127,7 @@ export const customMatchImage = async (fullBodyImage, dressImage, backgroundImag
             throw new Error('배경 이미지가 필요합니다.')
         }
 
-        const response = await api.post('/api/compose_xai_gemini_v2', formData, {
+        const response = await api.post('/fit/v3/compose', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
