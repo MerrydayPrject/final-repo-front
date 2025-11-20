@@ -1385,7 +1385,7 @@
 
     .step-background-selector .background-button {
         width: 100% !important;
-        height: 90px;
+        min-height: 80px;
         aspect-ratio: 1;
         flex: 0 0 calc(50% - 6px) !important;
     }
@@ -1421,6 +1421,72 @@
         max-width: 200px;
         padding: 10px 16px !important;
         font-size: 14px !important;
+    }
+
+    /* 커스텀 피팅 모바일 추가 조정 */
+    .content-wrapper.custom-wrapper .step-guide-panel-step3 .step-result-actions {
+        position: static !important;
+        transform: none !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 12px !important;
+        margin-top: 16px !important;
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+
+    .content-wrapper.custom-wrapper .step-guide-panel-step3 .filter-buttons-container {
+        flex-direction: row !important;
+        align-items: center !important;
+        margin-right: 0 !important;
+        margin-top: 0 !important;
+        width: 100%;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .content-wrapper.custom-wrapper .step-guide-panel-step3 .filter-label {
+        margin-right: 0 !important;
+        margin-bottom: 0;
+    }
+
+    .content-wrapper.custom-wrapper .step-guide-panel-step3 .filter-buttons {
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+        margin-right: 0 !important;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .content-wrapper.custom-wrapper .step-guide-panel-step3 .filter-button {
+        min-width: 70px;
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+
+    .content-wrapper.custom-wrapper .step-guide-panel-step3 .step-result-actions .download-button {
+        margin-top: 0 !important;
+        margin-right: 0 !important;
+        position: static !important;
+        width: auto;
+        max-width: none;
+    }
+
+    /* 커스텀 피팅 preview-container 모바일 조정 */
+    .fitting-container .content-wrapper.custom-wrapper .step-guide-panel .preview-container {
+        margin-top: 0 !important;
+        height: 300px !important;
+        max-height: 300px !important;
+        border-width: 8px !important;
+    }
+
+    .fitting-container .content-wrapper.custom-wrapper .step-guide-panel .preview-container .preview-image {
+        width: 100% !important;
+    }
+
+    .content-wrapper.custom-wrapper .step-guide-panel {
+        margin-top: 0 !important;
     }
 }
 
@@ -1468,7 +1534,8 @@
     }
 
     .step-background-selector .background-button {
-        height: 80px;
+        min-height: 80px;
+        aspect-ratio: 1;
         flex: 0 0 calc(50% - 5px) !important;
     }
 

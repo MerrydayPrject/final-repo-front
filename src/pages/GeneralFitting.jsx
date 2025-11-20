@@ -859,10 +859,12 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
 
         return (
             <div className="step-guide-panel step-guide-panel-step3">
-                <div className="step-3-header">
-                    <div className="step-badge">STEP 3</div>
-                    <p className="step-3-message">오른쪽 드레스에서 원하는 스타일을 드래그하세요</p>
-                </div>
+                {!(isProcessing || generalResultImage) && (
+                    <div className="step-3-header">
+                        <div className="step-badge">STEP 3</div>
+                        <p className="step-3-message">오른쪽 드레스에서 원하는 스타일을 드래그하세요</p>
+                    </div>
+                )}
                 {renderUploadArea()}
                 {renderResultActions()}
                 <div className="step-actions">
