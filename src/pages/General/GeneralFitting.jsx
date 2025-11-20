@@ -385,6 +385,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
         : dresses.filter(dress => dress.category === selectedCategory)
 
     const handleDressClick = (dress) => {
+        if (isProcessing) return
         handleDressSelect(dress)
     }
 
@@ -444,7 +445,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
         if (!container) return
 
         const handleScroll = () => {
-            if (isScrollingFromSlider.current) return
+            if (isProcessing || isScrollingFromSlider.current) return
 
             const maxScroll = container.scrollHeight - container.clientHeight
             if (maxScroll > 0) {
@@ -468,7 +469,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
         return () => {
             container.removeEventListener('scroll', handleScroll)
         }
-    }, [displayCount, filteredDresses.length])
+    }, [displayCount, filteredDresses.length, isProcessing])
 
     const updateSliderHandleTop = useCallback((percentage) => {
         const track = sliderTrackRef.current
@@ -970,12 +971,12 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
 
                     <div className="right-container">
                         {/* DressSelection 컴포넌트 */}
-                        <div className="dress-selection">
+                        <div className={`dress-selection ${isProcessing ? 'disabled' : ''}`}>
                             <div className="category-buttons-wrapper">
                                 <button
                                     className="category-nav-button prev"
                                     onClick={() => handleCategoryNavigation('prev')}
-                                    disabled={categoryStartIndex === 0}
+                                    disabled={isProcessing || categoryStartIndex === 0}
                                 >
                                     ‹
                                 </button>
@@ -985,6 +986,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                                             key={category.id}
                                             className={`category-button ${selectedCategory === category.id ? 'active' : ''}`}
                                             onClick={() => handleCategoryClick(category.id)}
+                                            disabled={isProcessing}
                                         >
                                             {category.name}
                                         </button>
@@ -993,7 +995,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                                 <button
                                     className="category-nav-button next"
                                     onClick={() => handleCategoryNavigation('next')}
-                                    disabled={categoryStartIndex === maxStartIndex}
+                                    disabled={isProcessing || categoryStartIndex === maxStartIndex}
                                 >
                                     ›
                                 </button>
@@ -1028,7 +1030,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                                                         data-dress-id={dress.id}
                                                         className={`dress-card draggable ${selectedDress?.id === dress.id ? 'selected' : ''}`}
                                                         onClick={() => handleDressClick(dress)}
-                                                        draggable={true}
+                                                        draggable={!isProcessing}
                                                         onMouseDown={(e) => {
                                                             // 클릭 시 커서를 grabbing으로 고정
                                                             e.currentTarget.style.cursor = 'grabbing'
@@ -1066,6 +1068,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                                         <button
                                             className="slider-arrow slider-arrow-up"
                                             onClick={() => handleArrowClick('up')}
+                                            disabled={isProcessing}
                                         >
                                             ▲
                                         </button>
@@ -1074,12 +1077,13 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                                                 className="slider-handle"
                                                 ref={sliderHandleRef}
                                                 style={{ top: `${sliderHandleTop}px` }}
-                                                onMouseDown={handleSliderMouseDown}
+                                                onMouseDown={isProcessing ? undefined : handleSliderMouseDown}
                                             />
                                         </div>
                                         <button
                                             className="slider-arrow slider-arrow-down"
                                             onClick={() => handleArrowClick('down')}
+                                            disabled={isProcessing}
                                         >
                                             ▼
                                         </button>
