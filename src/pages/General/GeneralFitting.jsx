@@ -3,7 +3,7 @@ import Lottie from 'lottie-react'
 import { MdOutlineDownload } from 'react-icons/md'
 import { HiQuestionMarkCircle } from 'react-icons/hi'
 import Modal from '../../components/Modal'
-import { autoMatchImage, getDresses, applyImageFilter } from '../../utils/api'
+import { autoMatchImage, getDresses, applyImageFilter, validatePerson } from '../../utils/api'
 import '../../styles/App.css'
 import '../../styles/General/ImageUpload.css'
 import '../../styles/General/DressSelection.css'
@@ -39,7 +39,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
 
     // 모달이 열려있을 때 body에 클래스 추가
     useEffect(() => {
-        if (isImageModalOpen && isMobile) {
+        if (isImageModalOpen) {
             document.body.classList.add('image-modal-open')
         } else {
             document.body.classList.remove('image-modal-open')
@@ -47,7 +47,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
         return () => {
             document.body.classList.remove('image-modal-open')
         }
-    }, [isImageModalOpen, isMobile])
+    }, [isImageModalOpen])
 
     // 배경 선택 상태
     const [selectedBackgroundIndex, setSelectedBackgroundIndex] = useState(0)
@@ -68,6 +68,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
     // DressSelection 상태
     const [selectedCategory, setSelectedCategory] = useState('all')
     const [scrollPosition, setScrollPosition] = useState(0)
+    const [sliderHandleTop, setSliderHandleTop] = useState(0)
     const [displayCount, setDisplayCount] = useState(6)
     const [categoryStartIndex, setCategoryStartIndex] = useState(0)
     const [dresses, setDresses] = useState([])
@@ -75,8 +76,11 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
     const [error, setError] = useState(null)
     const isDraggingRef = useRef(false)
     const isScrollingFromSlider = useRef(false)
+    const loadingMoreRef = useRef(false)
     const containerRef = useRef(null)
     const contentRef = useRef(null)
+    const sliderTrackRef = useRef(null)
+    const sliderHandleRef = useRef(null)
 
     // 카테고리 정의
     const categories = [
@@ -306,13 +310,31 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
         }
     }
 
-    const handleFile = (file) => {
-        const reader = new FileReader()
-        reader.onloadend = () => {
-            setPreview(reader.result)
-            handleImageUpload(file)
+    const handleFile = async (file) => {
+        // 사람 감지 검증
+        try {
+            setIsProcessing(true)
+            const validationResult = await validatePerson(file)
+            
+            if (!validationResult.success || !validationResult.is_person) {
+                alert(validationResult.message || '이미지에서 사람을 감지할 수 없습니다. 사람이 포함된 이미지를 업로드해주세요.')
+                setIsProcessing(false)
+                return
+            }
+            
+            // 사람이 감지되면 이미지 업로드 진행
+            const reader = new FileReader()
+            reader.onloadend = () => {
+                setPreview(reader.result)
+                handleImageUpload(file)
+                setIsProcessing(false)
+            }
+            reader.readAsDataURL(file)
+        } catch (error) {
+            console.error('사람 감지 오류:', error)
+            alert('이미지 검증 중 오류가 발생했습니다. 다시 시도해주세요.')
+            setIsProcessing(false)
         }
-        reader.readAsDataURL(file)
     }
 
     const handleDragOver = (e) => {
@@ -448,9 +470,15 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                 const percentage = (currentScroll / maxScroll) * 100
                 setScrollPosition(percentage)
 
-                if (percentage > 80 && displayCount < filteredDresses.length) {
+                const nearBottom = maxScroll - currentScroll <= container.clientHeight * 0.2
+                if (nearBottom && displayCount < filteredDresses.length && !loadingMoreRef.current) {
+                    loadingMoreRef.current = true
                     setDisplayCount(prev => Math.min(prev + 6, filteredDresses.length))
+                } else if (!nearBottom) {
+                    loadingMoreRef.current = false
                 }
+            } else {
+                setScrollPosition(0)
             }
         }
 
@@ -460,15 +488,55 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
         }
     }, [displayCount, filteredDresses.length])
 
-    const updateSliderPosition = useCallback((clientY) => {
-        const track = document.querySelector('.slider-track')
-        if (track) {
-            const rect = track.getBoundingClientRect()
-            const y = clientY - rect.top
-            const percentage = Math.max(0, Math.min(100, (y / rect.height) * 100))
-            setScrollPosition(percentage)
+    const updateSliderHandleTop = useCallback((percentage) => {
+        const track = sliderTrackRef.current
+        const handle = sliderHandleRef.current
+        if (!track || !handle) return
+        const trackHeight = track.clientHeight
+        const handleHeight = handle.clientHeight
+        if (trackHeight <= handleHeight) {
+            setSliderHandleTop(0)
+            return
         }
+        const maxTop = trackHeight - handleHeight
+        const newTop = (percentage / 100) * maxTop
+        setSliderHandleTop(newTop)
     }, [])
+
+    const updateSliderPosition = useCallback((clientY) => {
+        const track = sliderTrackRef.current
+        const handle = sliderHandleRef.current
+        if (!track || !handle) return
+        const rect = track.getBoundingClientRect()
+        const trackHeight = rect.height
+        const handleHeight = handle.clientHeight
+        const maxTop = trackHeight - handleHeight
+        if (maxTop <= 0) {
+            setScrollPosition(0)
+            return
+        }
+        const offsetY = clientY - rect.top - handleHeight / 2
+        const clamped = Math.max(0, Math.min(maxTop, offsetY))
+        const percentage = (clamped / maxTop) * 100
+        setScrollPosition(percentage)
+    }, [])
+
+    useEffect(() => {
+        updateSliderHandleTop(scrollPosition)
+    }, [scrollPosition, updateSliderHandleTop])
+
+    useEffect(() => {
+        const container = contentRef.current
+        if (!container) return
+        const maxScroll = container.scrollHeight - container.clientHeight
+        if (maxScroll > 0) {
+            const percentage = (container.scrollTop / maxScroll) * 100
+            setScrollPosition(percentage)
+        } else {
+            setScrollPosition(0)
+        }
+        loadingMoreRef.current = false
+    }, [displayCount, filteredDresses.length])
 
     const handleSliderMouseMove = useCallback((e) => {
         if (isDraggingRef.current) {
@@ -571,13 +639,21 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                     <img
                         src={imageSrc}
                         alt="Preview"
-                        className={`preview-image ${imageTransition ? 'fade-transition' : ''} ${generalResultImage && isMobile ? 'clickable' : ''}`}
-                        onClick={() => {
-                            if (generalResultImage && isMobile) {
+                        draggable="false"
+                        className={`preview-image ${imageTransition ? 'fade-transition' : ''} ${imageSrc ? 'clickable' : ''}`}
+                        onClick={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            if (imageSrc && !isProcessing) {
                                 setIsImageModalOpen(true)
                             }
                         }}
-                        style={{ cursor: generalResultImage && isMobile ? 'pointer' : 'default' }}
+                        onMouseDown={(e) => {
+                            if (imageSrc && !isProcessing) {
+                                e.stopPropagation()
+                            }
+                        }}
+                        style={{ cursor: imageSrc && !isProcessing ? 'pointer' : 'default', pointerEvents: isProcessing ? 'none' : 'auto', userSelect: 'none' }}
                     />
                     {isProcessing && (
                         <div className="processing-overlay">
@@ -1011,10 +1087,11 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                                         >
                                             ▲
                                         </button>
-                                        <div className="slider-track">
+                                        <div className="slider-track" ref={sliderTrackRef}>
                                             <div
                                                 className="slider-handle"
-                                                style={{ top: `${scrollPosition}%` }}
+                                                ref={sliderHandleRef}
+                                                style={{ top: `${sliderHandleTop}px` }}
                                                 onMouseDown={handleSliderMouseDown}
                                             />
                                         </div>

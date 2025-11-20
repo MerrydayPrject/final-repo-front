@@ -3,7 +3,7 @@ import Lottie from 'lottie-react'
 import { MdOutlineDownload } from 'react-icons/md'
 import { HiQuestionMarkCircle } from 'react-icons/hi'
 import Modal from '../../components/Modal'
-import { removeBackground, customMatchImage, applyImageFilter } from '../../utils/api'
+import { customMatchImage, applyImageFilter, validatePerson } from '../../utils/api'
 import '../../styles/App.css'
 import '../../styles/General/ImageUpload.css'
 import '../../styles/Custom/CustomUpload.css'
@@ -18,10 +18,8 @@ const CustomFitting = ({ onBackToMain }) => {
     const [selectedFilter, setSelectedFilter] = useState('none')
     const [isApplyingFilter, setIsApplyingFilter] = useState(false)
     const [isMatching, setIsMatching] = useState(false)
-    const [isRemovingBackground, setIsRemovingBackground] = useState(false)
-    const [isBackgroundRemoved, setIsBackgroundRemoved] = useState(false)
+    const [isValidatingPerson, setIsValidatingPerson] = useState(false)
     const [loadingAnimation, setLoadingAnimation] = useState(null)
-    const [bgRemovalModalOpen, setBgRemovalModalOpen] = useState(false)
     const [imageTransition, setImageTransition] = useState(false)
     const [errorModalOpen, setErrorModalOpen] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
@@ -65,7 +63,7 @@ const CustomFitting = ({ onBackToMain }) => {
 
     // 모달이 열려있을 때 body에 클래스 추가
     useEffect(() => {
-        if (isImageModalOpen && isMobile) {
+        if (isImageModalOpen) {
             document.body.classList.add('image-modal-open')
         } else {
             document.body.classList.remove('image-modal-open')
@@ -73,7 +71,7 @@ const CustomFitting = ({ onBackToMain }) => {
         return () => {
             document.body.classList.remove('image-modal-open')
         }
-    }, [isImageModalOpen, isMobile])
+    }, [isImageModalOpen])
 
     useEffect(() => {
         // Lottie 애니메이션 로드
@@ -124,39 +122,10 @@ const CustomFitting = ({ onBackToMain }) => {
 
     const handleCustomDressUpload = (image) => {
         setCustomDressImage(image)
-        setIsBackgroundRemoved(false)
         // 이미지가 변경되면 기존 매칭 결과 초기화 및 STEP 2로 이동
         if (image && customResultImage) {
             setCustomResultImage(null)
             setCurrentStep(2)
-        }
-    }
-
-    const handleRemoveBackground = async () => {
-        if (!customDressImage) return
-
-        setIsRemovingBackground(true)
-
-        try {
-            const result = await removeBackground(customDressImage)
-
-            if (result.success && result.image) {
-                const response = await fetch(result.image)
-                const blob = await response.blob()
-                const file = new File([blob], 'dress_no_bg.png', { type: 'image/png' })
-
-                setCustomDressImage(file)
-                setIsBackgroundRemoved(true)
-                setIsRemovingBackground(false)
-                setBgRemovalModalOpen(true)
-            } else {
-                throw new Error(result.message || '배경 제거에 실패했습니다.')
-            }
-        } catch (error) {
-            console.error('배경 제거 중 오류 발생:', error)
-            setIsRemovingBackground(false)
-            setErrorMessage(`배경 제거 중 오류가 발생했습니다: ${error.message}`)
-            setErrorModalOpen(true)
         }
     }
 
@@ -176,39 +145,8 @@ const CustomFitting = ({ onBackToMain }) => {
         // STEP 3로 이동
         setCurrentStep(3)
 
-        // 자동으로 배경 제거 후 매칭
-        let dressImageToMatch = customDressImage
-
-        // 배경이 제거되지 않았다면 자동으로 제거
-        if (!isBackgroundRemoved) {
-            setIsRemovingBackground(true)
-            try {
-                const result = await removeBackground(customDressImage)
-
-                if (result.success && result.image) {
-                    const response = await fetch(result.image)
-                    const blob = await response.blob()
-                    const file = new File([blob], 'dress_no_bg.png', { type: 'image/png' })
-
-                    dressImageToMatch = file
-                    setCustomDressImage(file)
-                    setIsBackgroundRemoved(true)
-                } else {
-                    throw new Error(result.message || '배경 제거에 실패했습니다.')
-                }
-            } catch (error) {
-                console.error('배경 제거 중 오류 발생:', error)
-                setIsRemovingBackground(false)
-                setErrorMessage(`배경 제거 중 오류가 발생했습니다: ${error.message}`)
-                setErrorModalOpen(true)
-                return
-            } finally {
-                setIsRemovingBackground(false)
-            }
-        }
-
-        // 배경 제거 완료 후 매칭 진행
-        handleCustomMatch(fullBodyImage, dressImageToMatch)
+        // 원본 드레스 이미지를 직접 사용하여 매칭 진행
+        handleCustomMatch(fullBodyImage, customDressImage)
     }
 
     const handleCustomMatch = async (fullBody, dress) => {
@@ -246,13 +184,31 @@ const CustomFitting = ({ onBackToMain }) => {
         }
     }
 
-    const handleFullBodyFile = (file) => {
-        const reader = new FileReader()
-        reader.onloadend = () => {
-            setFullBodyPreview(reader.result)
-            handleFullBodyUpload(file)
+    const handleFullBodyFile = async (file) => {
+        // 사람 감지 검증
+        try {
+            setIsValidatingPerson(true)
+            const validationResult = await validatePerson(file)
+            
+            if (!validationResult.success || !validationResult.is_person) {
+                alert(validationResult.message || '이미지에서 사람을 감지할 수 없습니다. 사람이 포함된 이미지를 업로드해주세요.')
+                setIsValidatingPerson(false)
+                return
+            }
+            
+            // 사람이 감지되면 이미지 업로드 진행
+            const reader = new FileReader()
+            reader.onloadend = () => {
+                setFullBodyPreview(reader.result)
+                handleFullBodyUpload(file)
+                setIsValidatingPerson(false)
+            }
+            reader.readAsDataURL(file)
+        } catch (error) {
+            console.error('사람 감지 오류:', error)
+            alert('이미지 검증 중 오류가 발생했습니다. 다시 시도해주세요.')
+            setIsValidatingPerson(false)
         }
-        reader.readAsDataURL(file)
     }
 
     useEffect(() => {
@@ -461,13 +417,21 @@ const CustomFitting = ({ onBackToMain }) => {
                             <img
                                 src={customResultImage}
                                 alt="Matching Result"
-                                className={`preview-image ${imageTransition ? 'fade-transition' : ''} ${customResultImage && isMobile ? 'clickable' : ''}`}
-                                onClick={() => {
-                                    if (customResultImage && isMobile) {
+                                draggable="false"
+                                className={`preview-image ${imageTransition ? 'fade-transition' : ''} ${customResultImage ? 'clickable' : ''}`}
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    e.stopPropagation()
+                                    if (customResultImage && !isMatching) {
                                         setIsImageModalOpen(true)
                                     }
                                 }}
-                                style={{ cursor: customResultImage && isMobile ? 'pointer' : 'default' }}
+                                onMouseDown={(e) => {
+                                    if (customResultImage && !isMatching) {
+                                        e.stopPropagation()
+                                    }
+                                }}
+                                style={{ cursor: customResultImage && !isMatching ? 'pointer' : 'default', pointerEvents: isMatching ? 'none' : 'auto', userSelect: 'none' }}
                             />
                         </div>
                     </div>
@@ -478,7 +442,12 @@ const CustomFitting = ({ onBackToMain }) => {
             return null
         }
 
-        // STEP 2와 STEP 1에서는 이미지 업로드 영역 없음
+        // STEP 2에서는 빈 wrapper 반환 (CSS 적용을 위해)
+        if (currentStep === 2) {
+            return <div className="image-upload-wrapper"></div>
+        }
+
+        // STEP 1에서는 이미지 업로드 영역 없음
         return null
     }
 
@@ -724,13 +693,13 @@ const CustomFitting = ({ onBackToMain }) => {
                         <div className="step-badge">STEP 2</div>
                         <div className="step-2-text">
                             <h3 className="step-title">전신사진과 드레스 사진을 업로드하고 매칭하기를 선택해주세요</h3>
-                            <p className="step-description">왼쪽 업로드 영역에서 전신사진과 드레스 사진을 업로드한 후 매칭하기 버튼을 누르면 STEP 3로 이동합니다.</p>
                         </div>
                     </div>
                     <div className="step-panel-content">
                         <button type="button" className="step-link-button" onClick={() => setCurrentStep(1)}>
                             STEP 1 · 배경 다시 선택
                         </button>
+                        {renderUploadArea()}
                     </div>
                 </div>
             )
@@ -794,16 +763,27 @@ const CustomFitting = ({ onBackToMain }) => {
 
                                 {!fullBodyPreview ? (
                                     <div
-                                        className={`custom-upload-area ${isDraggingFullBody ? 'dragging' : ''}`}
+                                        className={`custom-upload-area ${isDraggingFullBody ? 'dragging' : ''} ${isValidatingPerson ? 'processing' : ''}`}
                                         onDragOver={handleFullBodyDragOver}
                                         onDragLeave={handleFullBodyDragLeave}
                                         onDrop={handleFullBodyDrop}
                                         onClick={handleFullBodyClick}
                                     >
-                                        <div className="upload-icon">
-                                            <img src="/Image/body_icon.png" alt="전신사진 아이콘" />
-                                        </div>
-                                        <p className="upload-text">전신사진을 업로드 해주세요</p>
+                                        {isValidatingPerson ? (
+                                            <>
+                                                {loadingAnimation && (
+                                                    <Lottie animationData={loadingAnimation} loop={true} className="spinner-lottie" style={{ width: '80px', height: '80px' }} />
+                                                )}
+                                                <p className="upload-text">사람 감지 중...</p>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <div className="upload-icon">
+                                                    <img src="/Image/body_icon.png" alt="전신사진 아이콘" />
+                                                </div>
+                                                <p className="upload-text">전신사진을 업로드 해주세요</p>
+                                            </>
+                                        )}
                                     </div>
                                 ) : (
                                     <div
@@ -862,10 +842,10 @@ const CustomFitting = ({ onBackToMain }) => {
                             <button
                                 className="analyze-button"
                                 onClick={handleManualMatch}
-                                disabled={isMatching || isRemovingBackground || !fullBodyImage || !customDressImage || !!customResultImage}
+                                disabled={isMatching || !fullBodyImage || !customDressImage || !!customResultImage}
                             >
-                                {isMatching || isRemovingBackground
-                                    ? (isRemovingBackground ? '배경 제거 중...' : '매칭 중...')
+                                {isMatching
+                                    ? '매칭 중...'
                                     : customResultImage
                                         ? '매칭완료'
                                         : '매칭하기'}
@@ -874,14 +854,6 @@ const CustomFitting = ({ onBackToMain }) => {
                     </div>
                 </div>
             </div>
-
-            {/* 배경 제거 완료 모달 */}
-            <Modal
-                isOpen={bgRemovalModalOpen}
-                onClose={() => setBgRemovalModalOpen(false)}
-                message="배경 제거가 완료되었습니다"
-                center
-            />
 
             {/* 에러 모달 */}
             <Modal
