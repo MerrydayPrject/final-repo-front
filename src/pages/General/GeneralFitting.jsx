@@ -39,7 +39,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
 
     // 모달이 열려있을 때 body에 클래스 추가
     useEffect(() => {
-        if (isImageModalOpen && isMobile) {
+        if (isImageModalOpen) {
             document.body.classList.add('image-modal-open')
         } else {
             document.body.classList.remove('image-modal-open')
@@ -47,7 +47,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
         return () => {
             document.body.classList.remove('image-modal-open')
         }
-    }, [isImageModalOpen, isMobile])
+    }, [isImageModalOpen])
 
     // 배경 선택 상태
     const [selectedBackgroundIndex, setSelectedBackgroundIndex] = useState(0)
@@ -571,13 +571,21 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                     <img
                         src={imageSrc}
                         alt="Preview"
-                        className={`preview-image ${imageTransition ? 'fade-transition' : ''} ${generalResultImage && isMobile ? 'clickable' : ''}`}
-                        onClick={() => {
-                            if (generalResultImage && isMobile) {
+                        draggable="false"
+                        className={`preview-image ${imageTransition ? 'fade-transition' : ''} ${imageSrc ? 'clickable' : ''}`}
+                        onClick={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            if (imageSrc && !isProcessing) {
                                 setIsImageModalOpen(true)
                             }
                         }}
-                        style={{ cursor: generalResultImage && isMobile ? 'pointer' : 'default' }}
+                        onMouseDown={(e) => {
+                            if (imageSrc && !isProcessing) {
+                                e.stopPropagation()
+                            }
+                        }}
+                        style={{ cursor: imageSrc && !isProcessing ? 'pointer' : 'default', pointerEvents: isProcessing ? 'none' : 'auto', userSelect: 'none' }}
                     />
                     {isProcessing && (
                         <div className="processing-overlay">

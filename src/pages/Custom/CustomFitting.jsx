@@ -65,7 +65,7 @@ const CustomFitting = ({ onBackToMain }) => {
 
     // 모달이 열려있을 때 body에 클래스 추가
     useEffect(() => {
-        if (isImageModalOpen && isMobile) {
+        if (isImageModalOpen) {
             document.body.classList.add('image-modal-open')
         } else {
             document.body.classList.remove('image-modal-open')
@@ -73,7 +73,7 @@ const CustomFitting = ({ onBackToMain }) => {
         return () => {
             document.body.classList.remove('image-modal-open')
         }
-    }, [isImageModalOpen, isMobile])
+    }, [isImageModalOpen])
 
     useEffect(() => {
         // Lottie 애니메이션 로드
@@ -461,13 +461,21 @@ const CustomFitting = ({ onBackToMain }) => {
                             <img
                                 src={customResultImage}
                                 alt="Matching Result"
-                                className={`preview-image ${imageTransition ? 'fade-transition' : ''} ${customResultImage && isMobile ? 'clickable' : ''}`}
-                                onClick={() => {
-                                    if (customResultImage && isMobile) {
+                                draggable="false"
+                                className={`preview-image ${imageTransition ? 'fade-transition' : ''} ${customResultImage ? 'clickable' : ''}`}
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    e.stopPropagation()
+                                    if (customResultImage && !isMatching) {
                                         setIsImageModalOpen(true)
                                     }
                                 }}
-                                style={{ cursor: customResultImage && isMobile ? 'pointer' : 'default' }}
+                                onMouseDown={(e) => {
+                                    if (customResultImage && !isMatching) {
+                                        e.stopPropagation()
+                                    }
+                                }}
+                                style={{ cursor: customResultImage && !isMatching ? 'pointer' : 'default', pointerEvents: isMatching ? 'none' : 'auto', userSelect: 'none' }}
                             />
                         </div>
                     </div>
