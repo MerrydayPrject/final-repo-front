@@ -5,9 +5,9 @@ import { HiQuestionMarkCircle } from 'react-icons/hi'
 import Modal from '../components/Modal'
 import { removeBackground, customMatchImage, applyImageFilter } from '../utils/api'
 import '../styles/App.css'
-import '../styles/ImageUpload.css'
-import '../styles/CustomUpload.css'
-import '../styles/CustomResult.css'
+import '../styles/General/ImageUpload.css'
+import '../styles/Custom/CustomUpload.css'
+import '../styles/Custom/CustomResult.css'
 
 const CustomFitting = ({ onBackToMain }) => {
     // Custom Fitting 상태

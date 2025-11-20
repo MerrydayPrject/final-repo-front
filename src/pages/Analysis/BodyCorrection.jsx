@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from 'react'
 import Lottie from 'lottie-react'
 import { HiQuestionMarkCircle } from 'react-icons/hi'
-import '../styles/BodyTypeFitting.css'
-import '../styles/BodyCorrection.css'
+import '../../styles/Analysis/BodyTypeFitting.css'
+import '../../styles/Analysis/BodyCorrection.css'
 
 const BodyCorrection = ({ onBackToMain, initialImage }) => {
     const [beforeImage, setBeforeImage] = useState(initialImage || null)

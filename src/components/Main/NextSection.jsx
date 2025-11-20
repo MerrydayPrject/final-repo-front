@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import '../styles/NextSection.css'
+import '../../styles/Main/NextSection.css'
 
 const NextSection = () => {
     const sectionRef = useRef(null)

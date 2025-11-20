@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Lottie from 'lottie-react'
-import '../styles/UsageGuideSection.css'
+import '../../styles/Main/UsageGuideSection.css'
 
 const UsageGuideSection = () => {
     const containerRef = useRef(null)

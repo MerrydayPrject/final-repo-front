@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import '../styles/DressSlider.css'
+import '../../styles/Main/DressSlider.css'
 
 const DressSlider = () => {
     const [offset, setOffset] = useState(0)

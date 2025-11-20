@@ -1,8 +1,8 @@
 import { useState, useRef } from 'react'
 import { HiQuestionMarkCircle } from 'react-icons/hi'
-import Modal from '../components/Modal'
-import '../styles/BodyTypeFitting.css'
-import { analyzeBody } from '../utils/api'
+import Modal from '../../components/Modal'
+import '../../styles/Analysis/BodyTypeFitting.css'
+import { analyzeBody } from '../../utils/api'
 
 const DRESS_CATEGORY_LABELS = {
     ballgown: '벨라인',
@@ -365,7 +365,7 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            
+
                                             {/* 2. 체형 특징 */}
                                             {analysisResult.body_analysis?.body_features && analysisResult.body_analysis.body_features.length > 0 && (
                                                 <div className="result-item body-features-item">
@@ -380,7 +380,7 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                                                 })
                                                                 .filter((feature) => feature && feature.trim())
                                                         )).map((feature, index) => (
-                                                            <span 
+                                                            <span
                                                                 key={index}
                                                                 style={{
                                                                     display: 'inline-block',
@@ -398,7 +398,7 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                                     </div>
                                                 </div>
                                             )}
-                                            
+
                                             {/* 3. 추천 드레스 스타일 (분석글 위) */}
                                             {recommendedCategories.length > 0 && (
                                                 <div className="result-item recommended-categories-item">
@@ -430,17 +430,17 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                                     {analysisParagraphs.length > 0 ? (
                                                         (() => {
                                                             // 전체 텍스트를 하나로 합치기
-                                                            const fullText = analysisParagraphs.map(segments => 
+                                                            const fullText = analysisParagraphs.map(segments =>
                                                                 segments.map(s => s.text).join('')
                                                             ).join(' ');
-                                                            
+
                                                             // 체형 설명 부분 찾기 (첫 문장에서 "~체형입니다" 패턴만)
                                                             const firstSentence = fullText.split(/[\.。]/)[0];
                                                             // "전체적으로 슬림하고 비율이 좋은 체형입니다" 같은 패턴 찾기
                                                             // "이미지를 직접 관찰했을 때" 같은 앞부분은 제외하고 체형 설명 부분만
                                                             // "전체적으로"로 시작하는 부분을 찾아서 하이라이트 (앞에 "이미지를 직접 관찰"이 있어도 "전체적으로"부터만 하이라이트)
                                                             let bodyTypeMatch = null;
-                                                            
+
                                                             // 패턴 1: "전체적으로"로 시작하는 부분 찾기 (가장 우선)
                                                             const bodyTypePattern1 = /전체적으로[^\.]*(?:슬림|늘씬|균형|단정|좋은|우아|세련)[^\.]*(?:체형|비율)[입니다\.]*/;
                                                             const match1 = firstSentence.match(bodyTypePattern1);
@@ -448,7 +448,7 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                                                 // "전체적으로"부터만 하이라이트 (앞에 "이미지를 직접 관찰"이 있어도 상관없음)
                                                                 bodyTypeMatch = { 1: match1[0] };
                                                             }
-                                                            
+
                                                             // 패턴 2: "전체적으로"로 시작하지 않지만 체형 설명 부분 찾기
                                                             if (!bodyTypeMatch) {
                                                                 const bodyTypePattern2 = /([^\.]*(?:슬림|늘씬|균형|단정|좋은|우아|세련)[^\.]*(?:체형|비율)[입니다\.]*)/;
@@ -457,22 +457,22 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                                                     bodyTypeMatch = match2;
                                                                 }
                                                             }
-                                                            
+
                                                             // 드레스 키워드 찾기 (전체 텍스트에서 2개만)
                                                             const styleKeywords = [
                                                                 '슬림', '프린세스', 'A라인', '벨라인', '머메이드', '트럼펫', '미니드레스',
                                                                 '스트레이트', 'H라인', '에이라인', '플레어', '하이웨이스트', '벨트라인'
                                                             ];
-                                                            
+
                                                             // 전체 텍스트에서 하이라이트할 키워드 위치 찾기
                                                             const highlightedKeywords = [];
                                                             let dressHighlightCount = 0;
                                                             const maxDressHighlights = 2;
                                                             const sortedKeywords = [...styleKeywords].sort((a, b) => b.length - a.length);
-                                                            
+
                                                             sortedKeywords.forEach(keyword => {
                                                                 if (dressHighlightCount >= maxDressHighlights) return;
-                                                                
+
                                                                 const regex = new RegExp(keyword, 'gi');
                                                                 const match = regex.exec(fullText);
                                                                 if (match) {
@@ -484,18 +484,18 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                                                     dressHighlightCount++;
                                                                 }
                                                             });
-                                                            
+
                                                             return analysisParagraphs.map((segments, lineIndex) => {
                                                                 const lineText = segments.map(s => s.text).join('');
                                                                 let processedText = lineText;
-                                                                
+
                                                                 // 현재 줄의 시작 위치 계산 (원본 텍스트 기준)
                                                                 let lineStartIndex = 0;
                                                                 for (let i = 0; i < lineIndex; i++) {
                                                                     lineStartIndex += analysisParagraphs[i].map(s => s.text).join('').length + 1;
                                                                 }
                                                                 const lineEndIndex = lineStartIndex + lineText.length;
-                                                                
+
                                                                 // 먼저 드레스 키워드 하이라이트 (원본 텍스트 기준으로 정확한 위치, 역순으로 처리)
                                                                 // 역순으로 처리하여 인덱스가 변경되지 않도록
                                                                 const keywordsInLine = highlightedKeywords
@@ -506,7 +506,7 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                                                         length
                                                                     }))
                                                                     .sort((a, b) => b.localIndex - a.localIndex); // 역순 정렬
-                                                                
+
                                                                 keywordsInLine.forEach(({ keyword, localIndex, length }) => {
                                                                     // 원본 텍스트에서 정확한 위치의 키워드만 하이라이트
                                                                     if (processedText.substring(localIndex, localIndex + length) === keyword) {
@@ -518,7 +518,7 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                                                         }
                                                                     }
                                                                 });
-                                                                
+
                                                                 // 체형 설명 부분 하이라이트 (첫 줄에만, 드레스 키워드 하이라이트 이후)
                                                                 if (lineIndex === 0 && bodyTypeMatch && bodyTypeMatch[1]) {
                                                                     const bodyTypeText = bodyTypeMatch[1].trim();
@@ -533,13 +533,13 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                                                         });
                                                                     }
                                                                 }
-                                                                
+
                                                                 // 하이라이트된 텍스트 파싱
                                                                 const parts = [];
                                                                 let currentIndex = 0;
                                                                 const highlightRegex = /<span class="highlight">(.*?)<\/span>/g;
                                                                 let match;
-                                                                
+
                                                                 while ((match = highlightRegex.exec(processedText)) !== null) {
                                                                     if (match.index > currentIndex) {
                                                                         parts.push({
@@ -553,14 +553,14 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                                                     });
                                                                     currentIndex = match.index + match[0].length;
                                                                 }
-                                                                
+
                                                                 if (currentIndex < processedText.length) {
                                                                     parts.push({
                                                                         text: processedText.substring(currentIndex),
                                                                         highlight: false
                                                                     });
                                                                 }
-                                                                
+
                                                                 return (
                                                                     <p key={lineIndex} className="analysis-description-line">
                                                                         {parts.length > 0 ? (

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import '../styles/DressCollection.css'
+import '../../styles/Main/DressCollection.css'
 
 const DressCollection = () => {
     const [count, setCount] = useState(0)
