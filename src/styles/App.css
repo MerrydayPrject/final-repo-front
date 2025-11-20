@@ -172,6 +172,27 @@
     animation: bounce 0.6s ease;
 }
 
+/* 모바일에서 툴팁 및 아이콘 완전히 제거 */
+@media (max-width: 768px) {
+    .faq-button {
+        display: none !important;
+    }
+
+    .faq-button .tooltip,
+    .faq-button:hover .tooltip,
+    .faq-button:active .tooltip,
+    .faq-button:focus .tooltip {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }
+
+    .faq-button .tooltip::after {
+        display: none !important;
+    }
+}
+
 @keyframes bounce {
 
     0%,
@@ -479,15 +500,87 @@ body.dragging-dress * {
 @media (max-width: 768px) {
     .main-content {
         padding: 0;
+        margin-top: 80px;
     }
 
     .fitting-container {
-        height: calc(100vh - 170px);
+        height: auto;
+        min-height: calc(100vh - 80px);
     }
 
     .content-wrapper {
-        padding: 40px 20px 0;
-        gap: 16px;
+        flex-direction: column;
+        padding: 20px 12px 0;
+        gap: 20px;
+        overflow-y: auto;
+    }
+
+    .left-container {
+        flex: 0 0 auto;
+        width: 100%;
+        max-height: none;
+        margin-left: 0;
+        margin-right: 0;
+        gap: 8px;
+    }
+
+    .right-container {
+        flex: 1;
+        min-height: 250px;
+        max-height: calc(100vh - 200px);
+        margin-left: 0;
+        padding-left: 0;
+        padding-bottom: 0;
+        margin-bottom: 0;
+    }
+
+    .general-fitting-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 12px;
+        padding: 20px 10px 0;
+    }
+
+    .general-fitting-title {
+        font-size: 24px;
+    }
+
+    .tab-guide-text-wrapper {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        padding-top: 0;
+    }
+
+    .tab-guide-text {
+        font-size: 13px;
+        line-height: 1.4;
+    }
+
+    .faq-button {
+        display: none !important;
+    }
+
+    .faq-button svg {
+        display: none !important;
+    }
+
+    .tooltip {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+    }
+
+    .tooltip::after {
+        display: none !important;
+    }
+
+    .faq-button:hover .tooltip {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
     }
 
     .tab-menu-container {
@@ -505,10 +598,6 @@ body.dragging-dress * {
         font-size: 13px;
     }
 
-    .tab-guide-text {
-        font-size: 12px;
-    }
-
     .upload-section h2,
     .dress-section h2 {
         font-size: 24px;
@@ -517,10 +606,6 @@ body.dragging-dress * {
     .process-button {
         font-size: 18px;
         padding: 16px 40px;
-    }
-
-    .left-container {
-        max-height: 350px;
     }
 
     .drag-guide-arrow {
@@ -537,5 +622,56 @@ body.dragging-dress * {
 
     .drag-gif-icon {
         width: 35px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-content {
+        margin-top: 70px;
+    }
+
+    .fitting-container {
+        min-height: calc(100vh - 70px);
+    }
+
+    .content-wrapper {
+        padding: 16px 8px 0;
+        gap: 16px;
+    }
+
+    .general-fitting-header {
+        padding-top: 16px;
+    }
+
+    .general-fitting-title {
+        font-size: 20px;
+    }
+
+    .tab-guide-text {
+        font-size: 12px;
+    }
+
+    .faq-button {
+        display: none !important;
+    }
+
+    .faq-button svg {
+        display: none !important;
+    }
+
+    .tooltip {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+    }
+
+    .tooltip::after {
+        display: none !important;
+    }
+
+    .faq-button:hover .tooltip {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
     }
 }
