@@ -3,7 +3,7 @@ import Lottie from 'lottie-react'
 import { MdOutlineDownload } from 'react-icons/md'
 import { HiQuestionMarkCircle } from 'react-icons/hi'
 import Modal from '../../components/Modal'
-import { autoMatchImage, getDresses, applyImageFilter } from '../../utils/api'
+import { autoMatchImage, getDresses, applyImageFilter, validatePerson } from '../../utils/api'
 import '../../styles/App.css'
 import '../../styles/General/ImageUpload.css'
 import '../../styles/General/DressSelection.css'
@@ -310,13 +310,31 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
         }
     }
 
-    const handleFile = (file) => {
-        const reader = new FileReader()
-        reader.onloadend = () => {
-            setPreview(reader.result)
-            handleImageUpload(file)
+    const handleFile = async (file) => {
+        // 사람 감지 검증
+        try {
+            setIsProcessing(true)
+            const validationResult = await validatePerson(file)
+            
+            if (!validationResult.success || !validationResult.is_person) {
+                alert(validationResult.message || '이미지에서 사람을 감지할 수 없습니다. 사람이 포함된 이미지를 업로드해주세요.')
+                setIsProcessing(false)
+                return
+            }
+            
+            // 사람이 감지되면 이미지 업로드 진행
+            const reader = new FileReader()
+            reader.onloadend = () => {
+                setPreview(reader.result)
+                handleImageUpload(file)
+                setIsProcessing(false)
+            }
+            reader.readAsDataURL(file)
+        } catch (error) {
+            console.error('사람 감지 오류:', error)
+            alert('이미지 검증 중 오류가 발생했습니다. 다시 시도해주세요.')
+            setIsProcessing(false)
         }
-        reader.readAsDataURL(file)
     }
 
     const handleDragOver = (e) => {

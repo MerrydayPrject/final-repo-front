@@ -3,7 +3,7 @@ import Lottie from 'lottie-react'
 import { MdOutlineDownload } from 'react-icons/md'
 import { HiQuestionMarkCircle } from 'react-icons/hi'
 import Modal from '../../components/Modal'
-import { customMatchImage, applyImageFilter } from '../../utils/api'
+import { customMatchImage, applyImageFilter, validatePerson } from '../../utils/api'
 import '../../styles/App.css'
 import '../../styles/General/ImageUpload.css'
 import '../../styles/Custom/CustomUpload.css'
@@ -18,6 +18,7 @@ const CustomFitting = ({ onBackToMain }) => {
     const [selectedFilter, setSelectedFilter] = useState('none')
     const [isApplyingFilter, setIsApplyingFilter] = useState(false)
     const [isMatching, setIsMatching] = useState(false)
+    const [isValidatingPerson, setIsValidatingPerson] = useState(false)
     const [loadingAnimation, setLoadingAnimation] = useState(null)
     const [imageTransition, setImageTransition] = useState(false)
     const [errorModalOpen, setErrorModalOpen] = useState(false)
@@ -183,13 +184,31 @@ const CustomFitting = ({ onBackToMain }) => {
         }
     }
 
-    const handleFullBodyFile = (file) => {
-        const reader = new FileReader()
-        reader.onloadend = () => {
-            setFullBodyPreview(reader.result)
-            handleFullBodyUpload(file)
+    const handleFullBodyFile = async (file) => {
+        // 사람 감지 검증
+        try {
+            setIsValidatingPerson(true)
+            const validationResult = await validatePerson(file)
+            
+            if (!validationResult.success || !validationResult.is_person) {
+                alert(validationResult.message || '이미지에서 사람을 감지할 수 없습니다. 사람이 포함된 이미지를 업로드해주세요.')
+                setIsValidatingPerson(false)
+                return
+            }
+            
+            // 사람이 감지되면 이미지 업로드 진행
+            const reader = new FileReader()
+            reader.onloadend = () => {
+                setFullBodyPreview(reader.result)
+                handleFullBodyUpload(file)
+                setIsValidatingPerson(false)
+            }
+            reader.readAsDataURL(file)
+        } catch (error) {
+            console.error('사람 감지 오류:', error)
+            alert('이미지 검증 중 오류가 발생했습니다. 다시 시도해주세요.')
+            setIsValidatingPerson(false)
         }
-        reader.readAsDataURL(file)
     }
 
     useEffect(() => {
@@ -744,16 +763,27 @@ const CustomFitting = ({ onBackToMain }) => {
 
                                 {!fullBodyPreview ? (
                                     <div
-                                        className={`custom-upload-area ${isDraggingFullBody ? 'dragging' : ''}`}
+                                        className={`custom-upload-area ${isDraggingFullBody ? 'dragging' : ''} ${isValidatingPerson ? 'processing' : ''}`}
                                         onDragOver={handleFullBodyDragOver}
                                         onDragLeave={handleFullBodyDragLeave}
                                         onDrop={handleFullBodyDrop}
                                         onClick={handleFullBodyClick}
                                     >
-                                        <div className="upload-icon">
-                                            <img src="/Image/body_icon.png" alt="전신사진 아이콘" />
-                                        </div>
-                                        <p className="upload-text">전신사진을 업로드 해주세요</p>
+                                        {isValidatingPerson ? (
+                                            <>
+                                                {loadingAnimation && (
+                                                    <Lottie animationData={loadingAnimation} loop={true} className="spinner-lottie" style={{ width: '80px', height: '80px' }} />
+                                                )}
+                                                <p className="upload-text">사람 감지 중...</p>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <div className="upload-icon">
+                                                    <img src="/Image/body_icon.png" alt="전신사진 아이콘" />
+                                                </div>
+                                                <p className="upload-text">전신사진을 업로드 해주세요</p>
+                                            </>
+                                        )}
                                     </div>
                                 ) : (
                                     <div
