@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbit&family=Static&display=swap');
 
 .dress-selection {
-    position: relative;
     width: 100%;
     height: 100%;
     display: flex;
@@ -9,35 +8,38 @@
     background: white;
     padding: 30px 0 0;
     overflow: hidden;
-    transition: opacity 0.2s ease;
+    position: relative;
 }
 
-.dress-selection.disabled {
-    opacity: 0.6;
-    filter: grayscale(0.3);
+.dress-selection.processing {
     pointer-events: none;
 }
 
-.dress-selection.disabled .vertical-slider {
-    pointer-events: none;
-    opacity: 0.8;
+.dress-selection.processing .category-buttons-wrapper,
+.dress-selection.processing .dress-grid-container,
+.dress-selection.processing .vertical-slider {
+    filter: grayscale(100%) opacity(0.9);
 }
 
-.dress-selection.disabled .dress-grid-container {
-    overflow: hidden;
-}
-
-.dress-selection.disabled::after {
-    content: '';
+.dress-selection-overlay {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255, 255, 255, 0.5);
+    inset: 0;
+    background: rgba(250, 248, 248, 0.233);
     backdrop-filter: blur(2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     z-index: 5;
+    text-align: center;
+    padding: 20px;
     pointer-events: none;
+}
+
+.dress-selection-overlay-text {
+    color: #4a4a4a;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.5;
 }
 
 /* 카테고리 버튼 컨테이너 */
@@ -135,19 +137,13 @@
     flex-shrink: 0;
 }
 
-.category-button:hover:not(:disabled) {
+.category-button:hover {
     border-color: #ad9f41;
     background: rgba(118, 108, 8, 0.05);
 }
 
 .category-button.active {
     background: #ad9f41;
-
-    .category-button:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
-
     color: white;
     border-color: #ad9f41;
 }
@@ -400,19 +396,14 @@
     flex-shrink: 0;
 }
 
-.slider-arrow:hover:enabled {
+.slider-arrow:hover {
     background: #ad9f41;
     color: white;
     transform: scale(1.1);
 }
 
-.slider-arrow:active:enabled {
+.slider-arrow:active {
     transform: scale(0.95);
-}
-
-.slider-arrow:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
 }
 
 .slider-track {
