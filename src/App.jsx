@@ -1,16 +1,9 @@
 import { useState, useEffect } from 'react'
 import Header from './components/Header'
-import VideoBackground from './components/Main/VideoBackground'
-import DomeGallery from './components/Main/DomeGallery'
-import DressCollection from './components/Main/DressCollection'
-import UsageGuideSection from './components/Main/UsageGuideSection'
-import AboutUs from './components/Main/AboutUs'
-import NextSection from './components/Main/NextSection'
-import FAQSection from './components/Main/FAQSection'
-import ScrollToTop from './components/Main/ScrollToTop'
 import Modal from './components/Modal'
-import GeneralFitting from './pages/GeneralFitting'
-import CustomFitting from './pages/CustomFitting'
+import MainPage from './pages/Main/MainPage'
+import GeneralFitting from './pages/General/GeneralFitting'
+import CustomFitting from './pages/Custom/CustomFitting'
 import BodyAnalysis from './pages/Analysis/BodyAnalysis'
 import './styles/App.css'
 
@@ -89,24 +82,12 @@ function App() {
     return (
         <div className="app">
             {currentPage === 'main' && (
-                <>
-                    <VideoBackground onNavigateToFitting={handleNavigateToFitting} />
-                    <AboutUs
-                        onNavigateToGeneral={() => handleMenuClick('general')}
-                        onNavigateToCustom={() => handleMenuClick('custom')}
-                        onNavigateToAnalysis={() => handleMenuClick('analysis')}
-                    />
-                    <section className="dome-gallery-section">
-                        <div className="dome-gallery-header">
-                            <h2 className="dome-gallery-title">다양한 드레스를 피팅해보세요</h2>
-                        </div>
-                        <DomeGallery />
-                    </section>
-                    <DressCollection />
-                    <UsageGuideSection />
-                    <FAQSection />
-                    <NextSection />
-                </>
+                <MainPage
+                    onNavigateToFitting={handleNavigateToFitting}
+                    onNavigateToGeneral={() => handleMenuClick('general')}
+                    onNavigateToCustom={() => handleMenuClick('custom')}
+                    onNavigateToAnalysis={() => handleMenuClick('analysis')}
+                />
             )}
             <Header
                 currentPage={currentPage}
@@ -114,7 +95,6 @@ function App() {
                 onMenuClick={handleMenuClick}
                 onLogoClick={handleLogoClick}
             />
-            {currentPage === 'main' && <ScrollToTop />}
 
             {currentPage === 'general' && (
                 <GeneralFitting

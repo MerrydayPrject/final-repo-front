@@ -2,11 +2,11 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import Lottie from 'lottie-react'
 import { MdOutlineDownload } from 'react-icons/md'
 import { HiQuestionMarkCircle } from 'react-icons/hi'
-import Modal from '../components/Modal'
-import { autoMatchImage, getDresses, applyImageFilter } from '../utils/api'
-import '../styles/App.css'
-import '../styles/General/ImageUpload.css'
-import '../styles/General/DressSelection.css'
+import Modal from '../../components/Modal'
+import { autoMatchImage, getDresses, applyImageFilter } from '../../utils/api'
+import '../../styles/App.css'
+import '../../styles/General/ImageUpload.css'
+import '../../styles/General/DressSelection.css'
 
 const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
     // General Fitting 상태
