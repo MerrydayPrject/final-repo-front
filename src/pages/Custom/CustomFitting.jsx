@@ -478,7 +478,12 @@ const CustomFitting = ({ onBackToMain }) => {
             return null
         }
 
-        // STEP 2와 STEP 1에서는 이미지 업로드 영역 없음
+        // STEP 2에서는 빈 wrapper 반환 (CSS 적용을 위해)
+        if (currentStep === 2) {
+            return <div className="image-upload-wrapper"></div>
+        }
+
+        // STEP 1에서는 이미지 업로드 영역 없음
         return null
     }
 
@@ -724,13 +729,13 @@ const CustomFitting = ({ onBackToMain }) => {
                         <div className="step-badge">STEP 2</div>
                         <div className="step-2-text">
                             <h3 className="step-title">전신사진과 드레스 사진을 업로드하고 매칭하기를 선택해주세요</h3>
-                            <p className="step-description">왼쪽 업로드 영역에서 전신사진과 드레스 사진을 업로드한 후 매칭하기 버튼을 누르면 STEP 3로 이동합니다.</p>
                         </div>
                     </div>
                     <div className="step-panel-content">
                         <button type="button" className="step-link-button" onClick={() => setCurrentStep(1)}>
                             STEP 1 · 배경 다시 선택
                         </button>
+                        {renderUploadArea()}
                     </div>
                 </div>
             )
