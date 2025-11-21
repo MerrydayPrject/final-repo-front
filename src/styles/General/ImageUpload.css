@@ -192,7 +192,7 @@
 /* step3에서 필터 버튼들을 우측에 세로 배치 */
 .step-guide-panel-step3 .step-result-actions {
     position: absolute;
-    right: 4px;
+    right: 35px;
     top: 50%;
     transform: translateY(-50%);
     display: flex;
@@ -210,7 +210,7 @@
 
 .step-guide-panel-step3 .step-result-actions .download-button {
     margin-top: 140px !important;
-    margin-right: 80px !important;
+    margin-right: 50px !important;
 }
 
 .step-guide-panel-step3 .filter-buttons-container {
@@ -228,7 +228,7 @@
     color: #333;
     white-space: nowrap;
     margin-bottom: 4px;
-    margin-right: 100px;
+    margin-right: 60px;
     display: flex;
     align-items: center;
     gap: 6px;
@@ -245,7 +245,7 @@
     display: flex !important;
     flex-direction: column !important;
     gap: 12px !important;
-    margin-right: 50px !important;
+    margin-right: 20px !important;
 }
 
 .step-guide-panel-step3 .filter-button {

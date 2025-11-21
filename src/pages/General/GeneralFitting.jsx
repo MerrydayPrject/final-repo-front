@@ -675,20 +675,21 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                         src={imageSrc}
                         alt="Preview"
                         draggable="false"
-                        className={`preview-image ${imageTransition ? 'fade-transition' : ''} ${imageSrc ? 'clickable' : ''}`}
+                        className={`preview-image ${imageTransition ? 'fade-transition' : ''} ${generalResultImage ? 'clickable' : ''}`}
                         onClick={(e) => {
                             e.preventDefault()
                             e.stopPropagation()
-                            if (imageSrc && !isProcessing) {
+                            // 결과 이미지가 있을 때만 모달 열기
+                            if (generalResultImage && !isProcessing) {
                                 setIsImageModalOpen(true)
                             }
                         }}
                         onMouseDown={(e) => {
-                            if (imageSrc && !isProcessing) {
+                            if (generalResultImage && !isProcessing) {
                                 e.stopPropagation()
                             }
                         }}
-                        style={{ cursor: imageSrc && !isProcessing ? 'pointer' : 'default', pointerEvents: isProcessing ? 'none' : 'auto', userSelect: 'none' }}
+                        style={{ cursor: generalResultImage && !isProcessing ? 'pointer' : 'default', pointerEvents: isProcessing ? 'none' : 'auto', userSelect: 'none' }}
                     />
                     {isProcessing && (
                         <div className="processing-overlay">
@@ -1214,15 +1215,15 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                 center
             />
 
-            {/* 이미지 확대 모달 */}
-            {isImageModalOpen && (
+            {/* 이미지 확대 모달 - 결과 이미지만 표시 */}
+            {isImageModalOpen && generalResultImage && (
                 <div className="image-modal-overlay" onClick={() => setIsImageModalOpen(false)}>
                     <div className="image-modal-container" onClick={(e) => e.stopPropagation()}>
                         <button className="image-modal-close" onClick={() => setIsImageModalOpen(false)}>
                             ✕
                         </button>
                         <img
-                            src={imageSrc}
+                            src={generalResultImage}
                             alt="확대된 결과 이미지"
                             className="image-modal-image"
                         />
