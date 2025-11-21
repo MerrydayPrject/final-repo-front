@@ -3,7 +3,7 @@ import Lottie from 'lottie-react'
 import { MdOutlineDownload } from 'react-icons/md'
 import { HiQuestionMarkCircle } from 'react-icons/hi'
 import Modal from '../../components/Modal'
-import { autoMatchImage, getDresses, applyImageFilter, validatePerson } from '../../utils/api'
+import { autoMatchImageV4, getDresses, applyImageFilter, validatePerson } from '../../utils/api'
 import '../../styles/App.css'
 import '../../styles/General/ImageUpload.css'
 import '../../styles/General/DressSelection.css'
@@ -299,7 +299,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
             const backgroundImageUrl = backgroundImages[selectedBackgroundIndex]
             const backgroundFile = await urlToFile(backgroundImageUrl, `background${selectedBackgroundIndex + 1}.jpg`)
 
-            const result = await autoMatchImage(uploadedImage, dress, backgroundFile)
+            const result = await autoMatchImageV4(uploadedImage, dress, backgroundFile)
 
             if (result.success && result.result_image) {
                 setProgress(100)
