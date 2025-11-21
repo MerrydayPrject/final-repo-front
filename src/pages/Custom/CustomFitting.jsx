@@ -867,7 +867,7 @@ const CustomFitting = ({ onBackToMain }) => {
                                         onDrop={handleFullBodyDrop}
                                     >
                                         <img src={fullBodyPreview} alt="Full Body" className="custom-preview-image" />
-                                        {!isMatching && customResultImage && (
+                                        {!isMatching && (
                                             <button className="custom-remove-button" onClick={handleFullBodyRemove}>
                                                 ✕
                                             </button>
@@ -907,7 +907,7 @@ const CustomFitting = ({ onBackToMain }) => {
                                         onDrop={handleDressDrop}
                                     >
                                         <img src={dressPreview} alt="Dress" className="custom-preview-image" />
-                                        {!isMatching && customResultImage && (
+                                        {!isMatching && (
                                             <button className="custom-remove-button" onClick={handleDressRemove}>
                                                 ✕
                                             </button>
