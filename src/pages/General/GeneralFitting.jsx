@@ -28,6 +28,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
     const [isImageModalOpen, setIsImageModalOpen] = useState(false)
     const [validationModalOpen, setValidationModalOpen] = useState(false)
     const [validationMessage, setValidationMessage] = useState('')
+    const [isValidatingPerson, setIsValidatingPerson] = useState(false)
 
     // 모바일 여부 확인
     useEffect(() => {
@@ -324,37 +325,37 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
     const handleFile = async (file) => {
         // 사람 감지 검증
         try {
-            setIsProcessing(true)
+            setIsValidatingPerson(true)
             const validationResult = await validatePerson(file)
 
             // 동물이 감지된 경우
             if (validationResult.is_animal) {
                 setValidationMessage(validationResult.message || '동물이 감지되었습니다. 사람이 포함된 이미지를 업로드해주세요.')
                 setValidationModalOpen(true)
-                setIsProcessing(false)
+                setIsValidatingPerson(false)
                 return
             }
 
             if (!validationResult.success || !validationResult.is_person) {
                 setValidationMessage(validationResult.message || '이미지에서 사람을 감지할 수 없습니다. 사람이 포함된 이미지를 업로드해주세요.')
                 setValidationModalOpen(true)
-                setIsProcessing(false)
+                setIsValidatingPerson(false)
                 return
             }
 
             // 사람이 감지되면 이미지 업로드 진행
+            setIsValidatingPerson(false)
             const reader = new FileReader()
             reader.onloadend = () => {
                 setPreview(reader.result)
                 handleImageUpload(file)
-                setIsProcessing(false)
             }
             reader.readAsDataURL(file)
         } catch (error) {
             console.error('사람 감지 오류:', error)
             setValidationMessage('이미지 검증 중 오류가 발생했습니다. 다시 시도해주세요.')
             setValidationModalOpen(true)
-            setIsProcessing(false)
+            setIsValidatingPerson(false)
         }
     }
 
@@ -639,17 +640,29 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
         <div className="image-upload-wrapper">
             {!preview ? (
                 <div
-                    className={`upload-area ${isDragging ? 'dragging' : ''}`}
+                    className={`upload-area ${isDragging ? 'dragging' : ''} ${isValidatingPerson ? 'processing' : ''}`}
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
                     onDrop={handleDrop}
                     onClick={handleClick}
                 >
-                    <div className="upload-icon">
-                        <img src="/Image/body_icon.png" alt="전신사진 아이콘" />
-                    </div>
-                    <p className="upload-text">전신 또는 얼굴 이미지를 먼저 업로드 해주세요</p>
-                    <p className="upload-subtext">JPG, PNG, JPEG 형식 지원</p>
+                    {isValidatingPerson ? (
+                        <>
+                            <div className="validation-overlay"></div>
+                            <div className="validation-loader-wrapper">
+                                <div className="loader"><span></span></div>
+                                <p className="upload-text">이미지를 확인하고 있어요<br />잠시만 기다려주세요</p>
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                            <div className="upload-icon">
+                                <img src="/Image/body_icon.png" alt="전신사진 아이콘" />
+                            </div>
+                            <p className="upload-text">전신 또는 얼굴 이미지를 먼저 업로드 해주세요</p>
+                            <p className="upload-subtext">JPG, PNG, JPEG 형식 지원</p>
+                        </>
+                    )}
                 </div>
             ) : (
                 <div
@@ -926,7 +939,16 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
     const renderStepContent = () => {
         if (currentStep === 1) {
             return (
-                <div className="step-guide-panel">
+                <div className={`step-guide-panel ${isValidatingPerson ? 'validating' : ''}`}>
+                    {isValidatingPerson && (
+                        <>
+                            <div className="step-guide-panel-overlay"></div>
+                            <div className="step-guide-panel-loader-wrapper">
+                                <div className="loader"><span></span></div>
+                                <p className="upload-text">이미지를 확인하고 있어요<br />잠시만 기다려주세요</p>
+                            </div>
+                        </>
+                    )}
                     <div className="step-badge">STEP 1</div>
                     <h3 className="step-title">피팅 배경을 먼저 선택해보세요</h3>
                     <p className="step-description">아래 배경 버튼을 눌러 웨딩 피팅 공간의 무드를 선택하면 STEP 2로 이동합니다.</p>
@@ -938,7 +960,16 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
 
         if (currentStep === 2) {
             return (
-                <div className="step-guide-panel step-guide-panel-step2">
+                <div className={`step-guide-panel step-guide-panel-step2 ${isValidatingPerson ? 'validating' : ''}`}>
+                    {isValidatingPerson && (
+                        <>
+                            <div className="step-guide-panel-overlay"></div>
+                            <div className="step-guide-panel-loader-wrapper">
+                                <div className="loader"><span></span></div>
+                                <p className="upload-text">이미지를 확인하고 있어요<br />잠시만 기다려주세요</p>
+                            </div>
+                        </>
+                    )}
                     <div className="step-2-header">
                         <div className="step-badge">STEP 2</div>
                         <div className="step-2-text">
@@ -956,7 +987,16 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
         }
 
         return (
-            <div className="step-guide-panel step-guide-panel-step3">
+            <div className={`step-guide-panel step-guide-panel-step3 ${isValidatingPerson ? 'validating' : ''}`}>
+                {isValidatingPerson && (
+                    <>
+                        <div className="step-guide-panel-overlay"></div>
+                        <div className="step-guide-panel-loader-wrapper">
+                            <div className="loader"></div>
+                            <p className="upload-text">이미지를 확인하고 있어요<br />잠시만 기다려주세요</p>
+                        </div>
+                    </>
+                )}
                 {!(isProcessing || generalResultImage) && (
                     <div className="step-3-header">
                         <div className="step-badge">STEP 3</div>

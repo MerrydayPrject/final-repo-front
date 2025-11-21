@@ -781,10 +781,11 @@ const CustomFitting = ({ onBackToMain }) => {
                                     >
                                         {isValidatingPerson ? (
                                             <>
-                                                {loadingAnimation && (
-                                                    <Lottie animationData={loadingAnimation} loop={true} className="spinner-lottie" style={{ width: '80px', height: '80px' }} />
-                                                )}
-                                                <p className="upload-text">사람 감지 중...</p>
+                                                <div className="validation-overlay"></div>
+                                                <div className="validation-loader-wrapper">
+                                                    <div className="loader"><span></span></div>
+                                                    <p className="upload-text">이미지를 확인하고 있어요<br />잠시만 기다려주세요</p>
+                                                </div>
                                             </>
                                         ) : (
                                             <>
