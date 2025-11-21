@@ -30,7 +30,7 @@ const urlToFile = async (url, filename = 'dress.jpg') => {
 }
 
 /**
- * 자동 매칭 API 호출 (일반 탭: 사람 + 드레스 + 배경) - X.AI + Gemini 2.5 V2
+ * 자동 매칭 API 호출 (일반 탭: 사람 + 드레스 + 배경) - X.AI + Gemini 2.5 V3
  * @param {File} personImage - 사용자 사진
  * @param {Object|File} dressData - 드레스 데이터 (id, name, image, originalUrl) 또는 File 객체
  * @param {File} backgroundImage - 배경 이미지 파일
@@ -59,7 +59,7 @@ export const autoMatchImage = async (personImage, dressData, backgroundImage) =>
         }
         formData.append('background_image', backgroundImage)
 
-        const response = await api.post('/api/compose_xai_gemini_v2', formData, {
+        const response = await api.post('/fit/v3/compose', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
@@ -142,6 +142,40 @@ export const customMatchImage = async (fullBodyImage, dressImage, backgroundImag
         return response.data
     } catch (error) {
         console.error('커스텀 매칭 오류:', error)
+        throw error
+    }
+}
+
+/**
+ * CustomV3 매칭 API 호출 (의상 누끼 자동 처리 포함)
+ * @param {File} fullBodyImage - 전신 사진
+ * @param {File} dressImage - 드레스 이미지
+ * @param {File} backgroundImage - 배경 이미지
+ * @returns {Promise} 매칭된 결과 이미지
+ */
+export const customV3MatchImage = async (fullBodyImage, dressImage, backgroundImage) => {
+    try {
+        const formData = new FormData()
+        formData.append('person_image', fullBodyImage)
+        formData.append('garment_image', dressImage)
+        formData.append('background_image', backgroundImage)
+
+        const response = await api.post('/fit/custom-v3/compose', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+
+        // response.data 형식:
+        // {
+        //   success: true,
+        //   result_image: "data:image/png;base64,..." (Base64 문자열)
+        //   prompt: "생성된 프롬프트"
+        //   message: "CustomV3 파이프라인이 성공적으로 완료되었습니다."
+        // }
+        return response.data
+    } catch (error) {
+        console.error('CustomV3 매칭 오류:', error)
         throw error
     }
 }
