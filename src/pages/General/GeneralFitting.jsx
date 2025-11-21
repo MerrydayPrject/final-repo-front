@@ -26,6 +26,8 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
     const [isFilterOpen, setIsFilterOpen] = useState(false)
     const [isMobile, setIsMobile] = useState(false)
     const [isImageModalOpen, setIsImageModalOpen] = useState(false)
+    const [validationModalOpen, setValidationModalOpen] = useState(false)
+    const [validationMessage, setValidationMessage] = useState('')
 
     // 모바일 여부 확인
     useEffect(() => {
@@ -324,13 +326,22 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
         try {
             setIsProcessing(true)
             const validationResult = await validatePerson(file)
-            
-            if (!validationResult.success || !validationResult.is_person) {
-                alert(validationResult.message || '이미지에서 사람을 감지할 수 없습니다. 사람이 포함된 이미지를 업로드해주세요.')
+
+            // 동물이 감지된 경우
+            if (validationResult.is_animal) {
+                setValidationMessage(validationResult.message || '동물이 감지되었습니다. 사람이 포함된 이미지를 업로드해주세요.')
+                setValidationModalOpen(true)
                 setIsProcessing(false)
                 return
             }
-            
+
+            if (!validationResult.success || !validationResult.is_person) {
+                setValidationMessage(validationResult.message || '이미지에서 사람을 감지할 수 없습니다. 사람이 포함된 이미지를 업로드해주세요.')
+                setValidationModalOpen(true)
+                setIsProcessing(false)
+                return
+            }
+
             // 사람이 감지되면 이미지 업로드 진행
             const reader = new FileReader()
             reader.onloadend = () => {
@@ -341,11 +352,12 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
             reader.readAsDataURL(file)
         } catch (error) {
             console.error('사람 감지 오류:', error)
-            alert('이미지 검증 중 오류가 발생했습니다. 다시 시도해주세요.')
+            setValidationMessage('이미지 검증 중 오류가 발생했습니다. 다시 시도해주세요.')
+            setValidationModalOpen(true)
             setIsProcessing(false)
         }
     }
-    
+
     const handleDragOver = (e) => {
         e.preventDefault()
         e.stopPropagation()
@@ -1153,6 +1165,14 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                     ref={fileInputRef}
                 />
             </Modal>
+
+            {/* 검증 모달 (동물 감지 등) */}
+            <Modal
+                isOpen={validationModalOpen}
+                onClose={() => setValidationModalOpen(false)}
+                message={validationMessage}
+                center
+            />
 
             {/* 이미지 확대 모달 */}
             {isImageModalOpen && (
