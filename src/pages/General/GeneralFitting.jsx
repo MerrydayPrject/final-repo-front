@@ -48,23 +48,27 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
             return
         }
 
-        const messageDuration = 8000 // 8초마다 메시지 전환
+        const startTime = Date.now()
+        const estimatedDuration = 60000 // 예상 소요 시간 60초
         const timeouts = []
 
-        // 각 메시지마다 타이머 설정
+        // 각 메시지마다 타이머 설정 (완성 10초 전에 마지막 메시지 표시)
+        // 첫 번째: 0초, 두 번째: 25초, 세 번째: 45초, 네 번째: 58초 (완성 2초 전)
+        const messageTimings = [0, 25000, 45000, 58000]
+
         for (let i = 0; i < loadingMessages.length - 1; i++) {
             const timeout = setTimeout(() => {
                 setLoadingMessageIndex(i + 1)
-            }, messageDuration * (i + 1))
+            }, messageTimings[i + 1])
             timeouts.push(timeout)
         }
 
         const progressInterval = setInterval(() => {
-            setProgress((prev) => {
-                if (prev >= 95) return prev // 95%에서 멈춤
-                return prev + Math.random() * 3 + 1 // 1-4%씩 증가
-            })
-        }, 500) // 0.5초마다 프로그레스 업데이트
+            const elapsed = Date.now() - startTime
+            const progressPercent = Math.min(90, (elapsed / estimatedDuration) * 90) // 최대 90%까지
+
+            setProgress(progressPercent)
+        }, 200) // 0.2초마다 프로그레스 업데이트
 
         return () => {
             timeouts.forEach(timeout => clearTimeout(timeout))
@@ -765,9 +769,11 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                             <p>드레스를 여기에 드롭하세요</p>
                         </div>
                     )}
-                    <button className="remove-button" onClick={handleRemove}>
-                        ✕
-                    </button>
+                    {!isProcessing && generalResultImage && (
+                        <button className="remove-button" onClick={handleRemove}>
+                            ✕
+                        </button>
+                    )}
                 </div>
             )}
         </div>
