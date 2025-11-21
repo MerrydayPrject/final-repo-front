@@ -186,9 +186,9 @@
 @media (max-width: 48rem) {
     .video-background {
         padding-top: 6rem;
-        margin-top: 2rem;
+        margin-top: 4rem;
         height: auto;
-        min-height: 70vh;
+        min-height: 90vh;
     }
 
     .video-background-video {
@@ -205,7 +205,7 @@
         font-size: 16px;
         padding: 12.8px 32px;
         left: 30% !important;
-        bottom: 0.2rem !important;
+        bottom: 5rem !important;
     }
 
     .video-fitting-button.sticky {
