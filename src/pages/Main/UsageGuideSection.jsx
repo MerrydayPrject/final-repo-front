@@ -11,6 +11,7 @@ const UsageGuideSection = () => {
     const [fittingAnimation, setFittingAnimation] = useState(null)
     const [successAnimation, setSuccessAnimation] = useState(null)
     const successLottieRef = useRef(null)
+    const [isMobile, setIsMobile] = useState(false)
 
     const updateRatioFromClientX = (clientX) => {
         if (!containerRef.current) return
@@ -92,6 +93,15 @@ const UsageGuideSection = () => {
         }
     }, [successAnimation])
 
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth <= 768)
+        }
+        checkMobile()
+        window.addEventListener('resize', checkMobile)
+        return () => window.removeEventListener('resize', checkMobile)
+    }, [])
+
     return (
         <section className="usage-guide-section">
             <div className="usage-guide-container">
@@ -164,7 +174,7 @@ const UsageGuideSection = () => {
                     <div
                         className={`slider-handle ${dragging ? 'dragging' : ''}`}
                         style={{
-                            top: '300px',
+                            top: isMobile ? '50%' : '300px',
                             left: `${ratio * 100}%`,
                             transform: `translate(-50%, -50%)`
                         }}

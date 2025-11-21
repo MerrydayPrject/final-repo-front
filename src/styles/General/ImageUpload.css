@@ -346,10 +346,21 @@
     .step-2-header {
         flex-direction: column;
         gap: 8px;
+        align-items: center;
+        justify-content: center;
     }
 
     .step-2-text {
         width: 100%;
+        text-align: center;
+    }
+
+    .step-2-header .step-badge {
+        align-self: center;
+    }
+
+    .step-guide-panel-step2 .step-title {
+        text-align: center;
     }
 
     .step-guide-panel-step2 .step-panel-content .step-link-button {

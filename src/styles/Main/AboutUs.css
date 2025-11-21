@@ -286,15 +286,15 @@
 
     .about-us-main-text {
         font-size: 28px;
-        text-align: left;
-        align-self: flex-start;
+        text-align: center;
+        align-self: center;
     }
 
     .about-us-description {
         font-size: 15px;
-        text-align: left;
-        align-self: flex-start;
-        left: -25px;
+        text-align: center;
+        align-self: center;
+        left: 0;
         width: 100%;
         max-width: 100%;
         padding: 0 1.5rem;
@@ -308,8 +308,8 @@
 
     .about-us-text-item {
         min-height: auto;
-        align-items: flex-start;
-        text-align: left;
+        align-items: center;
+        text-align: center;
     }
 
     .about-us-text-item:last-child.visible {
@@ -322,8 +322,8 @@
         height: 42px;
         font-size: 0.8rem;
         margin-top: -10px;
-        margin-left: 80px;
-        align-self: flex-start;
+        margin-left: 0;
+        align-self: center;
     }
 
     .about-us-text-item.mobile-hidden {
@@ -339,8 +339,8 @@
         align-items: center;
         gap: 0.75rem;
         margin-top: 8px;
-        margin-left: 60px;
-        align-self: flex-start;
+        margin-left: 0;
+        align-self: center;
     }
 
     .about-us-text-item:nth-child(2) .about-us-slider-controls {
