@@ -164,6 +164,7 @@ const UsageGuideSection = () => {
                     <div
                         className={`slider-handle ${dragging ? 'dragging' : ''}`}
                         style={{
+                            top: '300px',
                             left: `${ratio * 100}%`,
                             transform: `translate(-50%, -50%)`
                         }}

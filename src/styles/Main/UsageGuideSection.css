@@ -160,8 +160,8 @@
 
 .slider-handle {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 300px;
+    left: 0px;
     width: 0;
     height: 0;
     transform: translate(-50%, -50%);
@@ -199,7 +199,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    top: 50%;
+    top: 0;
+    left: 0;
     transform: translate(-50%, -50%);
     border: 1px solid #fff;
     font-size: 1.2rem;
