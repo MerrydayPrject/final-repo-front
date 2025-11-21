@@ -346,7 +346,7 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                             {/* 우측: 분석 결과 영역 */}
                             <div
                                 ref={resultAreaRef}
-                                className={`analysis-result-area ${!isAnalyzing && !analysisResult ? 'mobile-hidden' : ''}`}
+                                className={`analysis-result-area ${!analysisResult ? 'mobile-hidden' : ''}`}
                             >
                                 <div className="result-section-header">
                                     <h3 className="result-section-title">분석 결과</h3>

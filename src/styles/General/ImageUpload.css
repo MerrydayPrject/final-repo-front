@@ -335,12 +335,17 @@
 @media (max-width: 768px) {
     .step-3-header {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
+        justify-content: center;
     }
 
     .step-3-message {
-        text-align: left;
+        text-align: center;
         width: 100%;
+    }
+
+    .step-guide-panel-step3 .step-3-header .step-badge {
+        align-self: center;
     }
 
     .step-2-header {
@@ -1195,6 +1200,7 @@
         align-items: flex-start !important;
         gap: 8px !important;
         margin-right: 0 !important;
+        margin-left: 30px !important;
         margin-top: 0 !important;
         flex: 1;
         position: relative;
@@ -1314,7 +1320,7 @@
 
     .step-guide-panel-step3 .step-result-actions .download-button {
         position: absolute !important;
-        right: 8px !important;
+        right: -15px !important;
         bottom: 80px !important;
         left: auto !important;
         margin-top: 0 !important;
@@ -1332,7 +1338,7 @@
 
     .step-guide-panel-step3 .preview-container .download-button {
         position: absolute !important;
-        right: 8px !important;
+        right: 4px !important;
         bottom: 80px !important;
         left: auto !important;
         top: auto !important;
@@ -1622,6 +1628,26 @@
     .step-link-button {
         padding: 5px 12px;
         font-size: 11px;
+    }
+
+    /* 모바일에서 매칭 중 요소들을 위로 올리기 */
+    .processing-overlay {
+        justify-content: flex-start !important;
+        padding-top: 20px !important;
+    }
+
+    .processing-overlay .spinner-lottie {
+        margin-bottom: -20px !important;
+        width: 200px !important;
+        height: 200px !important;
+    }
+
+    .processing-overlay .loading-message {
+        margin-top: 4px !important;
+    }
+
+    .processing-overlay .progress-bar-container {
+        margin-top: 4px !important;
     }
 }
 

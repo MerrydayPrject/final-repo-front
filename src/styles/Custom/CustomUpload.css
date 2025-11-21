@@ -761,6 +761,34 @@
         margin-top: 0;
     }
 
+    /* 모바일에서 로딩 아이콘과 문구를 오른쪽으로 이동 */
+    .custom-upload-area .validation-loader-wrapper {
+        left: auto !important;
+        right: 110px !important;
+        transform: translateY(-50%) !important;
+        gap: 12px !important;
+    }
+
+    /* 모바일에서 로딩 아이콘 크기 줄이기 */
+    .custom-upload-area .validation-loader-wrapper .loader {
+        width: 50px !important;
+        height: 50px !important;
+        border: 3px solid #fcfafa94 !important;
+    }
+
+    .custom-upload-area .validation-loader-wrapper .loader::before {
+        top: 8px !important;
+        left: 8px !important;
+        right: 8px !important;
+        bottom: 8px !important;
+        border: 1.5px solid #fcfafa94 !important;
+    }
+
+    /* 모바일에서 로딩 문구 크기 줄이기 */
+    .custom-upload-area .validation-loader-wrapper .upload-text {
+        font-size: 11px !important;
+    }
+
     .upload-icon {
         font-size: 32px;
     }
