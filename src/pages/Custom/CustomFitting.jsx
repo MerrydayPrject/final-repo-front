@@ -3,7 +3,7 @@ import Lottie from 'lottie-react'
 import { MdOutlineDownload } from 'react-icons/md'
 import { HiQuestionMarkCircle } from 'react-icons/hi'
 import Modal from '../../components/Modal'
-import { customV3MatchImage, applyImageFilter, validatePerson } from '../../utils/api'
+import { customV4MatchImage, applyImageFilter, validatePerson } from '../../utils/api'
 import '../../styles/App.css'
 import '../../styles/General/ImageUpload.css'
 import '../../styles/Custom/CustomUpload.css'
@@ -201,7 +201,7 @@ const CustomFitting = ({ onBackToMain }) => {
             const backgroundImageUrl = backgroundImages[selectedBackgroundIndex]
             const backgroundFile = await urlToFile(backgroundImageUrl, `background${selectedBackgroundIndex + 1}.jpg`)
 
-            const result = await customV3MatchImage(fullBody, dress, backgroundFile)
+            const result = await customV4MatchImage(fullBody, dress, backgroundFile)
 
             if (result.success && result.result_image) {
                 setProgress(100)
