@@ -24,6 +24,48 @@ const CustomFitting = ({ onBackToMain }) => {
     const [errorModalOpen, setErrorModalOpen] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
     const [currentStep, setCurrentStep] = useState(1)
+    const [loadingMessageIndex, setLoadingMessageIndex] = useState(0)
+    const [progress, setProgress] = useState(0)
+
+    // 로딩 메시지 목록 (순차적으로 표시, 마지막은 고정)
+    const loadingMessages = [
+        '이미지 분석중입니다',
+        '의상 합성중입니다',
+        '배경을 입히는 중입니다',
+        '곧 완성됩니다. 잠시만 기다려주세요'
+    ]
+
+    // 로딩 메시지 전환 및 프로그레스 업데이트
+    useEffect(() => {
+        if (!isMatching) {
+            setLoadingMessageIndex(0)
+            setProgress(0)
+            return
+        }
+
+        const messageDuration = 8000 // 8초마다 메시지 전환
+        const timeouts = []
+
+        // 각 메시지마다 타이머 설정
+        for (let i = 0; i < loadingMessages.length - 1; i++) {
+            const timeout = setTimeout(() => {
+                setLoadingMessageIndex(i + 1)
+            }, messageDuration * (i + 1))
+            timeouts.push(timeout)
+        }
+
+        const progressInterval = setInterval(() => {
+            setProgress((prev) => {
+                if (prev >= 95) return prev // 95%에서 멈춤
+                return prev + Math.random() * 3 + 1 // 1-4%씩 증가
+            })
+        }, 500) // 0.5초마다 프로그레스 업데이트
+
+        return () => {
+            timeouts.forEach(timeout => clearTimeout(timeout))
+            clearInterval(progressInterval)
+        }
+    }, [isMatching, loadingMessages.length])
 
     // 배경 선택 상태
     const [selectedBackgroundIndex, setSelectedBackgroundIndex] = useState(0)
@@ -151,6 +193,8 @@ const CustomFitting = ({ onBackToMain }) => {
 
     const handleCustomMatch = async (fullBody, dress) => {
         setIsMatching(true)
+        setProgress(0)
+        setLoadingMessageIndex(0)
 
         try {
             // 선택된 배경 이미지를 File 객체로 변환
@@ -160,6 +204,7 @@ const CustomFitting = ({ onBackToMain }) => {
             const result = await customV3MatchImage(fullBody, dress, backgroundFile)
 
             if (result.success && result.result_image) {
+                setProgress(100)
                 setCustomResultImage(result.result_image)
                 setOriginalResultImage(result.result_image) // 원본 이미지 저장
                 setSelectedFilter('none') // 필터 초기화
@@ -171,6 +216,7 @@ const CustomFitting = ({ onBackToMain }) => {
         } catch (error) {
             console.error('커스텀 매칭 중 오류 발생:', error)
             setIsMatching(false)
+            setProgress(0)
             setErrorMessage(`매칭 중 오류가 발생했습니다: ${error.message}`)
             setErrorModalOpen(true)
         }
@@ -400,7 +446,16 @@ const CustomFitting = ({ onBackToMain }) => {
                                 {loadingAnimation && (
                                     <Lottie animationData={loadingAnimation} loop={true} className="spinner-lottie" />
                                 )}
-                                <p>매칭 중...</p>
+                                <p className="loading-message">{loadingMessages[loadingMessageIndex]}</p>
+                                <div className="progress-bar-container">
+                                    <div className="progress-bar">
+                                        <div
+                                            className="progress-bar-fill"
+                                            style={{ width: `${progress}%` }}
+                                        ></div>
+                                    </div>
+                                    <span className="progress-text">{Math.round(progress)}%</span>
+                                </div>
                             </div>
                         </div>
                     </div>

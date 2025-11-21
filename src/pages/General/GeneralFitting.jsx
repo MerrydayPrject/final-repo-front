@@ -29,6 +29,48 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
     const [validationModalOpen, setValidationModalOpen] = useState(false)
     const [validationMessage, setValidationMessage] = useState('')
     const [isValidatingPerson, setIsValidatingPerson] = useState(false)
+    const [loadingMessageIndex, setLoadingMessageIndex] = useState(0)
+    const [progress, setProgress] = useState(0)
+
+    // 로딩 메시지 목록 (순차적으로 표시, 마지막은 고정)
+    const loadingMessages = [
+        '이미지를 분석하고 있습니다…',
+        '의상을 자연스럽게 합성하고 있습니다…',
+        '배경을 입히는 중입니다…',
+        '곧 완성됩니다. 잠시만 기다려주세요'
+    ]
+
+    // 로딩 메시지 전환 및 프로그레스 업데이트
+    useEffect(() => {
+        if (!isProcessing) {
+            setLoadingMessageIndex(0)
+            setProgress(0)
+            return
+        }
+
+        const messageDuration = 8000 // 8초마다 메시지 전환
+        const timeouts = []
+
+        // 각 메시지마다 타이머 설정
+        for (let i = 0; i < loadingMessages.length - 1; i++) {
+            const timeout = setTimeout(() => {
+                setLoadingMessageIndex(i + 1)
+            }, messageDuration * (i + 1))
+            timeouts.push(timeout)
+        }
+
+        const progressInterval = setInterval(() => {
+            setProgress((prev) => {
+                if (prev >= 95) return prev // 95%에서 멈춤
+                return prev + Math.random() * 3 + 1 // 1-4%씩 증가
+            })
+        }, 500) // 0.5초마다 프로그레스 업데이트
+
+        return () => {
+            timeouts.forEach(timeout => clearTimeout(timeout))
+            clearInterval(progressInterval)
+        }
+    }, [isProcessing, loadingMessages.length])
 
     // 모바일 여부 확인
     useEffect(() => {
@@ -249,6 +291,8 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
         if (!uploadedImage || !dress) return
 
         setIsProcessing(true)
+        setProgress(0)
+        setLoadingMessageIndex(0)
 
         try {
             // 선택된 배경 이미지를 File 객체로 변환
@@ -258,6 +302,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
             const result = await autoMatchImage(uploadedImage, dress, backgroundFile)
 
             if (result.success && result.result_image) {
+                setProgress(100)
                 setSelectedDress(dress)
                 setGeneralResultImage(result.result_image)
                 setOriginalResultImage(result.result_image) // 원본 이미지 저장
@@ -270,6 +315,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
         } catch (error) {
             console.error('매칭 중 오류 발생:', error)
             setIsProcessing(false)
+            setProgress(0)
             const serverMessage = error?.response?.data?.message || error?.response?.data?.error
             const friendly = serverMessage
                 || (error?.code === 'ERR_NETWORK' ? '백엔드 서버에 연결할 수 없습니다.' : null)
@@ -696,7 +742,16 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                             {loadingAnimation && (
                                 <Lottie animationData={loadingAnimation} loop={true} className="spinner-lottie" />
                             )}
-                            <p>매칭 중...</p>
+                            <p className="loading-message">{loadingMessages[loadingMessageIndex]}</p>
+                            <div className="progress-bar-container">
+                                <div className="progress-bar">
+                                    <div
+                                        className="progress-bar-fill"
+                                        style={{ width: `${progress}%` }}
+                                    ></div>
+                                </div>
+                                <span className="progress-text">{Math.round(progress)}%</span>
+                            </div>
                         </div>
                     )}
                     {showCheckmark && (

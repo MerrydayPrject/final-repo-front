@@ -902,6 +902,51 @@
     pointer-events: none;
 }
 
+.processing-overlay .loading-message {
+    margin-top: 16px;
+    font-size: 16px;
+    font-weight: 400;
+    font-family: 'Orbit', 'Static', sans-serif;
+    color: #000000;
+    pointer-events: none;
+    transition: opacity 0.5s ease-in-out;
+    min-height: 24px;
+}
+
+.processing-overlay .progress-bar-container {
+    margin-top: 10px;
+    width: 80%;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.processing-overlay .progress-bar {
+    width: 100%;
+    height: 8px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+}
+
+.processing-overlay .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ad9f41 0%, #c4b563 100%);
+    border-radius: 4px;
+    transition: width 0.3s ease-out;
+    box-shadow: 0 2px 4px rgba(173, 159, 65, 0.3);
+}
+
+.processing-overlay .progress-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: #666;
+    pointer-events: none;
+}
+
 .spinner-lottie+p {
     margin-top: -20px;
 }
