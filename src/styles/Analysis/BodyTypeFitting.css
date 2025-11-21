@@ -1192,6 +1192,25 @@
     .analysis-main-section {
         grid-template-columns: 1fr;
         gap: 20px;
+        margin-top: 20px;
+    }
+
+    .analysis-main-section .upload-area {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-left: 0 !important;
+    }
+
+    .general-fitting-header {
+        margin-bottom: -5px;
+    }
+
+    .general-fitting-title {
+        font-size: 1.5rem;
+    }
+
+    .tab-guide-text {
+        font-size: 0.85rem;
     }
 
     .section-title {
@@ -1199,36 +1218,163 @@
     }
 
     .upload-area .image-container {
-        height: 400px;
-        max-height: 60vh;
+        height: 300px;
+        max-height: 50vh;
+        margin-bottom: 12px;
+    }
+
+    .analysis-main-section .upload-area .image-container {
+        height: 300px !important;
+        max-height: 50vh !important;
+    }
+
+    .analysis-result-area {
+        margin-top: 0;
+        padding: 12px;
+        max-height: none;
+        display: block;
+    }
+
+    /* 모바일에서 분석 전에는 결과 영역 숨김 */
+    .analysis-result-area.mobile-hidden {
+        display: none;
+    }
+
+    .result-section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+
+    .result-section-title {
+        font-size: 1.2rem;
+        margin-left: 0;
+    }
+
+    .result-section-description {
+        font-size: 0.75rem;
+        margin-left: 0;
     }
 
     .result-box {
-        min-height: 00px;
-        padding: 20px;
-    }
-
-    .result-placeholder {
-        min-height: 300px;
-    }
-
-    .result-item {
+        min-height: auto;
+        height: auto;
+        max-height: none;
         padding: 15px;
     }
 
-    .result-item strong {
+    .result-placeholder {
+        min-height: 250px;
+    }
+
+    .placeholder-text {
         font-size: 1rem;
     }
 
-    .body-info-inputs {
-        flex-direction: column;
-        gap: 12px;
+    .result-item {
         padding: 12px;
+        gap: 10px;
+    }
+
+    .result-item strong {
+        font-size: 0.95rem;
+        margin-bottom: 8px;
+    }
+
+    .body-info-item-single {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .body-info-item-single strong {
+        font-size: 0.9rem;
+    }
+
+    .body-info-item-single span {
+        font-size: 0.9rem;
+    }
+
+    .result-item p,
+    .analysis-description {
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+
+    .analysis-description-line {
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+    }
+
+    .analysis-main-section .body-info-inputs {
+        margin-top: 20px !important;
+    }
+
+    .body-info-inputs {
+        flex-direction: row;
+        gap: 8px;
+        padding: 0;
+        margin-top: 20px;
+        margin-bottom: 12px;
+    }
+
+    .input-group {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .input-group label {
+        font-size: 0.8rem;
+        margin-top: 0;
+        margin-bottom: 4px;
     }
 
     .input-group input {
-        padding: 8px 12px;
-        font-size: 0.9rem;
+        padding: 8px 10px;
+        font-size: 0.85rem;
+    }
+
+    .analysis-main-section .upload-area .analyze-button {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-left: 0 !important;
+        margin-top: 12px !important;
+        transform: none !important;
+        padding: 12px;
+        font-size: 0.95rem;
+    }
+
+    .analysis-main-section .upload-area .analyze-button:hover:not(:disabled) {
+        transform: translateY(-2px) !important;
+    }
+
+    .category-badge {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+    }
+
+    .recommended-categories-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .recommended-categories-header strong {
+        font-size: 0.95rem;
+    }
+
+    .recommended-categories {
+        width: 100%;
+    }
+
+    .empty-image-placeholder .camera-icon {
+        width: 60px;
+        height: 60px;
+    }
+
+    .empty-image-placeholder p {
+        font-size: 14px;
     }
 
     .dress-slider-section {
@@ -1276,5 +1422,111 @@
 
     .dress-image-wrapper {
         height: 200px;
+    }
+
+    /* Body Analysis Small Mobile Styles */
+    .general-fitting-title {
+        font-size: 1.3rem;
+    }
+
+    .tab-guide-text {
+        font-size: 0.8rem;
+    }
+
+    .upload-area .image-container {
+        height: 250px;
+        max-height: 45vh;
+    }
+
+    .analysis-main-section .upload-area .image-container {
+        height: 250px !important;
+        max-height: 45vh !important;
+    }
+
+    .result-section-title {
+        font-size: 1.1rem;
+    }
+
+    .result-section-description {
+        font-size: 0.7rem;
+    }
+
+    .result-box {
+        padding: 12px;
+    }
+
+    .result-item {
+        padding: 10px;
+    }
+
+    .result-item strong {
+        font-size: 0.9rem;
+    }
+
+    .body-info-item-single strong,
+    .body-info-item-single span {
+        font-size: 0.85rem;
+    }
+
+    .result-item p,
+    .analysis-description {
+        font-size: 0.85rem;
+    }
+
+    .analysis-description-line {
+        font-size: 0.85rem;
+        margin-bottom: 8px;
+    }
+
+    .analysis-main-section .body-info-inputs {
+        margin-top: 8px !important;
+    }
+
+    .body-info-inputs {
+        flex-direction: row;
+        gap: 6px;
+        margin-top: 18px;
+    }
+
+    .input-group {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .input-group label {
+        font-size: 0.75rem;
+        margin-bottom: 3px;
+    }
+
+    .input-group input {
+        padding: 7px 8px;
+        font-size: 0.8rem;
+    }
+
+    .analysis-main-section .upload-area .analyze-button {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    .category-badge {
+        font-size: 0.75rem;
+        padding: 5px 10px;
+    }
+
+    .empty-image-placeholder .camera-icon {
+        width: 50px;
+        height: 50px;
+    }
+
+    .empty-image-placeholder p {
+        font-size: 13px;
+    }
+
+    .result-placeholder {
+        min-height: 200px;
+    }
+
+    .placeholder-text {
+        font-size: 0.9rem;
     }
 }

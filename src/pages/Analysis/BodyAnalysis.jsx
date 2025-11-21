@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { HiQuestionMarkCircle } from 'react-icons/hi'
 import Modal from '../../components/Modal'
 import '../../styles/Analysis/BodyTypeFitting.css'
@@ -144,6 +144,7 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
     const [modalOpen, setModalOpen] = useState(false)
     const [modalMessage, setModalMessage] = useState('')
     const fileInputRef = useRef(null)
+    const resultAreaRef = useRef(null)
 
     // 카테고리명을 한글로 변환하는 함수
     const getCategoryName = (category) => DRESS_CATEGORY_LABELS[category.toLowerCase()] || category
@@ -216,6 +217,20 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
             setRecommendedCategories(parsedGemini.recommended)
             setAvoidCategories(parsedGemini.avoid)
             setAnalysisParagraphs(parsedGemini.paragraphs)
+
+            // 모바일에서 분석 결과 영역으로 스크롤
+            setTimeout(() => {
+                if (window.innerWidth <= 768 && resultAreaRef.current) {
+                    const element = resultAreaRef.current
+                    const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
+                    const offsetPosition = elementPosition - 80 // 상단에서 80px 위로 스크롤
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    })
+                }
+            }, 100)
         } catch (error) {
             console.error('분석 오류:', error)
             const errorMessage = error.response?.data?.message || error.message || '이미지 분석 중 오류가 발생했습니다.'
@@ -329,7 +344,10 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                             </div>
 
                             {/* 우측: 분석 결과 영역 */}
-                            <div className="analysis-result-area">
+                            <div
+                                ref={resultAreaRef}
+                                className={`analysis-result-area ${!isAnalyzing && !analysisResult ? 'mobile-hidden' : ''}`}
+                            >
                                 <div className="result-section-header">
                                     <h3 className="result-section-title">분석 결과</h3>
                                     {analysisResult && (
@@ -347,14 +365,7 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                                 <div></div>
                                             </div>
                                         </div>
-                                    ) : !analysisResult ? (
-                                        <div className="result-placeholder">
-                                            <p className="placeholder-text">
-                                                이미지를 업로드하고<br />
-                                                분석하기 버튼을 눌러주세요
-                                            </p>
-                                        </div>
-                                    ) : (
+                                    ) : analysisResult ? (
                                         <div className="result-content">
                                             {/* 1. 체형 타입 (맨 위) */}
                                             <div className="result-item body-info-item">
@@ -589,6 +600,13 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                                     )}
                                                 </div>
                                             </div>
+                                        </div>
+                                    ) : (
+                                        <div className="result-placeholder">
+                                            <p className="placeholder-text">
+                                                이미지를 업로드하고<br />
+                                                분석하기 버튼을 눌러주세요
+                                            </p>
                                         </div>
                                     )}
                                 </div>
