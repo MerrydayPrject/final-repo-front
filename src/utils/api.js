@@ -181,6 +181,83 @@ export const customV3MatchImage = async (fullBodyImage, dressImage, backgroundIm
 }
 
 /**
+ * 자동 매칭 API 호출 V4 (일반 탭: 사람 + 드레스 + 배경) - Gemini 3 Flash
+ * @param {File} personImage - 사용자 사진
+ * @param {Object|File} dressData - 드레스 데이터 (id, name, image, originalUrl) 또는 File 객체
+ * @param {File} backgroundImage - 배경 이미지 파일
+ * @returns {Promise} 매칭된 이미지 결과
+ */
+export const autoMatchImageV4 = async (personImage, dressData, backgroundImage) => {
+    try {
+        const formData = new FormData()
+        formData.append('person_image', personImage)
+
+        // 드레스 이미지 처리
+        if (dressData instanceof File) {
+            formData.append('garment_image', dressData)
+        } else if (dressData.originalUrl || dressData.image) {
+            // 드레스 URL이 있는 경우 File 객체로 변환
+            const dressUrl = dressData.originalUrl || dressData.image
+            const dressFile = await urlToFile(dressUrl, 'dress.jpg')
+            formData.append('garment_image', dressFile)
+        } else {
+            throw new Error('드레스 이미지가 필요합니다.')
+        }
+
+        // 배경 이미지 추가
+        if (!backgroundImage) {
+            throw new Error('배경 이미지가 필요합니다.')
+        }
+        formData.append('background_image', backgroundImage)
+
+        const response = await api.post('/fit/v4/compose', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+
+        return response.data
+    } catch (error) {
+        console.error('자동 매칭 V4 오류:', error)
+        throw error
+    }
+}
+
+/**
+ * CustomV4 매칭 API 호출 (의상 누끼 자동 처리 포함, Gemini 3 Flash)
+ * @param {File} fullBodyImage - 전신 사진
+ * @param {File} dressImage - 드레스 이미지
+ * @param {File} backgroundImage - 배경 이미지
+ * @returns {Promise} 매칭된 결과 이미지
+ */
+export const customV4MatchImage = async (fullBodyImage, dressImage, backgroundImage) => {
+    try {
+        const formData = new FormData()
+        formData.append('person_image', fullBodyImage)
+        formData.append('garment_image', dressImage)
+        formData.append('background_image', backgroundImage)
+
+        const response = await api.post('/fit/custom-v4/compose', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+
+        // response.data 형식:
+        // {
+        //   success: true,
+        //   result_image: "data:image/png;base64,..." (Base64 문자열)
+        //   prompt: "생성된 프롬프트"
+        //   message: "CustomV4 파이프라인이 성공적으로 완료되었습니다."
+        // }
+        return response.data
+    } catch (error) {
+        console.error('CustomV4 매칭 오류:', error)
+        throw error
+    }
+}
+
+/**
  * 드레스 세그멘테이션 API 호출
  * @param {File} image - 세그멘테이션할 이미지
  * @returns {Promise} 세그멘테이션된 결과
