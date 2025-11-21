@@ -49,7 +49,8 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
         }
 
         const startTime = Date.now()
-        const estimatedDuration = 60000 // 예상 소요 시간 60초
+        const estimatedDuration = 65000 // 예상 소요 시간 70초
+        const maxProgressBeforeComplete = 99
         const timeouts = []
 
         // 각 메시지마다 타이머 설정 (완성 10초 전에 마지막 메시지 표시)
@@ -65,7 +66,10 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
 
         const progressInterval = setInterval(() => {
             const elapsed = Date.now() - startTime
-            const progressPercent = Math.min(90, (elapsed / estimatedDuration) * 90) // 최대 90%까지
+            const progressPercent = Math.min(
+                maxProgressBeforeComplete,
+                (elapsed / estimatedDuration) * maxProgressBeforeComplete
+            )
 
             setProgress(progressPercent)
         }, 200) // 0.2초마다 프로그레스 업데이트

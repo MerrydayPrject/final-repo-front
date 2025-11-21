@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import Header from './components/Header'
-import Modal from './components/Modal'
 import MainPage from './pages/Main/MainPage'
 import GeneralFitting from './pages/General/GeneralFitting'
 import CustomFitting from './pages/Custom/CustomFitting'
@@ -9,10 +8,6 @@ import './styles/App.css'
 
 function App() {
     const [currentPage, setCurrentPage] = useState('main') // 'main', 'general', 'custom', 'analysis'
-
-    // 모달 상태
-    const [modalOpen, setModalOpen] = useState(false)
-    const [modalMessage, setModalMessage] = useState('')
 
     // 일반피팅 페이지로 전달할 카테고리
     const [selectedCategoryForFitting, setSelectedCategoryForFitting] = useState(null)
@@ -68,17 +63,6 @@ function App() {
         setCurrentPage('general')
     }
 
-    // 모달 열기
-    const openModal = (message) => {
-        setModalMessage(message)
-        setModalOpen(true)
-    }
-
-    // 모달 닫기
-    const closeModal = () => {
-        setModalOpen(false)
-    }
-
     return (
         <div className="app">
             {currentPage === 'main' && (
@@ -114,13 +98,6 @@ function App() {
                     onNavigateToFittingWithCategory={handleNavigateToFittingWithCategory}
                 />
             )}
-
-            <Modal
-                isOpen={modalOpen}
-                onClose={closeModal}
-                message={modalMessage}
-                center
-            />
         </div>
     )
 }
