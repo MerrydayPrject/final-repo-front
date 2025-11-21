@@ -116,7 +116,7 @@ const UsageGuideSection = () => {
                                 <Lottie
                                     animationData={fittingAnimation}
                                     loop={true}
-                                    className="step-icon-lottie"
+                                    className="step-icon-lottie step-icon-lottie-fitting"
                                 />
                             )}
                         </div>

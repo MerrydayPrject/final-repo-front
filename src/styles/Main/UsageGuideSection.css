@@ -59,6 +59,10 @@
     height: 130px;
 }
 
+.step-icon-lottie-fitting {
+    filter: sepia(100%) saturate(400%) hue-rotate(20deg) brightness(0.2);
+}
+
 .step-label {
     font-size: 0.9rem;
     font-weight: 600;
