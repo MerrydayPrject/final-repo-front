@@ -3,7 +3,9 @@ import Lottie from 'lottie-react'
 import { MdOutlineDownload } from 'react-icons/md'
 import { HiQuestionMarkCircle } from 'react-icons/hi'
 import Modal from '../../components/Modal'
+import ReviewModal from '../../components/ReviewModal'
 import { autoMatchImageV4, getDresses, applyImageFilter, validatePerson } from '../../utils/api'
+import { isReviewCompleted } from '../../utils/cookies'
 import '../../styles/App.css'
 import '../../styles/General/ImageUpload.css'
 import '../../styles/General/DressSelection.css'
@@ -31,6 +33,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
     const [isValidatingPerson, setIsValidatingPerson] = useState(false)
     const [loadingMessageIndex, setLoadingMessageIndex] = useState(0)
     const [progress, setProgress] = useState(0)
+    const [reviewModalOpen, setReviewModalOpen] = useState(false)
 
     // 로딩 메시지 목록 (순차적으로 표시, 마지막은 고정)
     const loadingMessages = [
@@ -315,6 +318,14 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                 setGeneralResultImage(result.result_image)
                 setOriginalResultImage(result.result_image) // 원본 이미지 저장
                 setSelectedFilter('none') // 필터 초기화
+
+                // 리뷰 모달 표시 (1번만, 쿠키 확인)
+                if (!isReviewCompleted('general')) {
+                    // 약간의 지연 후 모달 표시 (완료 애니메이션 후)
+                    setTimeout(() => {
+                        setReviewModalOpen(true)
+                    }, 2000)
+                }
             } else {
                 throw new Error(result.message || '매칭에 실패했습니다.')
             }
@@ -1295,6 +1306,13 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                     </div>
                 </div>
             )}
+
+            {/* 리뷰 모달 */}
+            <ReviewModal
+                isOpen={reviewModalOpen}
+                onClose={() => setReviewModalOpen(false)}
+                pageType="general"
+            />
         </main>
     )
 }

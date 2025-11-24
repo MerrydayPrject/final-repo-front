@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect } from 'react'
 import { HiQuestionMarkCircle } from 'react-icons/hi'
 import Modal from '../../components/Modal'
+import ReviewModal from '../../components/ReviewModal'
 import '../../styles/Analysis/BodyTypeFitting.css'
 import { analyzeBody } from '../../utils/api'
+import { isReviewCompleted } from '../../utils/cookies'
 
 const DRESS_CATEGORY_LABELS = {
     ballgown: '벨라인',
@@ -143,6 +145,7 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
     const [weight, setWeight] = useState('')
     const [modalOpen, setModalOpen] = useState(false)
     const [modalMessage, setModalMessage] = useState('')
+    const [reviewModalOpen, setReviewModalOpen] = useState(false)
     const fileInputRef = useRef(null)
     const resultAreaRef = useRef(null)
 
@@ -217,6 +220,14 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
             setRecommendedCategories(parsedGemini.recommended)
             setAvoidCategories(parsedGemini.avoid)
             setAnalysisParagraphs(parsedGemini.paragraphs)
+
+            // 리뷰 모달 표시 (1번만, 쿠키 확인)
+            if (!isReviewCompleted('analysis')) {
+                // 약간의 지연 후 모달 표시 (결과 표시 후)
+                setTimeout(() => {
+                    setReviewModalOpen(true)
+                }, 1500)
+            }
 
             // 모바일에서 분석 결과 영역으로 스크롤
             setTimeout(() => {
@@ -351,7 +362,7 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                 <div className="result-section-header">
                                     <h3 className="result-section-title">분석 결과</h3>
                                     {analysisResult && (
-                                        <p className="result-section-description">카테고리를 선택하면 일반피팅 화면으로 이동됩니다</p>
+                                        <p className="result-section-description">추천 드레스 카테고리를 선택하면 일반피팅 화면으로 이동됩니다</p>
                                     )}
                                 </div>
                                 <div className="result-box">
@@ -380,8 +391,8 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                             {/* 2. 체형 특징 */}
                                             {analysisResult.body_analysis?.body_features && analysisResult.body_analysis.body_features.length > 0 && (
                                                 <div className="result-item body-features-item">
-                                                    <strong>체형 특징:</strong>
-                                                    <div style={{ marginTop: '8px', display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
+                                                        <strong>체형 특징:</strong>
                                                         {Array.from(new Set(
                                                             analysisResult.body_analysis.body_features
                                                                 .map((feature) => {
@@ -396,8 +407,8 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                                                 style={{
                                                                     display: 'inline-block',
                                                                     padding: '6px 14px',
-                                                                    background: '#e3f2fd',
-                                                                    color: '#1976d2',
+                                                                    background: '#fae8dc',
+                                                                    color: '#a27553',
                                                                     borderRadius: '20px',
                                                                     fontSize: '14px',
                                                                     fontWeight: '600'
@@ -621,6 +632,13 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                 onClose={() => setModalOpen(false)}
                 message={modalMessage}
                 center
+            />
+
+            {/* 리뷰 모달 */}
+            <ReviewModal
+                isOpen={reviewModalOpen}
+                onClose={() => setReviewModalOpen(false)}
+                pageType="analysis"
             />
         </main>
     )

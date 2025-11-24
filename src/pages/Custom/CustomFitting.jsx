@@ -3,7 +3,9 @@ import Lottie from 'lottie-react'
 import { MdOutlineDownload } from 'react-icons/md'
 import { HiQuestionMarkCircle } from 'react-icons/hi'
 import Modal from '../../components/Modal'
+import ReviewModal from '../../components/ReviewModal'
 import { customV4MatchImage, applyImageFilter, validatePerson } from '../../utils/api'
+import { isReviewCompleted } from '../../utils/cookies'
 import '../../styles/App.css'
 import '../../styles/General/ImageUpload.css'
 import '../../styles/Custom/CustomUpload.css'
@@ -100,6 +102,7 @@ const CustomFitting = ({ onBackToMain }) => {
     const [isMobile, setIsMobile] = useState(false)
     const [isImageModalOpen, setIsImageModalOpen] = useState(false)
     const filterButtonsRef = useRef(null)
+    const [reviewModalOpen, setReviewModalOpen] = useState(false)
 
     // 모바일 여부 확인
     useEffect(() => {
@@ -218,6 +221,14 @@ const CustomFitting = ({ onBackToMain }) => {
                 setSelectedFilter('none') // 필터 초기화
                 setIsMatching(false)
                 setCurrentStep(3)
+
+                // 리뷰 모달 표시 (1번만, 쿠키 확인)
+                if (!isReviewCompleted('custom')) {
+                    // 약간의 지연 후 모달 표시 (완료 애니메이션 후)
+                    setTimeout(() => {
+                        setReviewModalOpen(true)
+                    }, 2000)
+                }
             } else {
                 throw new Error(result.message || '매칭에 실패했습니다.')
             }
@@ -956,6 +967,13 @@ const CustomFitting = ({ onBackToMain }) => {
                     </div>
                 </div>
             )}
+
+            {/* 리뷰 모달 */}
+            <ReviewModal
+                isOpen={reviewModalOpen}
+                onClose={() => setReviewModalOpen(false)}
+                pageType="custom"
+            />
         </main>
     )
 }
