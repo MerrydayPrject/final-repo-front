@@ -30,6 +30,32 @@ body {
     overflow-y: auto;
 }
 
+/* 스크롤바 스타일링 - 일반 피팅 화면과 동일 */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f5f5f5;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #ad9f41;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #8b7d2a;
+}
+
+/* Firefox용 스크롤바 스타일링 */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #ad9f41 #f5f5f5;
+}
+
 #root {
     min-height: 100vh;
 }
