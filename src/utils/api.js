@@ -229,9 +229,9 @@ export const getDresses = async () => {
 /**
  * 리뷰 제출 API 호출
  * @param {Object} reviewData - 리뷰 데이터
- * @param {string} reviewData.page_type - 페이지 타입 ('general', 'custom', 'analysis')
+ * @param {string} reviewData.category - 카테고리 ('general', 'custom', 'analysis')
  * @param {number} reviewData.rating - 별점 (1-5)
- * @param {string|null} reviewData.feedback - 개선요청사항 (선택사항)
+ * @param {string|null} reviewData.content - 리뷰 내용 (선택사항)
  * @returns {Promise} 리뷰 제출 결과
  */
 export const submitReview = async (reviewData) => {

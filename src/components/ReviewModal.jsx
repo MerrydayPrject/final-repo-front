@@ -43,20 +43,10 @@ const ReviewModal = ({ isOpen, onClose, pageType }) => {
 
         setIsSubmitting(true)
         try {
-            // 테스트용: 실제 API 호출 없이 임의로 성공 처리
-            // await submitReview({
-            //     page_type: pageType, // 'general', 'custom', 'analysis'
-            //     rating: rating,
-            //     feedback: feedback.trim() || null
-            // })
-
-            // 테스트를 위한 지연 (실제 API 호출처럼 보이도록)
-            await new Promise(resolve => setTimeout(resolve, 500))
-
-            console.log('테스트 모드: 리뷰 제출 성공', {
-                page_type: pageType,
+            await submitReview({
+                category: pageType, // 'general', 'custom', 'analysis'
                 rating: rating,
-                feedback: feedback.trim() || null
+                content: feedback.trim() || null
             })
 
             // 쿠키에 완료 표시 저장
@@ -64,7 +54,8 @@ const ReviewModal = ({ isOpen, onClose, pageType }) => {
             onClose()
         } catch (error) {
             console.error('리뷰 제출 오류:', error)
-            alert('리뷰 제출에 실패했습니다. 다시 시도해주세요.')
+            const errorMessage = error.response?.data?.detail || error.message || '리뷰 제출에 실패했습니다.'
+            alert(errorMessage)
         } finally {
             setIsSubmitting(false)
         }
