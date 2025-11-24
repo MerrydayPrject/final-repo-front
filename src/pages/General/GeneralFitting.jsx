@@ -34,9 +34,9 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
 
     // 로딩 메시지 목록 (순차적으로 표시, 마지막은 고정)
     const loadingMessages = [
-        '이미지를 분석하고 있습니다…',
-        '의상을 자연스럽게 합성하고 있습니다…',
-        '배경을 입히는 중입니다…',
+        '이미지를 분석하고 있습니다...',
+        '의상을 자연스럽게 합성하고 있습니다...',
+        '배경을 입히는 중입니다...',
         '곧 완성됩니다. 잠시만 기다려주세요'
     ]
 
@@ -49,13 +49,13 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
         }
 
         const startTime = Date.now()
-        const estimatedDuration = 65000 // 예상 소요 시간 70초
+        const estimatedDuration = 40000 // 예상 소요 시간 40초
         const maxProgressBeforeComplete = 99
         const timeouts = []
 
-        // 각 메시지마다 타이머 설정 (완성 10초 전에 마지막 메시지 표시)
-        // 첫 번째: 0초, 두 번째: 25초, 세 번째: 45초, 네 번째: 58초 (완성 2초 전)
-        const messageTimings = [0, 25000, 45000, 58000]
+        // 각 메시지마다 타이머 설정 (완성 3초 전에 마지막 메시지 표시)
+        // 첫 번째: 0초, 두 번째: 10초, 세 번째: 22초, 네 번째: 37초 (완성 3초 전)
+        const messageTimings = [0, 10000, 22000, 37000]
 
         for (let i = 0; i < loadingMessages.length - 1; i++) {
             const timeout = setTimeout(() => {

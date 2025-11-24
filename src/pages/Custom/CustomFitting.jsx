@@ -44,13 +44,13 @@ const CustomFitting = ({ onBackToMain }) => {
         }
 
         const startTime = Date.now()
-        const estimatedDuration = 70000 // 예상 소요 시간 70초
-        const maxProgressBeforeComplete = 98
+        const estimatedDuration = 40000 // 예상 소요 시간 40초
+        const maxProgressBeforeComplete = 99
         const timeouts = []
 
-        // 각 메시지마다 타이머 설정 (완성 10초 전에 마지막 메시지 표시)
-        // 첫 번째: 0초, 두 번째: 25초, 세 번째: 45초, 네 번째: 58초 (완성 2초 전)
-        const messageTimings = [0, 25000, 45000, 58000]
+        // 각 메시지마다 타이머 설정 (완성 3초 전에 마지막 메시지 표시)
+        // 첫 번째: 0초, 두 번째: 10초, 세 번째: 22초, 네 번째: 37초 (완성 3초 전)
+        const messageTimings = [0, 10000, 22000, 37000]
 
         for (let i = 0; i < loadingMessages.length - 1; i++) {
             const timeout = setTimeout(() => {
