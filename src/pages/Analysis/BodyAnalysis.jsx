@@ -472,15 +472,7 @@ const BodyAnalysis = ({ onNavigateToFittingWithCategory }) => {
                                                         )).map((feature, index) => (
                                                             <span
                                                                 key={index}
-                                                                style={{
-                                                                    display: 'inline-block',
-                                                                    padding: '6px 14px',
-                                                                    background: '#fae8dc',
-                                                                    color: '#a27553',
-                                                                    borderRadius: '20px',
-                                                                    fontSize: '14px',
-                                                                    fontWeight: '600'
-                                                                }}
+                                                                className="body-feature-label"
                                                             >
                                                                 {feature}
                                                             </span>
