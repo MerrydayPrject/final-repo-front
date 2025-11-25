@@ -3,7 +3,7 @@ import { HiQuestionMarkCircle } from 'react-icons/hi'
 import Modal from '../../components/Modal'
 import ReviewModal from '../../components/ReviewModal'
 import '../../styles/Analysis/BodyTypeFitting.css'
-import { analyzeBody } from '../../utils/api'
+import { analyzeBody, validatePerson } from '../../utils/api'
 import { isReviewCompleted } from '../../utils/cookies'
 
 const DRESS_CATEGORY_LABELS = {
@@ -146,6 +146,7 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
     const [modalOpen, setModalOpen] = useState(false)
     const [modalMessage, setModalMessage] = useState('')
     const [reviewModalOpen, setReviewModalOpen] = useState(false)
+    const [isValidatingPerson, setIsValidatingPerson] = useState(false)
     const fileInputRef = useRef(null)
     const resultAreaRef = useRef(null)
 
@@ -154,20 +155,72 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
 
 
     // 파일 선택 핸들러
-    const handleFileSelect = (e) => {
+    const handleFileSelect = async (e) => {
         const file = e.target.files[0]
-        if (file) {
-            setUploadedImage(file)
-            const reader = new FileReader()
-            reader.onloadend = () => {
-                setImagePreview(reader.result)
+        if (file && file.type.startsWith('image/')) {
+            // 사람 감지 검증
+            try {
+                setIsValidatingPerson(true)
+                const validationResult = await validatePerson(file)
+
+                // 동물이 감지된 경우
+                if (validationResult.is_animal) {
+                    setModalMessage(validationResult.message || '인물사진을 업로드해주세요.')
+                    setModalOpen(true)
+                    setIsValidatingPerson(false)
+                    // 파일 입력 초기화
+                    if (fileInputRef.current) {
+                        fileInputRef.current.value = ''
+                    }
+                    return
+                }
+
+                // 얼굴만 감지된 경우 (전신 랜드마크 없음)
+                if (validationResult.is_face_only) {
+                    setModalMessage('전신 사진을 넣어주세요.')
+                    setModalOpen(true)
+                    setIsValidatingPerson(false)
+                    // 파일 입력 초기화
+                    if (fileInputRef.current) {
+                        fileInputRef.current.value = ''
+                    }
+                    return
+                }
+
+                if (!validationResult.success || !validationResult.is_person) {
+                    setModalMessage(validationResult.message || '얼굴사진을 넣어주세요.')
+                    setModalOpen(true)
+                    setIsValidatingPerson(false)
+                    // 파일 입력 초기화
+                    if (fileInputRef.current) {
+                        fileInputRef.current.value = ''
+                    }
+                    return
+                }
+
+                // 사람이 감지되면 이미지 업로드 진행
+                setIsValidatingPerson(false)
+                setUploadedImage(file)
+                const reader = new FileReader()
+                reader.onloadend = () => {
+                    setImagePreview(reader.result)
+                }
+                reader.readAsDataURL(file)
+                // 이전 분석 결과 초기화
+                setAnalysisResult(null)
+                setRecommendedCategories([])
+                setAvoidCategories([])
+                setAnalysisParagraphs([])
+            } catch (error) {
+                console.error('사람 감지 오류:', error)
+                setModalMessage('이미지 검증 중 오류가 발생했습니다. 다시 시도해주세요.')
+                setModalOpen(true)
+                setIsValidatingPerson(false)
+                // 파일 입력 초기화
+                if (fileInputRef.current) {
+                    fileInputRef.current.value = ''
+                }
             }
-            reader.readAsDataURL(file)
-            // 이전 분석 결과 초기화
-            setAnalysisResult(null)
-            setRecommendedCategories([])
-            setAvoidCategories([])
-            setAnalysisParagraphs([])
         }
     }
 
@@ -244,7 +297,18 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
             }, 100)
         } catch (error) {
             console.error('분석 오류:', error)
-            const errorMessage = error.response?.data?.message || error.message || '이미지 분석 중 오류가 발생했습니다.'
+            // 백엔드에서 반환한 에러 메시지 확인
+            let errorMessage = error.response?.data?.message || error.message || '이미지 분석 중 오류가 발생했습니다.'
+            
+            // 동물 감지 에러인 경우
+            if (error.response?.data?.is_animal) {
+                errorMessage = '인물사진을 업로드해주세요.'
+            }
+            // 전신 랜드마크가 없는 경우 (얼굴만 있는 경우)
+            else if (error.response?.data?.error === 'No pose detected' || errorMessage.includes('전신')) {
+                errorMessage = '전신 사진을 넣어주세요.'
+            }
+            
             setModalMessage(errorMessage)
             setModalOpen(true)
         } finally {
@@ -295,11 +359,23 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                         </>
                                     ) : (
                                         <div
-                                            className="empty-image-placeholder"
-                                            onClick={handleUploadClick}
+                                            className={`empty-image-placeholder ${isValidatingPerson ? 'validating' : ''}`}
+                                            onClick={!isValidatingPerson ? handleUploadClick : undefined}
                                         >
-                                            <img src="/Image/icons8-카메라-80.png" alt="카메라" className="camera-icon" />
-                                            <p>이미지를 업로드해주세요</p>
+                                            {isValidatingPerson ? (
+                                                <>
+                                                    <div className="validation-overlay"></div>
+                                                    <div className="validation-loader-wrapper">
+                                                        <div className="loader"><span></span></div>
+                                                        <p>이미지를 확인하고 있어요<br />잠시만 기다려주세요</p>
+                                                    </div>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <img src="/Image/icons8-카메라-80.png" alt="카메라" className="camera-icon" />
+                                                    <p>이미지를 업로드해주세요</p>
+                                                </>
+                                            )}
                                         </div>
                                     )}
                                     <input
