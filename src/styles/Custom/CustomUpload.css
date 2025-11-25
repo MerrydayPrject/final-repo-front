@@ -723,11 +723,16 @@
         gap: 0;
     }
 
+    /* 모바일 버전 - 커스텀피팅 헤더 및 description 마진 조정 */
     .content-wrapper.custom-wrapper>.general-fitting-header {
         margin-left: 0;
         margin-top: 25px;
         margin-bottom: 0;
         padding: 0 16px;
+    }
+
+    .content-wrapper.custom-wrapper>.general-fitting-header .tab-guide-text-wrapper {
+        margin-bottom: -8px;
     }
 
     .custom-left {

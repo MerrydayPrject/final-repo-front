@@ -761,7 +761,9 @@ const CustomFitting = ({ onBackToMain }) => {
                 <div className="step-guide-panel">
                     <div className="step-badge">STEP 1</div>
                     <h3 className="step-title">피팅 배경을 먼저 선택해보세요</h3>
-                    <p className="step-description">아래 배경 버튼을 눌러 웨딩 피팅 공간의 무드를 선택하면 STEP 2로 이동합니다.</p>
+                    <p className="step-description">
+                        아래 배경 버튼을 눌러 웨딩 피팅 공간의 무드를 선택하면{isMobile && <br />} STEP 2로 이동합니다.
+                    </p>
                     {renderBackgroundButtons()}
                     <p className="step-tip">배경을 선택하면 자동으로 다음 단계가 열려요.</p>
                 </div>
@@ -774,7 +776,9 @@ const CustomFitting = ({ onBackToMain }) => {
                     <div className="step-2-header">
                         <div className="step-badge">STEP 2</div>
                         <div className="step-2-text">
-                            <h3 className="step-title">전신사진과 드레스 사진을 업로드하고 매칭하기를 선택해주세요</h3>
+                            <h3 className="step-title">
+                                전신사진과 드레스 사진을 업로드하고{isMobile && <br />} 매칭하기를 선택해주세요
+                            </h3>
                         </div>
                     </div>
                     <div className="step-panel-content">
