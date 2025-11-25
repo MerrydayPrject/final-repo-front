@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef } from 'react'
 import { HiQuestionMarkCircle } from 'react-icons/hi'
 import Modal from '../../components/Modal'
 import ReviewModal from '../../components/ReviewModal'
@@ -133,13 +133,12 @@ const parseGeminiAnalysis = (analysisText = '') => {
     }
 }
 
-const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
+const BodyAnalysis = ({ onNavigateToFittingWithCategory }) => {
     const [uploadedImage, setUploadedImage] = useState(null)
     const [imagePreview, setImagePreview] = useState(null)
     const [analysisResult, setAnalysisResult] = useState(null)
     const [isAnalyzing, setIsAnalyzing] = useState(false)
     const [recommendedCategories, setRecommendedCategories] = useState([])
-    const [avoidCategories, setAvoidCategories] = useState([])
     const [analysisParagraphs, setAnalysisParagraphs] = useState([])
     const [height, setHeight] = useState('')
     const [weight, setWeight] = useState('')
@@ -152,7 +151,6 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
 
     // 카테고리명을 한글로 변환하는 함수
     const getCategoryName = (category) => DRESS_CATEGORY_LABELS[category.toLowerCase()] || category
-
 
     // 파일 선택 핸들러
     const handleFileSelect = async (e) => {
@@ -209,10 +207,8 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                 // 이전 분석 결과 초기화
                 setAnalysisResult(null)
                 setRecommendedCategories([])
-                setAvoidCategories([])
                 setAnalysisParagraphs([])
             } catch (error) {
-                console.error('사람 감지 오류:', error)
                 setModalMessage('이미지 검증 중 오류가 발생했습니다. 다시 시도해주세요.')
                 setModalOpen(true)
                 setIsValidatingPerson(false)
@@ -271,7 +267,6 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
 
             const parsedGemini = parseGeminiAnalysis(result.gemini_analysis?.detailed_analysis || '')
             setRecommendedCategories(parsedGemini.recommended)
-            setAvoidCategories(parsedGemini.avoid)
             setAnalysisParagraphs(parsedGemini.paragraphs)
 
             // 리뷰 모달 표시 (1번만, 쿠키 확인)
@@ -296,10 +291,9 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                 }
             }, 100)
         } catch (error) {
-            console.error('분석 오류:', error)
             // 백엔드에서 반환한 에러 메시지 확인
             let errorMessage = error.response?.data?.message || error.message || '이미지 분석 중 오류가 발생했습니다.'
-            
+
             // 동물 감지 에러인 경우
             if (error.response?.data?.is_animal) {
                 errorMessage = '인물사진을 업로드해주세요.'
@@ -308,14 +302,13 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
             else if (error.response?.data?.error === 'No pose detected' || errorMessage.includes('전신')) {
                 errorMessage = '전신 사진을 넣어주세요.'
             }
-            
+
             setModalMessage(errorMessage)
             setModalOpen(true)
         } finally {
             setIsAnalyzing(false)
         }
     }
-
 
     return (
         <main className="main-content">
@@ -349,7 +342,6 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                                 setImagePreview(null)
                                                 setAnalysisResult(null)
                                                 setRecommendedCategories([])
-                                                setAvoidCategories([])
                                                 setAnalysisParagraphs([])
                                                 setHeight('')
                                                 setWeight('')
@@ -372,7 +364,7 @@ const BodyAnalysis = ({ onBackToMain, onNavigateToFittingWithCategory }) => {
                                                 </>
                                             ) : (
                                                 <>
-                                                    <img src="/Image/icons8-카메라-80.png" alt="카메라" className="camera-icon" />
+                                                    <img src="/Image/analysis/icons8-카메라-80.png" alt="카메라" className="camera-icon" />
                                                     <p>이미지를 업로드해주세요</p>
                                                 </>
                                             )}

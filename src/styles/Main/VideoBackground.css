@@ -166,6 +166,7 @@
     margin: 0;
     font-family: 'Gowun Batang', 'Noto Sans KR', serif;
     line-height: 1.8;
+    cursor: default;
 }
 
 .video-side-text-line1 {

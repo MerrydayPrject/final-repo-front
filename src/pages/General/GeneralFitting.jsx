@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import Lottie from 'lottie-react'
 import { MdOutlineDownload } from 'react-icons/md'
-import { HiQuestionMarkCircle } from 'react-icons/hi'
 import Modal from '../../components/Modal'
 import ReviewModal from '../../components/ReviewModal'
 import { autoMatchImageV4, getDresses, applyImageFilter, validatePerson } from '../../utils/api'
@@ -1095,10 +1094,6 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                                 <div className="tab-guide-text">
                                     드래그 한 번으로 웨딩드레스를 자동 피팅해보세요
                                 </div>
-                                <button className="faq-button">
-                                    <HiQuestionMarkCircle />
-                                    <div className="tooltip">우측 드레스를 전신 또는 얼굴이미지로 드래그해주세요</div>
-                                </button>
                             </div>
                         </div>
                         {/* ImageUpload 컴포넌트 */}

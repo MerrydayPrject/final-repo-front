@@ -69,6 +69,7 @@
     font-family: 'Montserrat', 'Noto Sans KR', sans-serif;
     line-height: 1;
     animation: glow 2s ease-in-out infinite;
+    cursor: default;
 }
 
 @keyframes glow {
@@ -92,6 +93,7 @@
     background-clip: text;
     font-family: 'Montserrat', 'Noto Sans KR', sans-serif;
     animation: bounce 1s ease-in-out infinite;
+    cursor: default;
 }
 
 @keyframes bounce {
@@ -113,6 +115,7 @@
     margin-bottom: 15px;
     letter-spacing: -0.5px;
     animation: fadeInUp 1s ease-out 0.3s both;
+    cursor: default;
 }
 
 .collection-description {
@@ -121,6 +124,7 @@
     margin-bottom: 30px;
     line-height: 1.6;
     animation: fadeInUp 1s ease-out 0.5s both;
+    cursor: default;
 }
 
 @keyframes fadeInUp {

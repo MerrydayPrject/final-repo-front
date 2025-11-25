@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import Lottie from 'lottie-react'
 import { MdOutlineDownload } from 'react-icons/md'
-import { HiQuestionMarkCircle } from 'react-icons/hi'
 import Modal from '../../components/Modal'
 import ReviewModal from '../../components/ReviewModal'
 import { customV4MatchImage, applyImageFilter, validatePerson } from '../../utils/api'
@@ -818,10 +817,6 @@ const CustomFitting = ({ onBackToMain }) => {
                             <div className="tab-guide-text">
                                 배경 제거부터 피팅까지, AI가 모두 자동으로 도와드립니다
                             </div>
-                            <button className="faq-button">
-                                <HiQuestionMarkCircle />
-                                <div className="tooltip">전신사진과 드레스 이미지를 업로드한 후 매칭하기 버튼을 눌러주세요</div>
-                            </button>
                         </div>
                     </div>
 

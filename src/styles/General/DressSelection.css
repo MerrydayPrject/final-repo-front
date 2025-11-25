@@ -261,6 +261,20 @@
     opacity: 1;
 }
 
+/* 매칭 중일 때 호버 효과 비활성화 */
+.dress-selection.processing .dress-card:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.dress-selection.processing .dress-card:hover .drag-hint {
+    opacity: 0;
+}
+
+.dress-selection.processing .dress-card:hover .dress-image {
+    transform: none;
+}
+
 .dress-card.selected {
     border-color: #c4baba;
     box-shadow: var(--shadow-lg);

@@ -20,6 +20,7 @@
     position: relative;
     display: inline-block;
     padding-bottom: 12px;
+    cursor: default;
 }
 
 .dome-gallery-title::before,

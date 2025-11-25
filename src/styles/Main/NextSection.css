@@ -72,6 +72,11 @@
     text-align: center;
     z-index: 3;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    cursor: default;
+}
+
+.next-section-video-text .video-text-line {
+    cursor: default;
 }
 
 .video-text-break {
