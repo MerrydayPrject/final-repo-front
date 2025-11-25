@@ -1241,6 +1241,11 @@
         margin-bottom: -5px;
     }
 
+    /* 모바일 버전 - 체형분석 description 아래 마진 줄이기 */
+    .general-fitting-header .tab-guide-text-wrapper {
+        margin-bottom: -5px;
+    }
+
     .general-fitting-title {
         font-size: 1.5rem;
     }
@@ -1253,15 +1258,16 @@
         font-size: 1.3rem;
     }
 
+    /* 모바일 버전 - 체형분석 이미지 업로드 영역 높이 조정 */
     .upload-area .image-container {
-        height: 300px;
-        max-height: 50vh;
+        height: 250px;
+        max-height: 45vh;
         margin-bottom: 12px;
     }
 
     .analysis-main-section .upload-area .image-container {
-        height: 300px !important;
-        max-height: 50vh !important;
+        height: 250px !important;
+        max-height: 45vh !important;
     }
 
     .analysis-result-area {
@@ -1269,6 +1275,23 @@
         padding: 12px;
         max-height: none;
         display: block;
+    }
+
+    /* 모바일 버전 - 체형특징 라벨 가로 2개씩 배치 */
+    .body-features-item>div {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .body-features-item .body-feature-label {
+        flex: 0 0 calc(50% - 4px);
+        max-width: calc(50% - 4px);
+        padding: 5px 10px;
+        font-size: 12px;
+        text-align: center;
+        box-sizing: border-box;
     }
 
     /* 모바일에서 분석 전에는 결과 영역 숨김 */
@@ -1404,6 +1427,13 @@
         width: 100%;
     }
 
+    /* 모바일 버전 - 추천 드레스 스타일 카테고리 버튼 크기 증가 */
+    .category-badge {
+        padding: 12px 24px;
+        font-size: 1rem;
+        border-radius: 24px;
+    }
+
     .empty-image-placeholder .camera-icon {
         width: 60px;
         height: 60px;
@@ -1465,10 +1495,16 @@
         font-size: 1.3rem;
     }
 
+    /* 모바일 버전 (480px 이하) - 체형분석 description 아래 마진 줄이기 */
+    .general-fitting-header .tab-guide-text-wrapper {
+        margin-bottom: -5px;
+    }
+
     .tab-guide-text {
         font-size: 0.8rem;
     }
 
+    /* 모바일 버전 (480px 이하) - 체형분석 이미지 업로드 영역 높이 조정 */
     .upload-area .image-container {
         height: 250px;
         max-height: 45vh;
@@ -1556,6 +1592,21 @@
 
     .empty-image-placeholder p {
         font-size: 13px;
+    }
+
+    /* 모바일 버전 (480px 이하) - 체형특징 라벨 가로 2개씩 배치 */
+    .body-features-item .body-feature-label {
+        flex: 0 0 calc(50% - 4px);
+        max-width: calc(50% - 4px);
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+
+    /* 모바일 버전 (480px 이하) - 추천 드레스 스타일 카테고리 버튼 크기 증가 */
+    .category-badge {
+        padding: 5px 15px;
+        font-size: 0.8rem;
+        border-radius: 26px;
     }
 
     .result-placeholder {
