@@ -547,12 +547,15 @@ body.dragging-dress * {
         font-size: 24px;
     }
 
+    /* 모바일 버전 - 탭 가이드 텍스트 위치 조정 */
     .tab-guide-text-wrapper {
         width: 100%;
         flex-direction: column;
         align-items: flex-start;
         gap: 8px;
         padding-top: 0;
+        margin-top: -8px;
+        margin-bottom: 18px;
     }
 
     .tab-guide-text {
@@ -646,6 +649,12 @@ body.dragging-dress * {
 
     .general-fitting-title {
         font-size: 20px;
+    }
+
+    /* 모바일 버전 (480px 이하) - 탭 가이드 텍스트 위치 조정 */
+    .tab-guide-text-wrapper {
+        margin-top: -8px;
+        padding-bottom: 18px;
     }
 
     .tab-guide-text {

@@ -184,6 +184,10 @@
     pointer-events: auto;
 }
 
+/* ============================================
+   모바일 버전 (768px 이하) - 시작
+   ============================================ */
+
 @media (max-width: 768px) {
     .dress-grid-container {
         padding: 0 8px 0 !important;
@@ -194,6 +198,9 @@
     display: none;
 }
 
+/* ============================================
+   모바일 버전 (768px 이하) - 드레스 그리드 컨테이너
+   ============================================ */
 /* 모바일에서 가로 스크롤 활성화 (한 줄에 2개씩 보이도록) */
 @media (max-width: 768px) {
     .dress-grid-container {
@@ -219,6 +226,13 @@
     .dress-grid-container::-webkit-scrollbar-thumb {
         background: #ad9f41;
         border-radius: 3px;
+    }
+
+    /* 모바일 버전 - 카드가 1개일 때 스크롤 비활성화 및 중앙 정렬 */
+    .dress-grid-container:has(.dress-grid:has(.dress-card:only-child)) {
+        overflow-x: hidden;
+        display: flex;
+        justify-content: center;
     }
 }
 
@@ -455,6 +469,7 @@
 }
 
 
+/* 모바일 버전 - 드레스 선택 영역 스타일 */
 @media (max-width: 768px) {
     .dress-selection {
         padding: 8px 0 0 !important;
@@ -525,6 +540,7 @@
     }
 
 
+    /* 모바일 버전 - 드레스 그리드 레이아웃 (가로 스크롤) */
     .dress-grid {
         flex-direction: row;
         flex-wrap: nowrap;
@@ -538,6 +554,7 @@
         margin-bottom: 0;
     }
 
+    /* 모바일 버전 - 드레스 카드 크기 (화면 너비의 50% - 여백) */
     .dress-card {
         width: calc(50vw - 24px);
         min-width: calc(50vw - 24px);
@@ -549,6 +566,14 @@
         overflow: hidden;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         scroll-snap-align: start;
+    }
+
+    /* 모바일 버전 - 카드가 1개일 때 뭉개지는 문제 해결 */
+    /* TODO: 카드가 1개일 때 크기 조정 필요시 width 값 수정 (현재: 200px) */
+    .dress-grid:has(.dress-card:only-child) {
+        justify-content: center;
+        width: 200px;
+        margin: 0 auto;
     }
 
     .vertical-slider {
@@ -601,6 +626,9 @@
     }
 }
 
+/* ============================================
+   모바일 버전 (480px 이하) - 작은 모바일 기기
+   ============================================ */
 @media (max-width: 480px) {
     .category-buttons-wrapper {
         gap: 6px;

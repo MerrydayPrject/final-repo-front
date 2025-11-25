@@ -281,7 +281,7 @@
     }
 
     .about-us-title {
-        font-size: 48px;
+        font-size: 60px;
     }
 
     .about-us-content-wrapper {
@@ -388,7 +388,7 @@
 
 @media (max-width: 480px) {
     .about-us-title {
-        font-size: 36px;
+        font-size: 48px;
     }
 
     .about-us-main-text {
