@@ -90,7 +90,7 @@ const VideoBackground = ({ onNavigateToFitting }) => {
                 loop
                 playsInline
             >
-                <source src="/Image/Main_vd.mp4" type="video/mp4" />
+                <source src="/Image/main/Main_vd.mp4" type="video/mp4" />
             </video>
             <div ref={sideTextRef} className={`video-side-text ${isTextVisible ? 'visible' : ''}`}>
                 <p className="video-side-text-line1">입어보지 않아도, 느껴지는 설렘</p>

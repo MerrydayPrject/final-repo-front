@@ -57,9 +57,9 @@ const AboutUs = ({ onNavigateToGeneral, onNavigateToCustom, onNavigateToAnalysis
     const [visibleItems, setVisibleItems] = useState(() => Array(textSections.length).fill(false))
 
     const images = [
-        '/Image/About1.jpg',
-        '/Image/About2.jpg',
-        '/Image/About3.jpg'
+        '/Image/main/About1.jpg',
+        '/Image/main/About2.jpg',
+        '/Image/main/About3.jpg'
     ]
 
     useEffect(() => {

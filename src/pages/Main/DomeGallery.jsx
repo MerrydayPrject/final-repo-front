@@ -3,38 +3,38 @@ import { useGesture } from '@use-gesture/react'
 import '../../styles/Main/DomeGallery.css'
 
 const DEFAULT_IMAGES = [
-    { src: '/Image/Adress1.png', alt: 'Adress1.png' },
-    { src: '/Image/Adress2.png', alt: 'Adress2.png' },
-    { src: '/Image/Adress3.png', alt: 'Adress3.png' },
-    { src: '/Image/Adress4.png', alt: 'Adress4.png' },
-    { src: '/Image/Adress5.png', alt: 'Adress5.png' },
-    { src: '/Image/Bdress7.png', alt: 'Bdress7.png' },
-    { src: '/Image/Bdress8.PNG', alt: 'Bdress8.PNG' },
-    { src: '/Image/Bdress9.PNG', alt: 'Bdress9.PNG' },
-    { src: '/Image/Bdress10.PNG', alt: 'Bdress10.PNG' },
-    { src: '/Image/Kdress1.png', alt: 'Kdress1.png' },
-    { src: '/Image/Kdress2.PNG', alt: 'Kdress2.PNG' },
-    { src: '/Image/Kdress7.PNG', alt: 'Kdress7.PNG' },
-    { src: '/Image/Kdress8.png', alt: 'Kdress8.png' },
-    { src: '/Image/Mdress1.PNG', alt: 'Mdress1.PNG' },
-    { src: '/Image/Minidress2.PNG', alt: 'Minidress2.PNG' },
-    { src: '/Image/Minidress3.png', alt: 'Minidress3.png' },
-    { src: '/Image/Minidress4.png', alt: 'Minidress4.png' },
-    { src: '/Image/Tdress10.png', alt: 'Tdress10.png' },
-    { src: '/Image/Tdress19.PNG', alt: 'Tdress19.PNG' },
-    { src: '/Image/Tdress32.PNG', alt: 'Tdress32.PNG' },
-    { src: '/Image/Tdress33.png', alt: 'Tdress33.png' },
-    { src: '/Image/Tdress34.PNG', alt: 'Tdress34.PNG' },
-    { src: '/Image/Tdress35.png', alt: 'Tdress35.png' },
-    { src: '/Image/Tdress39.png', alt: 'Tdress39.png' },
-    { src: '/Image/Pdress1.PNG', alt: 'Pdress1.PNG' },
-    { src: '/Image/Pdress2.PNG', alt: 'Pdress2.PNG' },
-    { src: '/Image/Pdress3.PNG', alt: 'Pdress3.PNG' },
-    { src: '/Image/Pdress4.PNG', alt: 'Pdress4.PNG' },
-    { src: '/Image/Pdress5.PNG', alt: 'Pdress5.PNG' },
-    { src: '/Image/Sdress2.png', alt: 'Sdress2.png' },
-    { src: '/Image/Sdress10.png', alt: 'Sdress10.png' },
-    { src: '/Image/Sdress11.png', alt: 'Sdress11.png' }
+    { src: '/Image/main/Adress1.png', alt: 'Adress1.png' },
+    { src: '/Image/main/Adress2.png', alt: 'Adress2.png' },
+    { src: '/Image/main/Adress3.png', alt: 'Adress3.png' },
+    { src: '/Image/main/Adress4.png', alt: 'Adress4.png' },
+    { src: '/Image/main/Adress5.png', alt: 'Adress5.png' },
+    { src: '/Image/main/Bdress7.png', alt: 'Bdress7.png' },
+    { src: '/Image/main/Bdress8.PNG', alt: 'Bdress8.PNG' },
+    { src: '/Image/main/Bdress9.PNG', alt: 'Bdress9.PNG' },
+    { src: '/Image/main/Bdress10.PNG', alt: 'Bdress10.PNG' },
+    { src: '/Image/main/Kdress1.png', alt: 'Kdress1.png' },
+    { src: '/Image/main/Kdress2.PNG', alt: 'Kdress2.PNG' },
+    { src: '/Image/main/Kdress7.PNG', alt: 'Kdress7.PNG' },
+    { src: '/Image/main/Kdress8.png', alt: 'Kdress8.png' },
+    { src: '/Image/main/Mdress1.PNG', alt: 'Mdress1.PNG' },
+    { src: '/Image/main/Minidress2.PNG', alt: 'Minidress2.PNG' },
+    { src: '/Image/main/Minidress3.png', alt: 'Minidress3.png' },
+    { src: '/Image/main/Minidress4.png', alt: 'Minidress4.png' },
+    { src: '/Image/main/Tdress10.png', alt: 'Tdress10.png' },
+    { src: '/Image/main/Tdress19.PNG', alt: 'Tdress19.PNG' },
+    { src: '/Image/main/Tdress32.PNG', alt: 'Tdress32.PNG' },
+    { src: '/Image/main/Tdress33.png', alt: 'Tdress33.png' },
+    { src: '/Image/main/Tdress34.PNG', alt: 'Tdress34.PNG' },
+    { src: '/Image/main/Tdress35.png', alt: 'Tdress35.png' },
+    { src: '/Image/main/Tdress39.png', alt: 'Tdress39.png' },
+    { src: '/Image/main/Pdress1.PNG', alt: 'Pdress1.PNG' },
+    { src: '/Image/main/Pdress2.PNG', alt: 'Pdress2.PNG' },
+    { src: '/Image/main/Pdress3.PNG', alt: 'Pdress3.PNG' },
+    { src: '/Image/main/Pdress4.PNG', alt: 'Pdress4.PNG' },
+    { src: '/Image/main/Pdress5.PNG', alt: 'Pdress5.PNG' },
+    { src: '/Image/main/Sdress2.png', alt: 'Sdress2.png' },
+    { src: '/Image/main/Sdress10.png', alt: 'Sdress10.png' },
+    { src: '/Image/main/Sdress11.png', alt: 'Sdress11.png' }
 ]
 
 const DEFAULTS = {
@@ -62,11 +62,6 @@ function buildItems(pool, seg) {
     const totalSlots = coords.length
     if (pool.length === 0) {
         return coords.map((c) => ({ ...c, src: '', alt: '' }))
-    }
-    if (pool.length > totalSlots) {
-        console.warn(
-            `[DomeGallery] Provided image count (${pool.length}) exceeds available tiles (${totalSlots}). Some images will not be shown.`
-        )
     }
 
     const normalizedImages = pool.map((image) => {

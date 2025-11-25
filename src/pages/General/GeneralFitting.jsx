@@ -22,7 +22,6 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
     const [imageUploadModalOpen, setImageUploadModalOpen] = useState(false)
     const [pendingDress, setPendingDress] = useState(null)
     const [loadingAnimation, setLoadingAnimation] = useState(null)
-    const [imageTransition, setImageTransition] = useState(false)
     const [currentStep, setCurrentStep] = useState(1)
     const filterButtonsRef = useRef(null)
     const [isFilterOpen, setIsFilterOpen] = useState(false)
@@ -108,10 +107,10 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
     // 배경 선택 상태
     const [selectedBackgroundIndex, setSelectedBackgroundIndex] = useState(0)
     const backgroundImages = [
-        '/Image/background4.png',
-        '/Image/background1.jpg',
-        '/Image/background2 (2).png',
-        '/Image/background3.jpg'
+        '/Image/general/background4.png',
+        '/Image/general/background1.jpg',
+        '/Image/general/background2 (2).png',
+        '/Image/general/background3.jpg'
     ]
 
     // ImageUpload 상태
@@ -234,7 +233,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
 
     useEffect(() => {
         // Lottie 애니메이션 로드
-        fetch('/Image/One line dress.json')
+        fetch('/Image/lottie/One line dress.json')
             .then(response => response.json())
             .then(data => setLoadingAnimation(data))
             .catch(error => console.error('Lottie 로드 실패:', error))
@@ -377,15 +376,6 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
             handleFile(file)
         }
     }
-
-    // const handleFile = (file) => {
-    //     const reader = new FileReader()
-    //     reader.onloadend = () => {
-    //         setPreview(reader.result)
-    //         handleImageUpload(file)
-    //     }
-    //     reader.readAsDataURL(file)
-    // }
 
     const handleFile = async (file) => {
         // 사람 감지 검증
@@ -722,16 +712,16 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                     ) : (
                         <>
                             <div className="upload-icon">
-                                <img src="/Image/body_icon.png" alt="전신사진 아이콘" />
+                                <img src="/Image/general/body_icon.png" alt="전신사진 아이콘" />
                             </div>
-                            <p className="upload-text">전신 또는 얼굴 이미지를 먼저 업로드 해주세요</p>
+                            <p className="upload-text">전신 또는 얼굴 이미지를 업로드 해주세요</p>
                             <p className="upload-subtext">JPG, PNG, JPEG 형식 지원</p>
                         </>
                     )}
                 </div>
             ) : (
                 <div
-                    className={`preview-container ${isDragging ? 'dragging' : ''} ${imageTransition ? 'transitioning' : ''}`}
+                    className={`preview-container ${isDragging ? 'dragging' : ''}`}
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
                     onDrop={handleDrop}
@@ -740,7 +730,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                         src={imageSrc}
                         alt="Preview"
                         draggable="false"
-                        className={`preview-image ${imageTransition ? 'fade-transition' : ''} ${generalResultImage ? 'clickable' : ''}`}
+                        className={`preview-image ${generalResultImage ? 'clickable' : ''}`}
                         onClick={(e) => {
                             e.preventDefault()
                             e.stopPropagation()

@@ -70,6 +70,7 @@
     display: flex;
     align-items: center;
     gap: 6px;
+    cursor: default;
 }
 
 .content-wrapper.custom-wrapper .step-guide-panel-step3 .filter-label i {
@@ -498,6 +499,7 @@
     font-weight: 600;
     color: var(--text-dark);
     margin: 0;
+    cursor: default;
 }
 
 /* Custom Upload Validation Overlay and Loader */

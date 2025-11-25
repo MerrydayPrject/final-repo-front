@@ -22,7 +22,6 @@ const CustomFitting = ({ onBackToMain }) => {
     const [isMatching, setIsMatching] = useState(false)
     const [isValidatingPerson, setIsValidatingPerson] = useState(false)
     const [loadingAnimation, setLoadingAnimation] = useState(null)
-    const [imageTransition, setImageTransition] = useState(false)
     const [errorModalOpen, setErrorModalOpen] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
     const [currentStep, setCurrentStep] = useState(1)
@@ -31,9 +30,9 @@ const CustomFitting = ({ onBackToMain }) => {
 
     // 로딩 메시지 목록 (순차적으로 표시, 마지막은 고정)
     const loadingMessages = [
-        '이미지를 분석하고 있습니다…',
-        '의상을 자연스럽게 합성하고 있습니다…',
-        '배경을 입히는 중입니다…',
+        '이미지를 분석하고 있습니다...',
+        '의상을 자연스럽게 합성하고 있습니다...',
+        '배경을 입히는 중입니다...',
         '곧 완성됩니다. 잠시만 기다려주세요'
     ]
 
@@ -80,10 +79,10 @@ const CustomFitting = ({ onBackToMain }) => {
     // 배경 선택 상태
     const [selectedBackgroundIndex, setSelectedBackgroundIndex] = useState(0)
     const backgroundImages = [
-        '/Image/background4.png',
-        '/Image/background1.jpg',
-        '/Image/background2 (2).png',
-        '/Image/background3.jpg'
+        '/Image/general/background4.png',
+        '/Image/general/background1.jpg',
+        '/Image/general/background2 (2).png',
+        '/Image/general/background3.jpg'
     ]
     const backgroundLabels = ['피팅 룸', '야외 홀', '회색 스튜디오', '정원']
 
@@ -128,7 +127,7 @@ const CustomFitting = ({ onBackToMain }) => {
 
     useEffect(() => {
         // Lottie 애니메이션 로드
-        fetch('/Image/One line dress.json')
+        fetch('/Image/lottie/One line dress.json')
             .then(response => response.json())
             .then(data => setLoadingAnimation(data))
             .catch(error => console.error('Lottie 로드 실패:', error))
@@ -497,12 +496,12 @@ const CustomFitting = ({ onBackToMain }) => {
             if (customResultImage) {
                 return (
                     <div className="image-upload-wrapper">
-                        <div className={`preview-container ${imageTransition ? 'transitioning' : ''}`}>
+                        <div className="preview-container">
                             <img
                                 src={customResultImage}
                                 alt="Matching Result"
                                 draggable="false"
-                                className={`preview-image ${imageTransition ? 'fade-transition' : ''} ${customResultImage ? 'clickable' : ''}`}
+                                className={`preview-image ${customResultImage ? 'clickable' : ''}`}
                                 onClick={(e) => {
                                     e.preventDefault()
                                     e.stopPropagation()
@@ -864,9 +863,9 @@ const CustomFitting = ({ onBackToMain }) => {
                                         ) : (
                                             <>
                                                 <div className="upload-icon">
-                                                    <img src="/Image/body_icon.png" alt="전신사진 아이콘" />
+                                                    <img src="/Image/general/body_icon.png" alt="전신사진 아이콘" />
                                                 </div>
-                                                <p className="upload-text">전신사진을 업로드 해주세요</p>
+                                                <p className="upload-text">전신 또는 얼굴 이미지를 <br /> 업로드 해주세요</p>
                                             </>
                                         )}
                                     </div>
@@ -906,7 +905,7 @@ const CustomFitting = ({ onBackToMain }) => {
                                         onClick={handleDressClick}
                                     >
                                         <div className="upload-icon">
-                                            <img src="/Image/dress_icon.png" alt="드레스 아이콘" />
+                                            <img src="/Image/custom/dress_icon.png" alt="드레스 아이콘" />
                                         </div>
                                         <p className="upload-text">드레스 사진을 업로드 해주세요</p>
                                     </div>

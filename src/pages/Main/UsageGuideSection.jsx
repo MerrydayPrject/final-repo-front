@@ -71,17 +71,17 @@ const UsageGuideSection = () => {
 
     useEffect(() => {
         // Lottie 애니메이션 로드
-        fetch('/Image/upload files loader.json')
+        fetch('/Image/lottie/upload files loader.json')
             .then(response => response.json())
             .then(data => setUploadAnimation(data))
             .catch(error => console.error('Lottie 로드 실패:', error))
 
-        fetch('/Image/fitting.json')
+        fetch('/Image/lottie/fitting.json')
             .then(response => response.json())
             .then(data => setFittingAnimation(data))
             .catch(error => console.error('Lottie 로드 실패:', error))
 
-        fetch('/Image/success.json')
+        fetch('/Image/lottie/success.json')
             .then(response => response.json())
             .then(data => setSuccessAnimation(data))
             .catch(error => console.error('Lottie 로드 실패:', error))
@@ -153,7 +153,7 @@ const UsageGuideSection = () => {
                     onClick={handleContainerClick}
                 >
                     <div className="slider-image slider-before slider-image-ex-b">
-                        <img className="slider-img-ex-b" src="/Image/ex_B.jpg" alt="드레스 착용 전 예시" />
+                        <img className="slider-img-ex-b" src="/Image/main/ex_B.jpg" alt="드레스 착용 전 예시" />
                     </div>
 
                     <div className="slider-image slider-after slider-image-ex-a">
@@ -161,7 +161,7 @@ const UsageGuideSection = () => {
                             className="slider-after-clip"
                             style={{ '--clip-right': `${(1 - ratio) * 100}%` }}
                         >
-                            <img className="slider-img-ex-a" src="/Image/ex_A.png" alt="드레스 착용 후 예시" />
+                            <img className="slider-img-ex-a" src="/Image/main/ex_A.png" alt="드레스 착용 후 예시" />
                         </div>
                     </div>
 

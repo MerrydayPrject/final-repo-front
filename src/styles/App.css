@@ -82,6 +82,7 @@
     margin: 0;
     padding: 0;
     flex-shrink: 0;
+    cursor: default;
 }
 
 .tab-guide-text-wrapper {

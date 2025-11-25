@@ -84,6 +84,7 @@
     padding: 6px 18px;
     border-radius: 999px;
     letter-spacing: 0.08em;
+    cursor: default;
 }
 
 .step-title {
@@ -91,6 +92,7 @@
     font-size: 20px;
     font-weight: 700;
     color: #2c2c2c;
+    cursor: default;
 }
 
 .step-description {
@@ -98,12 +100,14 @@
     font-size: 15px;
     color: #6b6b6b;
     line-height: 1.5;
+    cursor: default;
 }
 
 .step-tip {
     font-size: 13px;
     color: #9a7b57;
     margin-top: 8px;
+    cursor: default;
 }
 
 .step-actions {
@@ -329,6 +333,7 @@
     font-size: 18px;
     font-weight: 600;
     color: #2c2c2c;
+    cursor: default;
     text-align: left;
 }
 
@@ -477,11 +482,13 @@
     font-weight: 600;
     color: black;
     margin-bottom: 8px;
+    cursor: default;
 }
 
 .upload-subtext {
     font-size: 14px;
     color: var(--text-light);
+    cursor: default;
 }
 
 .preview-container {
@@ -710,6 +717,7 @@
     font-weight: 600;
     color: #333;
     white-space: nowrap;
+    cursor: default;
 }
 
 .filter-buttons {
