@@ -135,9 +135,13 @@ const CustomFitting = ({ onBackToMain }) => {
     // 배경 이미지 URL을 File 객체로 변환하는 함수
     const urlToFile = async (url, filename = 'background.jpg') => {
         try {
-            let apiBaseUrl = import.meta.env.VITE_API_URL || 'http://marryday.kro.kr'
+            let apiBaseUrl = import.meta.env.VITE_API_URL || 'https://marryday.kro.kr'
             // URL 끝의 슬래시 제거
             apiBaseUrl = apiBaseUrl.replace(/\/+$/, '')
+            // 프로덕션 환경(HTTPS)에서는 HTTP를 HTTPS로 자동 변환
+            if (typeof window !== 'undefined' && window.location.protocol === 'https:' && apiBaseUrl.startsWith('http://')) {
+                apiBaseUrl = apiBaseUrl.replace('http://', 'https://')
+            }
             const isExternalUrl = url.startsWith('http://') || url.startsWith('https://')
             const proxyUrl = isExternalUrl
                 ? `${apiBaseUrl}/api/proxy-image?url=${encodeURIComponent(url)}`

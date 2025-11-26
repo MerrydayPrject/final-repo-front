@@ -22,8 +22,10 @@ npm install
 프로젝트 루트에 `.env` 파일을 생성하고 백엔드 API URL을 설정하세요:
 
 ```env
-VITE_API_URL=http://marryday.kro.kr
+VITE_API_URL=https://marryday.kro.kr
 ```
+
+**참고:** Vercel은 HTTPS로 배포되므로 백엔드도 HTTPS를 사용해야 Mixed Content 오류를 방지할 수 있습니다. 코드는 자동으로 HTTPS 환경에서 HTTP를 HTTPS로 변환합니다.
 
 ### 개발 서버 실행
 
@@ -52,8 +54,10 @@ npm run build
    - Vercel 대시보드에서 프로젝트 설정 → Environment Variables
    - 다음 환경 변수 추가:
      ```
-     VITE_API_URL=http://marryday.kro.kr
+     VITE_API_URL=https://marryday.kro.kr
      ```
+     
+     **중요:** HTTPS를 사용해야 Mixed Content 오류를 방지할 수 있습니다.
 
 3. **배포 설정**
    - Framework Preset: Vite
