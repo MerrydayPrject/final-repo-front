@@ -2,17 +2,15 @@ import axios from 'axios'
 
 // 환경변수에서 API URL 가져오기 (끝의 슬래시 제거)
 export const getApiBaseUrl = () => {
-    let url = import.meta.env.VITE_API_URL || 'https://marryday.kro.kr'
+    // Vercel 프로덕션 환경에서는 상대 경로 사용 (rewrites를 통해 프록시)
+    if (typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')) {
+        return '' // 상대 경로 사용
+    }
+
+    // 로컬 개발 환경 또는 다른 환경
+    let url = import.meta.env.VITE_API_URL || 'http://marryday.kro.kr'
     // URL 끝의 슬래시 제거
     url = url.replace(/\/+$/, '')
-    // 프로토콜이 없으면 https 추가 (프로덕션 환경에서 Mixed Content 방지)
-    if (!url.startsWith('http://') && !url.startsWith('https://')) {
-        url = `https://${url}`
-    }
-    // 프로덕션 환경(HTTPS)에서는 HTTP를 HTTPS로 자동 변환
-    if (typeof window !== 'undefined' && window.location.protocol === 'https:' && url.startsWith('http://')) {
-        url = url.replace('http://', 'https://')
-    }
     return url
 }
 
