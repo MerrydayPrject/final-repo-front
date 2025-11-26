@@ -404,7 +404,7 @@
     border-radius: 2px;
     padding: 40px 20px;
     text-align: center;
-    cursor: pointer;
+    cursor: default;
     transition: var(--transition);
     width: 80%;
     flex: 1;
@@ -450,10 +450,10 @@
 }
 
 .upload-area:hover {
-    border-color: #fdf9ee;
-    background: #fdf9ee;
-    animation: none;
-    transform: translateY(-2px);
+    border-color: #f8f8f800;
+    background: #f8f6f683;
+    animation: gentleJump 7s ease-in-out infinite;
+    transform: none;
 }
 
 .upload-area.dragging {
@@ -1751,6 +1751,20 @@
 .background-button:disabled:hover {
     transform: none;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Android - General fitting font adjustments */
+.android .fitting-container .upload-text {
+    font-size: 16px;
+}
+
+.android .fitting-container .upload-subtext {
+    font-size: 12px;
+}
+
+.android .fitting-container .step-guide-panel .step-description,
+.android .fitting-container .step-guide-panel .step-tip {
+    font-size: 13px;
 }
 
 .background-hover-label {

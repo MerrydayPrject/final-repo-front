@@ -577,6 +577,24 @@ body.dragging-dress * {
         opacity: 0 !important;
     }
 
+    /* Android - General fitting font adjustments */
+    .android .fitting-container .general-fitting-title {
+        font-size: 20px;
+    }
+
+    .android .fitting-container .tab-guide-text {
+        font-size: 11px;
+    }
+
+    .android .fitting-container .step-title {
+        font-size: 15px;
+    }
+
+    .android .fitting-container .step-description,
+    .android .fitting-container .step-tip {
+        font-size: 10px;
+    }
+
     .tooltip::after {
         display: none !important;
     }

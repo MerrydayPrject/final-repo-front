@@ -1629,12 +1629,13 @@
 
 .android .analysis-main-section .empty-image-placeholder .camera-icon {
     align-self: center;
+    margin-left: 30px;
 }
 
 .android .analysis-main-section .empty-image-placeholder p {
     width: 100%;
     text-align: left;
-    margin-left: 180px;
+    margin-left: 200px;
 }
 
 .android .analysis-main-section .body-info-inputs .input-group:nth-child(2) {
