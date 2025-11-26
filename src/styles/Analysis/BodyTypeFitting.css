@@ -1617,3 +1617,44 @@
         font-size: 0.9rem;
     }
 }
+
+/* ===========================
+   Android 전용 미세 조정
+   =========================== */
+.android .analysis-main-section .empty-image-placeholder {
+    align-items: center;
+    text-align: center;
+    padding-left: 0;
+}
+
+.android .analysis-main-section .empty-image-placeholder .camera-icon {
+    align-self: center;
+}
+
+.android .analysis-main-section .empty-image-placeholder p {
+    width: 100%;
+    text-align: left;
+    margin-left: 180px;
+}
+
+.android .analysis-main-section .body-info-inputs .input-group:nth-child(2) {
+    flex: 0.9;
+}
+
+.android .analysis-main-section .body-info-inputs .input-group:first-child {
+    flex: 0.9;
+}
+
+.android .analysis-main-section .body-info-inputs .input-group:first-child input {
+    width: 100%;
+}
+
+.android .analysis-main-section .body-info-inputs .input-group:nth-child(2) input {
+    width: 100%;
+}
+
+.android .analysis-main-section .upload-area .analyze-button {
+    width: 95% !important;
+    max-width: 95% !important;
+    transform: none !important;
+}
