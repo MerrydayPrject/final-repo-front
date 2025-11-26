@@ -496,7 +496,20 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
 
     const handleDressClick = (dress) => {
         if (isProcessing) return
-        handleDressSelect(dress)
+
+        // 모바일에서는 클릭 시 바로 매칭
+        if (isMobile) {
+            if (!uploadedImage) {
+                // 이미지가 없으면 업로드 모달 열기
+                handleImageUploadRequired(dress)
+            } else {
+                // 이미지가 있으면 바로 매칭
+                handleDressDropped(dress)
+            }
+        } else {
+            // 웹 버전은 기존대로 선택만
+            handleDressSelect(dress)
+        }
     }
 
     const handleCategoryClick = (categoryId) => {
@@ -1196,22 +1209,37 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                                                         data-dress-id={dress.id}
                                                         className={`dress-card draggable ${selectedDress?.id === dress.id ? 'selected' : ''}`}
                                                         onClick={() => handleDressClick(dress)}
-                                                        draggable={!isProcessing}
+                                                        draggable={!isMobile && !isProcessing}
                                                         onMouseDown={(e) => {
-                                                            // 클릭 시 커서를 grabbing으로 고정
-                                                            e.currentTarget.style.cursor = 'grabbing'
+                                                            // 모바일이 아닐 때만 커서 변경
+                                                            if (!isMobile) {
+                                                                e.currentTarget.style.cursor = 'grabbing'
+                                                            }
                                                         }}
                                                         onMouseUp={(e) => {
-                                                            // 마우스 업 시 grab으로 복구
-                                                            e.currentTarget.style.cursor = 'grab'
+                                                            // 모바일이 아닐 때만 커서 복구
+                                                            if (!isMobile) {
+                                                                e.currentTarget.style.cursor = 'grab'
+                                                            }
                                                         }}
                                                         onMouseLeave={(e) => {
-                                                            // 영역 벗어날 때도 복구
-                                                            e.currentTarget.style.cursor = 'grab'
+                                                            // 모바일이 아닐 때만 커서 복구
+                                                            if (!isMobile) {
+                                                                e.currentTarget.style.cursor = 'grab'
+                                                            }
                                                         }}
-                                                        onDragStart={(e) => handleDragStart(e, dress)}
+                                                        onDragStart={(e) => {
+                                                            // 모바일이 아닐 때만 드래그 허용
+                                                            if (!isMobile) {
+                                                                handleDragStart(e, dress)
+                                                            } else {
+                                                                e.preventDefault()
+                                                            }
+                                                        }}
                                                         onDragEnd={(e) => {
-                                                            e.currentTarget.style.cursor = 'grab'
+                                                            if (!isMobile) {
+                                                                e.currentTarget.style.cursor = 'grab'
+                                                            }
                                                         }}
                                                     >
                                                         <div className="dress-category-badge">
@@ -1221,7 +1249,8 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                                                         {selectedDress?.id === dress.id && (
                                                             <div className="selected-badge">✓</div>
                                                         )}
-                                                        <div className="drag-hint">드래그 가능</div>
+                                                        {!isMobile && <div className="drag-hint">드래그 가능</div>}
+                                                        {isMobile && <div className="drag-hint">탭하여 선택</div>}
                                                     </div>
                                                 ))
                                             )}
