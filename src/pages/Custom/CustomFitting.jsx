@@ -140,7 +140,7 @@ const CustomFitting = ({ onBackToMain }) => {
             if (typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')) {
                 apiBaseUrl = '' // 상대 경로 사용
             } else {
-                apiBaseUrl = import.meta.env.VITE_API_URL || 'https://marryday.kro.kr'
+                apiBaseUrl = import.meta.env.VITE_API_URL || 'http://marryday.kro.kr'
                 // URL 끝의 슬래시 제거
                 apiBaseUrl = apiBaseUrl.replace(/\/+$/, '')
             }

@@ -19,7 +19,7 @@ export const getApiBaseUrl = () => {
     }
 
     // 로컬 개발 환경 또는 다른 환경
-    let url = import.meta.env.VITE_API_URL || 'https://marryday.kro.kr'
+    let url = import.meta.env.VITE_API_URL || 'http://marryday.kro.kr'
     // URL 끝의 슬래시 제거
     url = url.replace(/\/+$/, '')
     console.log('API Base URL:', url)
