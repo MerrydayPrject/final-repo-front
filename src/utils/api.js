@@ -1,12 +1,55 @@
 import axios from 'axios'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+// 환경변수에서 API URL 가져오기 (끝의 슬래시 제거)
+export const getApiBaseUrl = () => {
+    const url = import.meta.env.VITE_API_URL || 'http://marryday.kro.kr'
+    // URL 끝의 슬래시 제거
+    return url.replace(/\/+$/, '')
+}
+
+const API_BASE_URL = getApiBaseUrl()
+
+// 디버깅을 위한 로그 (개발 환경에서만)
+if (import.meta.env.DEV) {
+    console.log('API Base URL:', API_BASE_URL)
+    console.log('Environment VITE_API_URL:', import.meta.env.VITE_API_URL)
+}
 
 const api = axios.create({
     baseURL: API_BASE_URL,
+    timeout: 300000, // 5분 타임아웃 (AI 처리 시간이 길 수 있음)
     // multipart/form-data는 FormData를 보낼 때 axios가 자동으로 boundary를 포함한 Content-Type을 설정하므로
     // 기본 헤더에 설정하지 않음 (필요한 경우 개별 요청에서만 설정)
 })
+
+// 요청 인터셉터 (디버깅용)
+api.interceptors.request.use(
+    (config) => {
+        if (import.meta.env.DEV) {
+            console.log('API Request:', config.method?.toUpperCase(), config.baseURL + config.url)
+        }
+        return config
+    },
+    (error) => {
+        console.error('API Request Error:', error)
+        return Promise.reject(error)
+    }
+)
+
+// 응답 인터셉터 (에러 처리)
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        console.error('API Response Error:', {
+            message: error.message,
+            status: error.response?.status,
+            statusText: error.response?.statusText,
+            url: error.config?.url,
+            baseURL: error.config?.baseURL,
+        })
+        return Promise.reject(error)
+    }
+)
 
 /**
  * URL에서 이미지를 다운로드하여 File 객체로 변환 (CORS 문제 해결을 위해 프록시 사용)

@@ -203,7 +203,9 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
 
                 if (response.success && response.data) {
                     // DB에서 받은 URL을 백엔드 프록시를 통해 제공
-                    const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+                    let apiBaseUrl = import.meta.env.VITE_API_URL || 'http://marryday.kro.kr'
+                    // URL 끝의 슬래시 제거
+                    apiBaseUrl = apiBaseUrl.replace(/\/+$/, '')
                     const transformedDresses = response.data.map((dress) => ({
                         id: dress.id,
                         name: dress.image_name.replace(/\.[^/.]+$/, ''),
@@ -269,7 +271,9 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
     // 배경 이미지 URL을 File 객체로 변환하는 함수 (CORS 문제 해결을 위해 프록시 사용)
     const urlToFile = async (url, filename = 'background.jpg') => {
         try {
-            const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+            let apiBaseUrl = import.meta.env.VITE_API_URL || 'http://marryday.kro.kr'
+            // URL 끝의 슬래시 제거
+            apiBaseUrl = apiBaseUrl.replace(/\/+$/, '')
             // 로컬 이미지 경로인 경우 그대로 사용, 외부 URL인 경우 프록시 사용
             const isExternalUrl = url.startsWith('http://') || url.startsWith('https://')
             const proxyUrl = isExternalUrl
