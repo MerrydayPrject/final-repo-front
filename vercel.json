@@ -1,0 +1,21 @@
+{
+    "buildCommand": "npm run build",
+    "outputDirectory": "dist",
+    "devCommand": "npm run dev",
+    "installCommand": "npm install",
+    "framework": "vite",
+    "rewrites": [
+        {
+            "source": "/api/:path*",
+            "destination": "https://marryday.kro.kr/api/:path*"
+        },
+        {
+            "source": "/fit/:path*",
+            "destination": "https://marryday.kro.kr/fit/:path*"
+        },
+        {
+            "source": "/(.*)",
+            "destination": "/index.html"
+        }
+    ]
+}

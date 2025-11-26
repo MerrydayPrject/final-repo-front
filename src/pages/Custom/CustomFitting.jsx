@@ -135,7 +135,15 @@ const CustomFitting = ({ onBackToMain }) => {
     // 배경 이미지 URL을 File 객체로 변환하는 함수
     const urlToFile = async (url, filename = 'background.jpg') => {
         try {
-            const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+            // Vercel 프로덕션 환경에서는 상대 경로 사용
+            let apiBaseUrl = ''
+            if (typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')) {
+                apiBaseUrl = '' // 상대 경로 사용
+            } else {
+                apiBaseUrl = import.meta.env.VITE_API_URL || 'https://marryday.kro.kr'
+                // URL 끝의 슬래시 제거
+                apiBaseUrl = apiBaseUrl.replace(/\/+$/, '')
+            }
             const isExternalUrl = url.startsWith('http://') || url.startsWith('https://')
             const proxyUrl = isExternalUrl
                 ? `${apiBaseUrl}/api/proxy-image?url=${encodeURIComponent(url)}`

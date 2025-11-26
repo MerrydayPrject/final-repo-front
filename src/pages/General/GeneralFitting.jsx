@@ -203,7 +203,15 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
 
                 if (response.success && response.data) {
                     // DB에서 받은 URL을 백엔드 프록시를 통해 제공
-                    const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+                    // Vercel 프로덕션 환경에서는 상대 경로 사용
+                    let apiBaseUrl = ''
+                    if (typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')) {
+                        apiBaseUrl = '' // 상대 경로 사용
+                    } else {
+                        apiBaseUrl = import.meta.env.VITE_API_URL || 'https://marryday.kro.kr'
+                        // URL 끝의 슬래시 제거
+                        apiBaseUrl = apiBaseUrl.replace(/\/+$/, '')
+                    }
                     const transformedDresses = response.data.map((dress) => ({
                         id: dress.id,
                         name: dress.image_name.replace(/\.[^/.]+$/, ''),
@@ -269,7 +277,15 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
     // 배경 이미지 URL을 File 객체로 변환하는 함수 (CORS 문제 해결을 위해 프록시 사용)
     const urlToFile = async (url, filename = 'background.jpg') => {
         try {
-            const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+            // Vercel 프로덕션 환경에서는 상대 경로 사용
+            let apiBaseUrl = ''
+            if (typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')) {
+                apiBaseUrl = '' // 상대 경로 사용
+            } else {
+                apiBaseUrl = import.meta.env.VITE_API_URL || 'https://marryday.kro.kr'
+                // URL 끝의 슬래시 제거
+                apiBaseUrl = apiBaseUrl.replace(/\/+$/, '')
+            }
             // 로컬 이미지 경로인 경우 그대로 사용, 외부 URL인 경우 프록시 사용
             const isExternalUrl = url.startsWith('http://') || url.startsWith('https://')
             const proxyUrl = isExternalUrl
@@ -480,7 +496,20 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
 
     const handleDressClick = (dress) => {
         if (isProcessing) return
-        handleDressSelect(dress)
+
+        // 모바일에서는 클릭 시 바로 매칭
+        if (isMobile) {
+            if (!uploadedImage) {
+                // 이미지가 없으면 업로드 모달 열기
+                handleImageUploadRequired(dress)
+            } else {
+                // 이미지가 있으면 바로 매칭
+                handleDressDropped(dress)
+            }
+        } else {
+            // 웹 버전은 기존대로 선택만
+            handleDressSelect(dress)
+        }
     }
 
     const handleCategoryClick = (categoryId) => {
@@ -1180,22 +1209,37 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                                                         data-dress-id={dress.id}
                                                         className={`dress-card draggable ${selectedDress?.id === dress.id ? 'selected' : ''}`}
                                                         onClick={() => handleDressClick(dress)}
-                                                        draggable={!isProcessing}
+                                                        draggable={!isMobile && !isProcessing}
                                                         onMouseDown={(e) => {
-                                                            // 클릭 시 커서를 grabbing으로 고정
-                                                            e.currentTarget.style.cursor = 'grabbing'
+                                                            // 모바일이 아닐 때만 커서 변경
+                                                            if (!isMobile) {
+                                                                e.currentTarget.style.cursor = 'grabbing'
+                                                            }
                                                         }}
                                                         onMouseUp={(e) => {
-                                                            // 마우스 업 시 grab으로 복구
-                                                            e.currentTarget.style.cursor = 'grab'
+                                                            // 모바일이 아닐 때만 커서 복구
+                                                            if (!isMobile) {
+                                                                e.currentTarget.style.cursor = 'grab'
+                                                            }
                                                         }}
                                                         onMouseLeave={(e) => {
-                                                            // 영역 벗어날 때도 복구
-                                                            e.currentTarget.style.cursor = 'grab'
+                                                            // 모바일이 아닐 때만 커서 복구
+                                                            if (!isMobile) {
+                                                                e.currentTarget.style.cursor = 'grab'
+                                                            }
                                                         }}
-                                                        onDragStart={(e) => handleDragStart(e, dress)}
+                                                        onDragStart={(e) => {
+                                                            // 모바일이 아닐 때만 드래그 허용
+                                                            if (!isMobile) {
+                                                                handleDragStart(e, dress)
+                                                            } else {
+                                                                e.preventDefault()
+                                                            }
+                                                        }}
                                                         onDragEnd={(e) => {
-                                                            e.currentTarget.style.cursor = 'grab'
+                                                            if (!isMobile) {
+                                                                e.currentTarget.style.cursor = 'grab'
+                                                            }
                                                         }}
                                                     >
                                                         <div className="dress-category-badge">
@@ -1205,7 +1249,8 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                                                         {selectedDress?.id === dress.id && (
                                                             <div className="selected-badge">✓</div>
                                                         )}
-                                                        <div className="drag-hint">드래그 가능</div>
+                                                        {!isMobile && <div className="drag-hint">드래그 가능</div>}
+                                                        {isMobile && <div className="drag-hint">탭하여 선택</div>}
                                                     </div>
                                                 ))
                                             )}

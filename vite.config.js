@@ -5,16 +5,17 @@ export default defineConfig({
     plugins: [react()],
     server: {
         port: 3000,
-        proxy: {
-            '/api': {
-                target: 'http://localhost:8000',
-                changeOrigin: true
-            },
-            '/images': {
-                target: 'http://localhost:8000',
-                changeOrigin: true
-            }
-        }
+        // 프록시 제거 - 직접 백엔드 서버로 호출
+        // proxy: {
+        //     '/api': {
+        //         target: 'https://marryday.kro.kr',
+        //         changeOrigin: true
+        //     },
+        //     '/images': {
+        //         target: 'https://marryday.kro.kr',
+        //         changeOrigin: true
+        //     }
+        // }
     }
 })
 

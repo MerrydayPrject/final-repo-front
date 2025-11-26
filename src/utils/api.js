@@ -1,12 +1,78 @@
 import axios from 'axios'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+// 환경변수에서 API URL 가져오기 (끝의 슬래시 제거)
+export const getApiBaseUrl = () => {
+    // 환경변수로 상대 경로 사용 강제 설정 가능
+    if (import.meta.env.VITE_USE_RELATIVE_API === 'true') {
+        console.log('환경변수로 상대 경로 사용 설정됨')
+        return ''
+    }
 
-const api = axios.create({
-    baseURL: API_BASE_URL,
-    // multipart/form-data는 FormData를 보낼 때 axios가 자동으로 boundary를 포함한 Content-Type을 설정하므로
-    // 기본 헤더에 설정하지 않음 (필요한 경우 개별 요청에서만 설정)
-})
+    // 런타임에 동적으로 결정 (빌드 타임이 아닌 실행 시점)
+    if (typeof window !== 'undefined') {
+        // Vercel 프로덕션 환경에서는 상대 경로 사용 (rewrites를 통해 프록시)
+        const hostname = window.location.hostname
+        if (hostname.includes('vercel.app') || hostname.includes('vercel.com')) {
+            console.log('Vercel 환경 감지: 상대 경로 사용', hostname)
+            return '' // 상대 경로 사용
+        }
+    }
+
+    // 로컬 개발 환경 또는 다른 환경
+    let url = import.meta.env.VITE_API_URL || 'https://marryday.kro.kr'
+    // URL 끝의 슬래시 제거
+    url = url.replace(/\/+$/, '')
+    console.log('API Base URL:', url)
+    return url
+}
+
+// 런타임에 baseURL을 결정하기 위해 함수로 생성
+const createApiInstance = () => {
+    const API_BASE_URL = getApiBaseUrl()
+
+    // 디버깅을 위한 로그
+    console.log('API Base URL:', API_BASE_URL || '(상대 경로)')
+    console.log('Environment VITE_API_URL:', import.meta.env.VITE_API_URL)
+    console.log('Current hostname:', typeof window !== 'undefined' ? window.location.hostname : 'N/A')
+
+    return axios.create({
+        baseURL: API_BASE_URL,
+        timeout: 300000, // 5분 타임아웃 (AI 처리 시간이 길 수 있음)
+        // multipart/form-data는 FormData를 보낼 때 axios가 자동으로 boundary를 포함한 Content-Type을 설정하므로
+        // 기본 헤더에 설정하지 않음 (필요한 경우 개별 요청에서만 설정)
+    })
+}
+
+const api = createApiInstance()
+
+// 요청 인터셉터 (디버깅용)
+api.interceptors.request.use(
+    (config) => {
+        if (import.meta.env.DEV) {
+            console.log('API Request:', config.method?.toUpperCase(), config.baseURL + config.url)
+        }
+        return config
+    },
+    (error) => {
+        console.error('API Request Error:', error)
+        return Promise.reject(error)
+    }
+)
+
+// 응답 인터셉터 (에러 처리)
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        console.error('API Response Error:', {
+            message: error.message,
+            status: error.response?.status,
+            statusText: error.response?.statusText,
+            url: error.config?.url,
+            baseURL: error.config?.baseURL,
+        })
+        return Promise.reject(error)
+    }
+)
 
 /**
  * URL에서 이미지를 다운로드하여 File 객체로 변환 (CORS 문제 해결을 위해 프록시 사용)
@@ -17,8 +83,9 @@ const api = axios.create({
 const urlToFile = async (url, filename = 'dress.jpg') => {
     // S3 URL이거나 외부 URL인 경우 백엔드 프록시를 통해 가져오기
     const isExternalUrl = url.startsWith('http://') || url.startsWith('https://')
+    const apiBaseUrl = getApiBaseUrl()
     const proxyUrl = isExternalUrl
-        ? `${API_BASE_URL}/api/proxy-image?url=${encodeURIComponent(url)}`
+        ? `${apiBaseUrl}/api/proxy-image?url=${encodeURIComponent(url)}`
         : url
 
     const response = await fetch(proxyUrl)

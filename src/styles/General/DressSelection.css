@@ -706,3 +706,28 @@
         transform: translateX(-50%);
     }
 }
+
+/* Android - General fitting font adjustments */
+.android .fitting-container .dress-selection-overlay-text {
+    font-size: 13px;
+}
+
+.android .fitting-container .category-button {
+    font-size: 13px;
+}
+
+.android .fitting-container .custom-message {
+    font-size: 14px;
+}
+
+.android .fitting-container .dress-name {
+    font-size: 0.95rem;
+}
+
+.android .fitting-container .dress-category {
+    font-size: 0.78rem;
+}
+
+.android .fitting-container .drag-hint {
+    font-size: 11px;
+}
