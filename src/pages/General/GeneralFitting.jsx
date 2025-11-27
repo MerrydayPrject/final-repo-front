@@ -1102,7 +1102,9 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                 {!(isProcessing || generalResultImage) && (
                     <div className="step-3-header">
                         <div className="step-badge">STEP 3</div>
-                        <p className="step-3-message">오른쪽 드레스에서 원하는 스타일을 드래그하세요</p>
+                        <p className="step-3-message">
+                            {isMobile ? '원하는 드레스를 선택해주세요' : '오른쪽 드레스에서 원하는 스타일을 드래그하세요'}
+                        </p>
                     </div>
                 )}
                 {renderUploadArea()}
