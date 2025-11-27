@@ -5,7 +5,6 @@ import GeneralFitting from './pages/General/GeneralFitting'
 import CustomFitting from './pages/Custom/CustomFitting'
 import BodyAnalysis from './pages/Analysis/BodyAnalysis'
 import { addPlatformClasses } from './utils/platform'
-import { countVisitor } from './utils/api'
 import './styles/App.css'
 
 function App() {
@@ -38,25 +37,6 @@ function App() {
         }
     }, [])
 
-    // 프론트엔드 페이지 방문 시 방문자 수 카운팅
-    useEffect(() => {
-        // 오늘 날짜를 키로 사용하여 하루에 한 번만 카운팅
-        const today = new Date().toDateString()
-        const countedToday = sessionStorage.getItem('visitor_counted_date')
-
-        if (countedToday !== today) {
-            // 방문자 수 카운팅 (에러는 조용히 처리)
-            countVisitor()
-                .then(() => {
-                    // 성공 시 오늘 날짜 저장
-                    sessionStorage.setItem('visitor_counted_date', today)
-                })
-                .catch((error) => {
-                    // 에러는 조용히 처리 (사용자 경험에 영향 없도록)
-                    console.error('방문자 수 카운팅 오류:', error)
-                })
-        }
-    }, [])
 
     const handleNavigateToFitting = () => {
         setCurrentPage('general')

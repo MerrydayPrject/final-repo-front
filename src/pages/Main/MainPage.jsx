@@ -8,6 +8,7 @@ import FAQSection from './FAQSection'
 import NextSection from './NextSection'
 import ScrollToTop from './ScrollToTop'
 import Modal from '../../components/Modal'
+import { countVisitor } from '../../utils/api'
 
 const MainPage = ({ onNavigateToFitting, onNavigateToGeneral, onNavigateToCustom, onNavigateToAnalysis }) => {
     const [showBetaModal, setShowBetaModal] = useState(false)
@@ -20,6 +21,8 @@ const MainPage = ({ onNavigateToFitting, onNavigateToGeneral, onNavigateToCustom
             // 2초 후 모달 표시
             const timer = setTimeout(() => {
                 setShowBetaModal(true)
+                // 모달 표시 시 방문자 카운트
+                countVisitor().catch(() => {})
             }, 2000)
 
             return () => clearTimeout(timer)
