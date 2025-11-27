@@ -1723,6 +1723,11 @@
     box-shadow: 0 4px 12px rgba(44, 44, 44, 0.4);
 }
 
+.background-button.active:hover {
+    transform: none;
+    box-shadow: 0 4px 12px rgba(44, 44, 44, 0.4);
+}
+
 .background-button img {
     width: 100%;
     height: 100%;
@@ -1786,9 +1791,16 @@
     border-radius: inherit;
 }
 
-.background-button:hover .background-hover-label,
-.background-button.active .background-hover-label {
+.background-button:hover .background-hover-label {
     opacity: 1;
+}
+
+.background-button.active .background-hover-label {
+    opacity: 0;
+}
+
+.background-button.active:hover .background-hover-label {
+    opacity: 0;
 }
 
 .step-background-selector {

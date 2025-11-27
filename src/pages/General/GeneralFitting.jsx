@@ -104,7 +104,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
     }, [isImageModalOpen])
 
     // 배경 선택 상태
-    const [selectedBackgroundIndex, setSelectedBackgroundIndex] = useState(0)
+    const [selectedBackgroundIndex, setSelectedBackgroundIndex] = useState(null)
     const backgroundImages = [
         '/Image/general/background4.png',
         '/Image/general/background1.jpg',
@@ -314,6 +314,11 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
 
     const handleDressDropped = async (dress) => {
         if (!uploadedImage || !dress) return
+
+        if (selectedBackgroundIndex === null) {
+            alert('배경을 먼저 선택해주세요.')
+            return
+        }
 
         setIsProcessing(true)
         setProgress(0)

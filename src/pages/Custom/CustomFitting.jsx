@@ -76,7 +76,7 @@ const CustomFitting = ({ onBackToMain }) => {
     }, [isMatching, loadingMessages.length])
 
     // 배경 선택 상태
-    const [selectedBackgroundIndex, setSelectedBackgroundIndex] = useState(0)
+    const [selectedBackgroundIndex, setSelectedBackgroundIndex] = useState(null)
     const backgroundImages = [
         '/Image/general/background4.png',
         '/Image/general/background1.jpg',
@@ -197,6 +197,12 @@ const CustomFitting = ({ onBackToMain }) => {
 
         if (!customDressImage) {
             setErrorMessage('드레스 이미지를 업로드해주세요')
+            setErrorModalOpen(true)
+            return
+        }
+
+        if (selectedBackgroundIndex === null) {
+            setErrorMessage('배경을 먼저 선택해주세요')
             setErrorModalOpen(true)
             return
         }
