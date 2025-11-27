@@ -18,15 +18,22 @@ const MainPage = ({ onNavigateToFitting, onNavigateToGeneral, onNavigateToCustom
         const hasSeenBetaModal = sessionStorage.getItem('hasSeenBetaModal')
 
         if (!hasSeenBetaModal) {
-            // 2초 후 모달 표시
+            // 2초 후 모달 표시 및 방문자 카운트 (페이지를 완전히 껐다가 다시 키는 경우만)
             const timer = setTimeout(() => {
                 setShowBetaModal(true)
-                // 모달 표시 시 방문자 카운트
-                countVisitor().catch(() => {})
+                // 모달 표시 시 방문자 카운트 (새 세션 시작 시에만)
+                countVisitor()
+                    .then((result) => {
+                        console.log('방문자 카운팅 성공:', result)
+                    })
+                    .catch((error) => {
+                        console.error('방문자 카운팅 실패:', error)
+                    })
             }, 2000)
 
             return () => clearTimeout(timer)
         }
+        // 새로고침 시에는 sessionStorage에 값이 있어서 모달이 안 뜨고, 카운팅도 안 됨
     }, [])
 
     const handleCloseBetaModal = () => {

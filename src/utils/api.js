@@ -319,6 +319,10 @@ export const countVisitor = async () => {
     } catch (error) {
         // 접속자 카운팅 실패는 조용히 처리 (사용자 경험에 영향 없도록)
         console.error('접속자 카운팅 오류:', error)
+        if (error.response) {
+            console.error('응답 데이터:', error.response.data)
+            console.error('응답 상태:', error.response.status)
+        }
         return { success: false }
     }
 }
