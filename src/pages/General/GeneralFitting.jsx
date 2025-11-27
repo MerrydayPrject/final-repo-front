@@ -153,10 +153,9 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
     // 한 번에 보여질 카테고리 수
     const categoriesPerView = 5
     const maxStartIndex = Math.max(0, categories.length - categoriesPerView)
-    const visibleCategories = categories.slice(
-        categoryStartIndex,
-        categoryStartIndex + categoriesPerView
-    )
+    const visibleCategories = isMobile
+        ? categories
+        : categories.slice(categoryStartIndex, categoryStartIndex + categoriesPerView)
 
     // 스타일을 카테고리로 변환하는 함수
     const styleToCategory = (style) => {
@@ -498,6 +497,8 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
     const filteredDresses = selectedCategory === 'all'
         ? dresses
         : dresses.filter(dress => dress.category === selectedCategory)
+
+    const dressesToRender = isMobile ? filteredDresses : filteredDresses.slice(0, displayCount)
 
     const handleDressClick = (dress) => {
         if (isProcessing) return
@@ -1211,7 +1212,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                                                         등록된 드레스가 없습니다.
                                                     </div>
                                                 ) : (
-                                                    filteredDresses.slice(0, displayCount).map((dress) => (
+                                                    dressesToRender.map((dress) => (
                                                         <div
                                                             key={dress.id}
                                                             data-dress-id={dress.id}

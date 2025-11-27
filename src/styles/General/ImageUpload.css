@@ -913,7 +913,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+    padding-top: 20px;
     border-radius: 0;
     z-index: 10;
     pointer-events: none;
@@ -928,7 +929,7 @@
 }
 
 .processing-overlay .loading-message {
-    margin-top: 16px;
+    margin-top: -30px;
     font-size: 16px;
     font-weight: 400;
     font-family: 'Orbit', 'Static', sans-serif;
@@ -973,7 +974,7 @@
 }
 
 .spinner-lottie+p {
-    margin-top: -20px;
+    margin-top: -40px;
 }
 
 .spinner {
@@ -989,10 +990,17 @@
 .spinner-lottie {
     width: 250px;
     height: 250px;
+    margin-top: 50px;
     object-fit: contain;
     pointer-events: none;
     filter: brightness(0) saturate(100%) invert(67%) sepia(12%) saturate(507%) hue-rotate(12deg) brightness(90%) contrast(120%);
     opacity: 1;
+}
+
+/* 매칭 완료 시 오버레이 가운데 정렬 */
+.processing-overlay:has(.completion-icon) {
+    justify-content: center;
+    padding-top: 0;
 }
 
 .completion-icon {
@@ -1076,24 +1084,31 @@
     /* 모바일에서 매칭 중 요소들을 위로 올리기 */
     .processing-overlay {
         justify-content: flex-start !important;
-        padding-top: 30px !important;
+        padding-top: 0 !important;
         align-items: center !important;
     }
 
     .processing-overlay .spinner-lottie {
         width: 180px !important;
         height: 180px !important;
-        margin-bottom: 0 !important;
+        margin-top: -20px !important;
+        margin-bottom: -30px !important;
     }
 
     .processing-overlay .loading-message {
-        margin-top: 8px !important;
+        margin-top: -10px !important;
         font-size: 14px !important;
     }
 
     .processing-overlay .progress-bar-container {
-        margin-top: 8px !important;
+        margin-top: 15px !important;
         width: 90% !important;
+    }
+
+    /* 모바일에서 매칭 완료 시 위치 조정 */
+    .processing-overlay:has(.completion-icon) {
+        justify-content: center !important;
+        padding-top: 40px !important;
     }
 
     .image-upload {
@@ -1663,25 +1678,6 @@
         font-size: 11px;
     }
 
-    /* 모바일에서 매칭 중 요소들을 위로 올리기 */
-    .processing-overlay {
-        justify-content: flex-start !important;
-        padding-top: 20px !important;
-    }
-
-    .processing-overlay .spinner-lottie {
-        margin-bottom: -20px !important;
-        width: 200px !important;
-        height: 200px !important;
-    }
-
-    .processing-overlay .loading-message {
-        margin-top: 4px !important;
-    }
-
-    .processing-overlay .progress-bar-container {
-        margin-top: 4px !important;
-    }
 }
 
 .background-selector {
