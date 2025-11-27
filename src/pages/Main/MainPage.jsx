@@ -8,7 +8,6 @@ import FAQSection from './FAQSection'
 import NextSection from './NextSection'
 import ScrollToTop from './ScrollToTop'
 import Modal from '../../components/Modal'
-import { Helmet } from 'react-helmet'
 import { countVisitor } from '../../utils/api'
 
 const MainPage = ({ onNavigateToFitting, onNavigateToGeneral, onNavigateToCustom, onNavigateToAnalysis }) => {
@@ -41,26 +40,6 @@ const MainPage = ({ onNavigateToFitting, onNavigateToGeneral, onNavigateToCustom
 
     return (
         <>
-            <Helmet>
-                <title>Marryday | AI 웨딩드레스 추천 서비스</title>
-                <meta
-                    name="description"
-                    content="사진만 업로드하면 AI가 어울리는 웨딩드레스를 추천해드려요. 무료로 체험해보세요."
-                />
-                <meta
-                    name="keywords"
-                    content="Marryday, 웨딩드레스, AI 피팅, 결혼 준비, 예비신부, 드레스 추천"
-                />
-                <meta property="og:title" content="Marryday | AI 웨딩드레스 추천" />
-                <meta
-                    property="og:description"
-                    content="AI가 제안하는 맞춤 웨딩드레스 피팅을 바로 경험해보세요."
-                />
-                <meta
-                    name="naver-site-verification"
-                    content="6d6890f6f92e56f2394bd541130a4be19008bfc9"
-                />
-            </Helmet>
             <VideoBackground onNavigateToFitting={onNavigateToFitting} />
             <AboutUs
                 onNavigateToGeneral={onNavigateToGeneral}
