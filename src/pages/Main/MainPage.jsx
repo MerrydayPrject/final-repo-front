@@ -58,7 +58,7 @@ const MainPage = ({ onNavigateToFitting, onNavigateToGeneral, onNavigateToCustom
                 center={true}
             >
                 <div style={{ textAlign: 'left', lineHeight: '1.8' }}>
-                    <div style={{ fontSize: '14px', marginBottom: '12px' }}>해당 페이지는 Beta 버전이므로 서버운영 시간은</div>
+                    <div style={{ fontSize: '16px', marginBottom: '12px' }}>해당 페이지는 Beta 버전이므로 서버운영 시간은</div>
                     <div>월요일,목요일: 12:00~21:00</div>
                     <div>화요일,수요일,금요일: 09:00~18:00 입니다.</div>
                     <div style={{ marginTop: '12px' }}>양해부탁드립니다.</div>
