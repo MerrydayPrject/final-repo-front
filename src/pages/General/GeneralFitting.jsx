@@ -747,7 +747,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                             <div className="upload-icon">
                                 <img src="/Image/general/body_icon.png" alt="전신사진 아이콘" />
                             </div>
-                            <p className="upload-text">전신 또는 얼굴 이미지를 업로드 해주세요</p>
+                            <p className="upload-text">전신 이미지를 업로드 해주세요</p>
                             <p className="upload-subtext">JPG, PNG, JPEG 형식 지원</p>
                         </>
                     )}
@@ -1075,7 +1075,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                     <div className="step-2-header">
                         <div className="step-badge">STEP 2</div>
                         <div className="step-2-text">
-                            <h3 className="step-title">전신 또는 얼굴 이미지를 업로드해주세요</h3>
+                            <h3 className="step-title">전신 이미지를 업로드해주세요</h3>
                         </div>
                     </div>
                     <div className="step-panel-content">
