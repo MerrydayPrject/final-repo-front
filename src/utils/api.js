@@ -310,11 +310,16 @@ export const submitReview = async (reviewData) => {
  */
 export const countVisitor = async () => {
     try {
+        const baseURL = getApiBaseUrl()
+        const fullUrl = baseURL ? `${baseURL}/visitor/visit` : '/visitor/visit'
+        console.log('방문자 카운팅 요청 URL:', fullUrl)
+
         const response = await api.post('/visitor/visit', {}, {
             headers: {
                 'Content-Type': 'application/json',
             },
         })
+        console.log('방문자 카운팅 응답:', response.data)
         return response.data
     } catch (error) {
         // 접속자 카운팅 실패는 조용히 처리 (사용자 경험에 영향 없도록)
@@ -322,6 +327,12 @@ export const countVisitor = async () => {
         if (error.response) {
             console.error('응답 데이터:', error.response.data)
             console.error('응답 상태:', error.response.status)
+            console.error('요청 URL:', error.config?.url)
+            console.error('Base URL:', error.config?.baseURL)
+        } else if (error.request) {
+            console.error('요청이 전송되었지만 응답을 받지 못함:', error.request)
+        } else {
+            console.error('요청 설정 오류:', error.message)
         }
         return { success: false }
     }
