@@ -12,10 +12,10 @@ const Modal = ({ isOpen, onClose, message, children, center = false, hideFooter 
     }
 
     return (
-        <div className="modal-overlay" onClick={onClose}>
+        <div className="modal-overlay">
             <div className="modal-container" onClick={(e) => e.stopPropagation()}>
                 <div className={`modal-body${center ? ' center' : ''}`}>
-                    <p className="modal-message">{message}</p>
+                    {message && <p className="modal-message">{message}</p>}
                     {children}
                 </div>
                 {!hideFooter && (
