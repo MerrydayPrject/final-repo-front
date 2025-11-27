@@ -1148,152 +1148,154 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                         </div>
                     </div>
 
-                    <div className="right-container">
-                        {/* DressSelection 컴포넌트 */}
-                        <div className={`dress-selection ${isProcessing ? 'processing' : ''}`}>
-                            {isProcessing && (
-                                <div className="dress-selection-overlay">
-                                    <p className="dress-selection-overlay-text">
-                                        드레스 매칭 중입니다.<br />잠시만 기다려주세요.
-                                    </p>
-                                </div>
-                            )}
-                            <div className="category-buttons-wrapper">
-                                <button
-                                    className="category-nav-button prev"
-                                    onClick={() => handleCategoryNavigation('prev')}
-                                    disabled={categoryStartIndex === 0 || isProcessing}
-                                >
-                                    ‹
-                                </button>
-                                <div className="category-buttons">
-                                    {visibleCategories.map((category) => (
-                                        <button
-                                            key={category.id}
-                                            className={`category-button ${selectedCategory === category.id ? 'active' : ''}`}
-                                            onClick={() => handleCategoryClick(category.id)}
-                                            disabled={isProcessing}
-                                        >
-                                            {category.name}
-                                        </button>
-                                    ))}
-                                </div>
-                                <button
-                                    className="category-nav-button next"
-                                    onClick={() => handleCategoryNavigation('next')}
-                                    disabled={categoryStartIndex === maxStartIndex || isProcessing}
-                                >
-                                    ›
-                                </button>
-                            </div>
-
-                            <div className="dress-content-wrapper" ref={containerRef}>
-                                <div className="dress-grid-container" ref={contentRef}>
-                                    {loading && (
-                                        <div className="dress-grid">
-                                            <div style={{ textAlign: 'center', padding: '40px', color: '#666' }}>
-                                                드레스 목록을 불러오는 중...
-                                            </div>
-                                        </div>
-                                    )}
-                                    {error && (
-                                        <div className="dress-grid">
-                                            <div style={{ textAlign: 'center', padding: '40px', color: '#ef4444' }}>
-                                                {error}
-                                            </div>
-                                        </div>
-                                    )}
-                                    {!loading && !error && (
-                                        <div className="dress-grid">
-                                            {filteredDresses.length === 0 ? (
-                                                <div style={{ textAlign: 'center', padding: '40px', color: '#666' }}>
-                                                    등록된 드레스가 없습니다.
-                                                </div>
-                                            ) : (
-                                                filteredDresses.slice(0, displayCount).map((dress) => (
-                                                    <div
-                                                        key={dress.id}
-                                                        data-dress-id={dress.id}
-                                                        className={`dress-card draggable ${selectedDress?.id === dress.id ? 'selected' : ''}`}
-                                                        onClick={() => handleDressClick(dress)}
-                                                        draggable={!isMobile && !isProcessing}
-                                                        onMouseDown={(e) => {
-                                                            // 모바일이 아닐 때만 커서 변경
-                                                            if (!isMobile) {
-                                                                e.currentTarget.style.cursor = 'grabbing'
-                                                            }
-                                                        }}
-                                                        onMouseUp={(e) => {
-                                                            // 모바일이 아닐 때만 커서 복구
-                                                            if (!isMobile) {
-                                                                e.currentTarget.style.cursor = 'grab'
-                                                            }
-                                                        }}
-                                                        onMouseLeave={(e) => {
-                                                            // 모바일이 아닐 때만 커서 복구
-                                                            if (!isMobile) {
-                                                                e.currentTarget.style.cursor = 'grab'
-                                                            }
-                                                        }}
-                                                        onDragStart={(e) => {
-                                                            // 모바일이 아닐 때만 드래그 허용
-                                                            if (!isMobile) {
-                                                                handleDragStart(e, dress)
-                                                            } else {
-                                                                e.preventDefault()
-                                                            }
-                                                        }}
-                                                        onDragEnd={(e) => {
-                                                            if (!isMobile) {
-                                                                e.currentTarget.style.cursor = 'grab'
-                                                            }
-                                                        }}
-                                                    >
-                                                        <div className="dress-category-badge">
-                                                            {categories.find(cat => cat.id === dress.category)?.name || '기타'}
-                                                        </div>
-                                                        <img src={dress.image} alt={dress.name} className="dress-image" draggable={false} />
-                                                        {selectedDress?.id === dress.id && (
-                                                            <div className="selected-badge">✓</div>
-                                                        )}
-                                                        {!isMobile && <div className="drag-hint">드래그 가능</div>}
-                                                        {isMobile && <div className="drag-hint">탭하여 선택</div>}
-                                                    </div>
-                                                ))
-                                            )}
-                                        </div>
-                                    )}
-                                </div>
-
-                                {filteredDresses.length > 0 && (
-                                    <div className="vertical-slider">
-                                        <button
-                                            className="slider-arrow slider-arrow-up"
-                                            onClick={() => handleArrowClick('up')}
-                                            disabled={isProcessing}
-                                        >
-                                            ▲
-                                        </button>
-                                        <div className="slider-track" ref={sliderTrackRef}>
-                                            <div
-                                                className="slider-handle"
-                                                ref={sliderHandleRef}
-                                                style={{ top: `${sliderHandleTop}px` }}
-                                                onMouseDown={isProcessing ? undefined : handleSliderMouseDown}
-                                            />
-                                        </div>
-                                        <button
-                                            className="slider-arrow slider-arrow-down"
-                                            onClick={() => handleArrowClick('down')}
-                                            disabled={isProcessing}
-                                        >
-                                            ▼
-                                        </button>
+                    {(!isMobile || currentStep > 1) && (
+                        <div className="right-container">
+                            {/* DressSelection 컴포넌트 */}
+                            <div className={`dress-selection ${isProcessing ? 'processing' : ''}`}>
+                                {isProcessing && (
+                                    <div className="dress-selection-overlay">
+                                        <p className="dress-selection-overlay-text">
+                                            드레스 매칭 중입니다.<br />잠시만 기다려주세요.
+                                        </p>
                                     </div>
                                 )}
+                                <div className="category-buttons-wrapper">
+                                    <button
+                                        className="category-nav-button prev"
+                                        onClick={() => handleCategoryNavigation('prev')}
+                                        disabled={categoryStartIndex === 0 || isProcessing}
+                                    >
+                                        ‹
+                                    </button>
+                                    <div className="category-buttons">
+                                        {visibleCategories.map((category) => (
+                                            <button
+                                                key={category.id}
+                                                className={`category-button ${selectedCategory === category.id ? 'active' : ''}`}
+                                                onClick={() => handleCategoryClick(category.id)}
+                                                disabled={isProcessing}
+                                            >
+                                                {category.name}
+                                            </button>
+                                        ))}
+                                    </div>
+                                    <button
+                                        className="category-nav-button next"
+                                        onClick={() => handleCategoryNavigation('next')}
+                                        disabled={categoryStartIndex === maxStartIndex || isProcessing}
+                                    >
+                                        ›
+                                    </button>
+                                </div>
+
+                                <div className="dress-content-wrapper" ref={containerRef}>
+                                    <div className="dress-grid-container" ref={contentRef}>
+                                        {loading && (
+                                            <div className="dress-grid">
+                                                <div style={{ textAlign: 'center', padding: '40px', color: '#666' }}>
+                                                    드레스 목록을 불러오는 중...
+                                                </div>
+                                            </div>
+                                        )}
+                                        {error && (
+                                            <div className="dress-grid">
+                                                <div style={{ textAlign: 'center', padding: '40px', color: '#ef4444' }}>
+                                                    {error}
+                                                </div>
+                                            </div>
+                                        )}
+                                        {!loading && !error && (
+                                            <div className="dress-grid">
+                                                {filteredDresses.length === 0 ? (
+                                                    <div style={{ textAlign: 'center', padding: '40px', color: '#666' }}>
+                                                        등록된 드레스가 없습니다.
+                                                    </div>
+                                                ) : (
+                                                    filteredDresses.slice(0, displayCount).map((dress) => (
+                                                        <div
+                                                            key={dress.id}
+                                                            data-dress-id={dress.id}
+                                                            className={`dress-card draggable ${selectedDress?.id === dress.id ? 'selected' : ''}`}
+                                                            onClick={() => handleDressClick(dress)}
+                                                            draggable={!isMobile && !isProcessing}
+                                                            onMouseDown={(e) => {
+                                                                // 모바일이 아닐 때만 커서 변경
+                                                                if (!isMobile) {
+                                                                    e.currentTarget.style.cursor = 'grabbing'
+                                                                }
+                                                            }}
+                                                            onMouseUp={(e) => {
+                                                                // 모바일이 아닐 때만 커서 복구
+                                                                if (!isMobile) {
+                                                                    e.currentTarget.style.cursor = 'grab'
+                                                                }
+                                                            }}
+                                                            onMouseLeave={(e) => {
+                                                                // 모바일이 아닐 때만 커서 복구
+                                                                if (!isMobile) {
+                                                                    e.currentTarget.style.cursor = 'grab'
+                                                                }
+                                                            }}
+                                                            onDragStart={(e) => {
+                                                                // 모바일이 아닐 때만 드래그 허용
+                                                                if (!isMobile) {
+                                                                    handleDragStart(e, dress)
+                                                                } else {
+                                                                    e.preventDefault()
+                                                                }
+                                                            }}
+                                                            onDragEnd={(e) => {
+                                                                if (!isMobile) {
+                                                                    e.currentTarget.style.cursor = 'grab'
+                                                                }
+                                                            }}
+                                                        >
+                                                            <div className="dress-category-badge">
+                                                                {categories.find(cat => cat.id === dress.category)?.name || '기타'}
+                                                            </div>
+                                                            <img src={dress.image} alt={dress.name} className="dress-image" draggable={false} />
+                                                            {selectedDress?.id === dress.id && (
+                                                                <div className="selected-badge">✓</div>
+                                                            )}
+                                                            {!isMobile && <div className="drag-hint">드래그 가능</div>}
+                                                            {isMobile && <div className="drag-hint">탭하여 선택</div>}
+                                                        </div>
+                                                    ))
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {filteredDresses.length > 0 && (
+                                        <div className="vertical-slider">
+                                            <button
+                                                className="slider-arrow slider-arrow-up"
+                                                onClick={() => handleArrowClick('up')}
+                                                disabled={isProcessing}
+                                            >
+                                                ▲
+                                            </button>
+                                            <div className="slider-track" ref={sliderTrackRef}>
+                                                <div
+                                                    className="slider-handle"
+                                                    ref={sliderHandleRef}
+                                                    style={{ top: `${sliderHandleTop}px` }}
+                                                    onMouseDown={isProcessing ? undefined : handleSliderMouseDown}
+                                                />
+                                            </div>
+                                            <button
+                                                className="slider-arrow slider-arrow-down"
+                                                onClick={() => handleArrowClick('down')}
+                                                disabled={isProcessing}
+                                            >
+                                                ▼
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    )}
                 </div>
             </div>
 
