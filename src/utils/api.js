@@ -310,45 +310,14 @@ export const submitReview = async (reviewData) => {
  */
 export const countVisitor = async () => {
     try {
-        const baseURL = getApiBaseUrl()
-        const endpoint = '/visitor/visit'
-        const fullUrl = baseURL ? `${baseURL}${endpoint}` : endpoint
-
-        console.log('[방문자 카운팅] 요청 시작')
-        console.log('[방문자 카운팅] Base URL:', baseURL || '(상대 경로)')
-        console.log('[방문자 카운팅] Endpoint:', endpoint)
-        console.log('[방문자 카운팅] Full URL:', fullUrl)
-
-        const response = await api.post(endpoint, {}, {
+        const response = await api.post('/visitor/visit', {}, {
             headers: {
                 'Content-Type': 'application/json',
             },
         })
-
-        console.log('[방문자 카운팅] 응답 성공:', response.data)
-        console.log('[방문자 카운팅] 응답 상태:', response.status)
         return response.data
     } catch (error) {
         // 접속자 카운팅 실패는 조용히 처리 (사용자 경험에 영향 없도록)
-        console.error('[방문자 카운팅] 오류 발생:', error)
-
-        if (error.response) {
-            console.error('[방문자 카운팅] 응답 데이터:', error.response.data)
-            console.error('[방문자 카운팅] 응답 상태:', error.response.status)
-            console.error('[방문자 카운팅] 응답 헤더:', error.response.headers)
-        } else if (error.request) {
-            console.error('[방문자 카운팅] 요청 전송됨, 응답 없음')
-            console.error('[방문자 카운팅] 요청 정보:', error.request)
-        } else {
-            console.error('[방문자 카운팅] 요청 설정 오류:', error.message)
-        }
-
-        if (error.config) {
-            console.error('[방문자 카운팅] 요청 URL:', error.config.url)
-            console.error('[방문자 카운팅] Base URL:', error.config.baseURL)
-            console.error('[방문자 카운팅] Method:', error.config.method)
-        }
-
         return { success: false }
     }
 }
