@@ -8,11 +8,11 @@ export default defineConfig({
         // 프록시 제거 - 직접 백엔드 서버로 호출
         // proxy: {
         //     '/api': {
-        //         target: 'https://marryday.kro.kr',
+        //         target: 'http://marryday.kro.kr',
         //         changeOrigin: true
         //     },
         //     '/images': {
-        //         target: 'https://marryday.kro.kr',
+        //         target: 'http://marryday.kro.kr',
         //         changeOrigin: true
         //     }
         // }

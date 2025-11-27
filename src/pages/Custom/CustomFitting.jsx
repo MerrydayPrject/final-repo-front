@@ -76,7 +76,7 @@ const CustomFitting = ({ onBackToMain }) => {
     }, [isMatching, loadingMessages.length])
 
     // 배경 선택 상태
-    const [selectedBackgroundIndex, setSelectedBackgroundIndex] = useState(0)
+    const [selectedBackgroundIndex, setSelectedBackgroundIndex] = useState(null)
     const backgroundImages = [
         '/Image/general/background4.png',
         '/Image/general/background1.jpg',
@@ -140,7 +140,7 @@ const CustomFitting = ({ onBackToMain }) => {
             if (typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')) {
                 apiBaseUrl = '' // 상대 경로 사용
             } else {
-                apiBaseUrl = import.meta.env.VITE_API_URL || 'https://marryday.kro.kr'
+                apiBaseUrl = import.meta.env.VITE_API_URL || 'http://marryday.kro.kr'
                 // URL 끝의 슬래시 제거
                 apiBaseUrl = apiBaseUrl.replace(/\/+$/, '')
             }
@@ -201,6 +201,12 @@ const CustomFitting = ({ onBackToMain }) => {
             return
         }
 
+        if (selectedBackgroundIndex === null) {
+            setErrorMessage('배경을 먼저 선택해주세요')
+            setErrorModalOpen(true)
+            return
+        }
+
         // STEP 3로 이동
         setCurrentStep(3)
 
@@ -230,10 +236,10 @@ const CustomFitting = ({ onBackToMain }) => {
 
                 // 리뷰 모달 표시 (1번만, 쿠키 확인)
                 if (!isReviewCompleted('custom')) {
-                    // 약간의 지연 후 모달 표시 (완료 애니메이션 후)
+                    // 결과 이미지가 화면에 표시된 후 2~3초 후 모달 표시
                     setTimeout(() => {
                         setReviewModalOpen(true)
-                    }, 2000)
+                    }, 3000)
                 }
             } else {
                 throw new Error(result.message || '매칭에 실패했습니다.')

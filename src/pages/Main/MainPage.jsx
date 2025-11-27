@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import VideoBackground from './VideoBackground'
 import AboutUs from './AboutUs'
 import DomeGallery from './DomeGallery'
@@ -6,8 +7,31 @@ import UsageGuideSection from './UsageGuideSection'
 import FAQSection from './FAQSection'
 import NextSection from './NextSection'
 import ScrollToTop from './ScrollToTop'
+import Modal from '../../components/Modal'
 
 const MainPage = ({ onNavigateToFitting, onNavigateToGeneral, onNavigateToCustom, onNavigateToAnalysis }) => {
+    const [showBetaModal, setShowBetaModal] = useState(false)
+
+    useEffect(() => {
+        // sessionStorage에서 이미 모달을 봤는지 확인
+        const hasSeenBetaModal = sessionStorage.getItem('hasSeenBetaModal')
+
+        if (!hasSeenBetaModal) {
+            // 2초 후 모달 표시
+            const timer = setTimeout(() => {
+                setShowBetaModal(true)
+            }, 2000)
+
+            return () => clearTimeout(timer)
+        }
+    }, [])
+
+    const handleCloseBetaModal = () => {
+        setShowBetaModal(false)
+        // sessionStorage에 모달을 봤다는 표시 저장 (탭을 닫으면 사라짐)
+        sessionStorage.setItem('hasSeenBetaModal', 'true')
+    }
+
     return (
         <>
             <VideoBackground onNavigateToFitting={onNavigateToFitting} />
@@ -27,6 +51,19 @@ const MainPage = ({ onNavigateToFitting, onNavigateToGeneral, onNavigateToCustom
             <FAQSection />
             <NextSection />
             <ScrollToTop />
+            <Modal
+                isOpen={showBetaModal}
+                onClose={handleCloseBetaModal}
+                message=""
+                center={true}
+            >
+                <div style={{ textAlign: 'left', lineHeight: '1.8', transform: 'translateY(20px)' }}>
+                    <div style={{ fontSize: '16px', marginBottom: '12px' }}>해당 페이지는 Beta 버전이므로 서버운영 시간은</div>
+                    <div>월요일,목요일: 12:00~21:00</div>
+                    <div>화요일,수요일,금요일: 09:00~18:00 입니다.</div>
+                    <div style={{ marginTop: '12px' }}>양해부탁드립니다.</div>
+                </div>
+            </Modal>
         </>
     )
 }
