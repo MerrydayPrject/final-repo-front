@@ -311,29 +311,44 @@ export const submitReview = async (reviewData) => {
 export const countVisitor = async () => {
     try {
         const baseURL = getApiBaseUrl()
-        const fullUrl = baseURL ? `${baseURL}/visitor/visit` : '/visitor/visit'
-        console.log('방문자 카운팅 요청 URL:', fullUrl)
+        const endpoint = '/visitor/visit'
+        const fullUrl = baseURL ? `${baseURL}${endpoint}` : endpoint
 
-        const response = await api.post('/visitor/visit', {}, {
+        console.log('[방문자 카운팅] 요청 시작')
+        console.log('[방문자 카운팅] Base URL:', baseURL || '(상대 경로)')
+        console.log('[방문자 카운팅] Endpoint:', endpoint)
+        console.log('[방문자 카운팅] Full URL:', fullUrl)
+
+        const response = await api.post(endpoint, {}, {
             headers: {
                 'Content-Type': 'application/json',
             },
         })
-        console.log('방문자 카운팅 응답:', response.data)
+
+        console.log('[방문자 카운팅] 응답 성공:', response.data)
+        console.log('[방문자 카운팅] 응답 상태:', response.status)
         return response.data
     } catch (error) {
         // 접속자 카운팅 실패는 조용히 처리 (사용자 경험에 영향 없도록)
-        console.error('접속자 카운팅 오류:', error)
+        console.error('[방문자 카운팅] 오류 발생:', error)
+
         if (error.response) {
-            console.error('응답 데이터:', error.response.data)
-            console.error('응답 상태:', error.response.status)
-            console.error('요청 URL:', error.config?.url)
-            console.error('Base URL:', error.config?.baseURL)
+            console.error('[방문자 카운팅] 응답 데이터:', error.response.data)
+            console.error('[방문자 카운팅] 응답 상태:', error.response.status)
+            console.error('[방문자 카운팅] 응답 헤더:', error.response.headers)
         } else if (error.request) {
-            console.error('요청이 전송되었지만 응답을 받지 못함:', error.request)
+            console.error('[방문자 카운팅] 요청 전송됨, 응답 없음')
+            console.error('[방문자 카운팅] 요청 정보:', error.request)
         } else {
-            console.error('요청 설정 오류:', error.message)
+            console.error('[방문자 카운팅] 요청 설정 오류:', error.message)
         }
+
+        if (error.config) {
+            console.error('[방문자 카운팅] 요청 URL:', error.config.url)
+            console.error('[방문자 카운팅] Base URL:', error.config.baseURL)
+            console.error('[방문자 카운팅] Method:', error.config.method)
+        }
+
         return { success: false }
     }
 }
