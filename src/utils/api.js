@@ -4,7 +4,6 @@ import axios from 'axios'
 export const getApiBaseUrl = () => {
     // 환경변수로 상대 경로 사용 강제 설정 가능
     if (import.meta.env.VITE_USE_RELATIVE_API === 'true') {
-        console.log('환경변수로 상대 경로 사용 설정됨')
         return ''
     }
 
@@ -13,7 +12,6 @@ export const getApiBaseUrl = () => {
         // Vercel 프로덕션 환경에서는 상대 경로 사용 (rewrites를 통해 프록시)
         const hostname = window.location.hostname
         if (hostname.includes('vercel.app') || hostname.includes('vercel.com')) {
-            console.log('Vercel 환경 감지: 상대 경로 사용', hostname)
             return '' // 상대 경로 사용
         }
     }
@@ -22,18 +20,12 @@ export const getApiBaseUrl = () => {
     let url = import.meta.env.VITE_API_URL || 'http://marryday.kro.kr'
     // URL 끝의 슬래시 제거
     url = url.replace(/\/+$/, '')
-    console.log('API Base URL:', url)
     return url
 }
 
 // 런타임에 baseURL을 결정하기 위해 함수로 생성
 const createApiInstance = () => {
     const API_BASE_URL = getApiBaseUrl()
-
-    // 디버깅을 위한 로그
-    console.log('API Base URL:', API_BASE_URL || '(상대 경로)')
-    console.log('Environment VITE_API_URL:', import.meta.env.VITE_API_URL)
-    console.log('Current hostname:', typeof window !== 'undefined' ? window.location.hostname : 'N/A')
 
     return axios.create({
         baseURL: API_BASE_URL,
@@ -45,12 +37,9 @@ const createApiInstance = () => {
 
 const api = createApiInstance()
 
-// 요청 인터셉터 (디버깅용)
+// 요청 인터셉터
 api.interceptors.request.use(
     (config) => {
-        if (import.meta.env.DEV) {
-            console.log('API Request:', config.method?.toUpperCase(), config.baseURL + config.url)
-        }
         return config
     },
     (error) => {
