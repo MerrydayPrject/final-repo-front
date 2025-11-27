@@ -56,6 +56,10 @@ const MainPage = ({ onNavigateToFitting, onNavigateToGeneral, onNavigateToCustom
                     property="og:description"
                     content="AI가 제안하는 맞춤 웨딩드레스 피팅을 바로 경험해보세요."
                 />
+                <meta
+                    name="naver-site-verification"
+                    content="6d6890f6f92e56f2394bd541130a4be19008bfc9"
+                />
             </Helmet>
             <VideoBackground onNavigateToFitting={onNavigateToFitting} />
             <AboutUs
