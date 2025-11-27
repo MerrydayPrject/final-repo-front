@@ -340,10 +340,10 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
 
                 // 리뷰 모달 표시 (1번만, 쿠키 확인)
                 if (!isReviewCompleted('general')) {
-                    // 약간의 지연 후 모달 표시 (완료 애니메이션 후)
+                    // 결과 이미지가 화면에 표시된 후 2~3초 후 모달 표시
                     setTimeout(() => {
                         setReviewModalOpen(true)
-                    }, 2000)
+                    }, 3000)
                 }
             } else {
                 throw new Error(result.message || '매칭에 실패했습니다.')

@@ -404,7 +404,7 @@
     border-radius: 2px;
     padding: 40px 20px;
     text-align: center;
-    cursor: default;
+    cursor: pointer;
     transition: var(--transition);
     width: 80%;
     flex: 1;
@@ -454,6 +454,7 @@
     background: #f8f6f683;
     animation: gentleJump 7s ease-in-out infinite;
     transform: none;
+    cursor: pointer;
 }
 
 .upload-area.dragging {
@@ -482,13 +483,13 @@
     font-weight: 600;
     color: black;
     margin-bottom: 8px;
-    cursor: default;
+    cursor: pointer;
 }
 
 .upload-subtext {
     font-size: 14px;
     color: var(--text-light);
-    cursor: default;
+    cursor: pointer;
 }
 
 .preview-container {
@@ -1801,6 +1802,13 @@
 
 .background-button.active:hover .background-hover-label {
     opacity: 0;
+}
+
+/* active가 아닌 버튼은 호버 효과 유지 */
+.background-button:not(.active):hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    border-color: white;
 }
 
 .step-background-selector {
