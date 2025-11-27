@@ -304,5 +304,24 @@ export const submitReview = async (reviewData) => {
     }
 }
 
+/**
+ * 접속자 수 카운팅 API 호출
+ * @returns {Promise} 접속자 카운팅 결과
+ */
+export const countVisitor = async () => {
+    try {
+        const response = await api.post('/visitor/visit', {}, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        return response.data
+    } catch (error) {
+        // 접속자 카운팅 실패는 조용히 처리 (사용자 경험에 영향 없도록)
+        console.error('접속자 카운팅 오류:', error)
+        return { success: false }
+    }
+}
+
 export default api
 

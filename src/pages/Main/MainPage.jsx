@@ -8,6 +8,7 @@ import FAQSection from './FAQSection'
 import NextSection from './NextSection'
 import ScrollToTop from './ScrollToTop'
 import Modal from '../../components/Modal'
+import { countVisitor } from '../../utils/api'
 
 const MainPage = ({ onNavigateToFitting, onNavigateToGeneral, onNavigateToCustom, onNavigateToAnalysis }) => {
     const [showBetaModal, setShowBetaModal] = useState(false)
@@ -17,9 +18,13 @@ const MainPage = ({ onNavigateToFitting, onNavigateToGeneral, onNavigateToCustom
         const hasSeenBetaModal = sessionStorage.getItem('hasSeenBetaModal')
 
         if (!hasSeenBetaModal) {
-            // 2초 후 모달 표시
+            // 2초 후 모달 표시 및 접속자 카운팅
             const timer = setTimeout(() => {
                 setShowBetaModal(true)
+                // 접속자 카운팅 요청 (비동기, 에러 무시)
+                countVisitor().catch(() => {
+                    // 에러는 조용히 처리
+                })
             }, 2000)
 
             return () => clearTimeout(timer)
