@@ -878,7 +878,7 @@ const CustomFitting = ({ onBackToMain }) => {
                                                 <div className="upload-icon">
                                                     <img src="/Image/general/body_icon.png" alt="전신사진 아이콘" />
                                                 </div>
-                                                <p className="upload-text">전신 또는 얼굴 이미지를 <br /> 업로드 해주세요</p>
+                                                <p className="upload-text">전신 이미지를 <br /> 업로드 해주세요</p>
                                             </>
                                         )}
                                     </div>

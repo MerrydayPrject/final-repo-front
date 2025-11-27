@@ -37,6 +37,7 @@ function App() {
         }
     }, [])
 
+
     const handleNavigateToFitting = () => {
         setCurrentPage('general')
     }
