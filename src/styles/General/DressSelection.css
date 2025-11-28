@@ -485,19 +485,10 @@
         padding: 0 8px;
     }
 
-    .category-nav-button.prev {
-        margin-right: 8px;
-    }
-
-    .category-nav-button.next {
-        margin-left: 8px;
-    }
-
+    .category-nav-button.prev,
+    .category-nav-button.next,
     .category-nav-button {
-        width: 32px;
-        height: 32px;
-        font-size: 20px;
-        padding: 0 0 2px 0;
+        display: none !important;
     }
 
     .category-buttons {
@@ -513,20 +504,15 @@
         -webkit-overflow-scrolling: touch;
     }
 
-    .category-buttons::-webkit-scrollbar {
-        display: none;
-    }
-
     .category-button {
         padding: 10px 16px;
         font-size: 14px;
         border-radius: 20px;
-        width: calc(33.333% - 6px);
-        min-width: calc(33.333% - 6px);
-        max-width: calc(33.333% - 6px);
-        flex-shrink: 0;
+        width: auto;
+        min-width: 100px;
         text-align: center;
         white-space: nowrap;
+        flex-shrink: 0;
     }
 
     .dress-content-wrapper {
@@ -555,17 +541,22 @@
     }
 
     /* 모바일 버전 - 드레스 카드 크기 (화면 너비의 50% - 여백) */
-    .dress-card {
-        width: calc(50vw - 24px);
-        min-width: calc(50vw - 24px);
-        max-width: calc(50vw - 24px);
-        padding-top: calc((50vw - 24px) * 0.65);
-        margin-top: 0;
+    .dress-grid .dress-card {
+        width: 200px !important;
+        min-width: 200px !important;
+        max-width: 200px !important;
+        padding-top: 130px !important;
+        margin-top: 0 !important;
         flex-shrink: 0;
         border-radius: 12px;
         overflow: hidden;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         scroll-snap-align: start;
+    }
+
+    .dress-grid .dress-card .dress-image {
+        width: 100% !important;
+        height: 100% !important;
     }
 
     /* 모바일 버전 - 카드가 1개일 때 뭉개지는 문제 해결 */
@@ -635,37 +626,31 @@
         padding: 0 4px;
     }
 
-    .category-nav-button.prev {
-        margin-right: 4px;
-    }
-
-    .category-nav-button.next {
-        margin-left: 4px;
-    }
-
+    .category-nav-button.prev,
+    .category-nav-button.next,
     .category-nav-button {
-        width: 28px;
-        height: 28px;
-        font-size: 18px;
+        display: none !important;
     }
 
     .category-buttons {
         gap: 6px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
     }
 
     .category-button {
         padding: 8px 12px;
         font-size: 13px;
-        width: calc(33.333% - 5px);
-        min-width: calc(33.333% - 5px);
-        max-width: calc(33.333% - 5px);
+        width: auto;
+        min-width: 100px;
+        flex-shrink: 0;
     }
 
     .dress-card {
-        width: calc(10vw - 20px);
-        min-width: calc(50vw - 20px);
-        max-width: calc(50vw - 20px);
-        padding-top: calc((50vw - 20px) * 0.65);
+        width: 200px;
+        min-width: 200px;
+        max-width: 200px;
+        padding-top: 130px;
         border-radius: 10px;
     }
 

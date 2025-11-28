@@ -273,9 +273,31 @@
 
 .step-guide-panel-step2 .step-panel-content .step-link-button {
     position: absolute;
-    top: 460px;
+    top: 520px;
     right: 20px;
     margin: 0;
+}
+
+.step-guide-panel-step3 .step-link-button.step-3-back-button {
+    position: absolute;
+    top: 610px;
+    right: 50px;
+    margin: 0;
+}
+
+/* 웹 버전에서는 step-panel-content가 이미지 영역 크기에 영향을 주지 않도록 */
+.step-guide-panel-step3 .step-panel-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+    align-items: flex-end;
+}
+
+.step-guide-panel-step3 .step-panel-content .image-upload-wrapper {
+    width: auto;
+    max-width: none;
 }
 
 .step-guide-panel-step2 .step-panel-content .image-upload-wrapper {
@@ -913,7 +935,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+    padding-top: 20px;
     border-radius: 0;
     z-index: 10;
     pointer-events: none;
@@ -928,7 +951,7 @@
 }
 
 .processing-overlay .loading-message {
-    margin-top: 16px;
+    margin-top: -30px;
     font-size: 16px;
     font-weight: 400;
     font-family: 'Orbit', 'Static', sans-serif;
@@ -972,8 +995,18 @@
     pointer-events: none;
 }
 
+.processing-overlay .loading-notice,
+.preview-container .processing-overlay .loading-notice,
+.image-upload-wrapper .preview-container .processing-overlay .loading-notice {
+    font-size: 12px;
+    color: rgba(102, 102, 102, 0.842);
+    margin-top: 80px;
+    text-align: center;
+    font-weight: 400;
+}
+
 .spinner-lottie+p {
-    margin-top: -20px;
+    margin-top: -40px;
 }
 
 .spinner {
@@ -989,10 +1022,17 @@
 .spinner-lottie {
     width: 250px;
     height: 250px;
+    margin-top: 50px;
     object-fit: contain;
     pointer-events: none;
     filter: brightness(0) saturate(100%) invert(67%) sepia(12%) saturate(507%) hue-rotate(12deg) brightness(90%) contrast(120%);
     opacity: 1;
+}
+
+/* 매칭 완료 시 오버레이 가운데 정렬 */
+.processing-overlay:has(.completion-icon) {
+    justify-content: center;
+    padding-top: 0;
 }
 
 .completion-icon {
@@ -1076,24 +1116,41 @@
     /* 모바일에서 매칭 중 요소들을 위로 올리기 */
     .processing-overlay {
         justify-content: flex-start !important;
-        padding-top: 30px !important;
+        padding-top: 0 !important;
         align-items: center !important;
     }
 
     .processing-overlay .spinner-lottie {
         width: 180px !important;
         height: 180px !important;
-        margin-bottom: 0 !important;
+        margin-top: -20px !important;
+        margin-bottom: -30px !important;
     }
 
     .processing-overlay .loading-message {
-        margin-top: 8px !important;
+        margin-top: -10px !important;
         font-size: 14px !important;
     }
 
     .processing-overlay .progress-bar-container {
-        margin-top: 8px !important;
+        margin-top: 15px !important;
         width: 90% !important;
+    }
+
+    .processing-overlay .loading-notice,
+    .preview-container .processing-overlay .loading-notice,
+    .image-upload-wrapper .preview-container .processing-overlay .loading-notice {
+        font-size: 10px !important;
+        color: rgba(102, 102, 102, 0.842) !important;
+        margin-top: 10px !important;
+        text-align: center !important;
+        font-weight: 400 !important;
+    }
+
+    /* 모바일에서 매칭 완료 시 위치 조정 */
+    .processing-overlay:has(.completion-icon) {
+        justify-content: center !important;
+        padding-top: 40px !important;
     }
 
     .image-upload {
@@ -1170,6 +1227,25 @@
         top: auto;
         right: auto;
         margin: 0;
+    }
+
+    .step-guide-panel-step3 .step-panel-content {
+        gap: 12px;
+        align-items: center;
+    }
+
+    /* 모바일 전용: step3 버튼을 이미지 영역 위에 배치 */
+    .step-guide-panel-step3 .step-link-button.step-3-back-button.mobile-step-3-back-button {
+        position: absolute;
+        top: 85px;
+        right: 20px;
+        margin: 0 !important;
+        z-index: 10;
+    }
+
+    /* 모바일에서 step3 이미지 영역에 간격 추가 (버튼이 위에 있으므로) */
+    .step-guide-panel-step3 .image-upload-wrapper {
+        margin-top: 20px !important;
     }
 
     .step-guide-panel-step2 .step-panel-content .image-upload-wrapper {
@@ -1663,25 +1739,6 @@
         font-size: 11px;
     }
 
-    /* 모바일에서 매칭 중 요소들을 위로 올리기 */
-    .processing-overlay {
-        justify-content: flex-start !important;
-        padding-top: 20px !important;
-    }
-
-    .processing-overlay .spinner-lottie {
-        margin-bottom: -20px !important;
-        width: 200px !important;
-        height: 200px !important;
-    }
-
-    .processing-overlay .loading-message {
-        margin-top: 4px !important;
-    }
-
-    .processing-overlay .progress-bar-container {
-        margin-top: 4px !important;
-    }
 }
 
 .background-selector {

@@ -153,10 +153,9 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
     // 한 번에 보여질 카테고리 수
     const categoriesPerView = 5
     const maxStartIndex = Math.max(0, categories.length - categoriesPerView)
-    const visibleCategories = categories.slice(
-        categoryStartIndex,
-        categoryStartIndex + categoriesPerView
-    )
+    const visibleCategories = isMobile
+        ? categories
+        : categories.slice(categoryStartIndex, categoryStartIndex + categoriesPerView)
 
     // 스타일을 카테고리로 변환하는 함수
     const styleToCategory = (style) => {
@@ -205,7 +204,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                     // DB에서 받은 URL을 백엔드 프록시를 통해 제공
                     // Vercel 프로덕션 환경에서는 상대 경로 사용
                     let apiBaseUrl = ''
-                    if (typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')) {
+                    if (typeof window !== 'undefined' && window.location.hostname.includes('marryday.co.kr')) {
                         apiBaseUrl = '' // 상대 경로 사용
                     } else {
                         apiBaseUrl = import.meta.env.VITE_API_URL || 'http://marryday.kro.kr'
@@ -279,7 +278,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
         try {
             // Vercel 프로덕션 환경에서는 상대 경로 사용
             let apiBaseUrl = ''
-            if (typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')) {
+            if (typeof window !== 'undefined' && window.location.hostname.includes('marryday.co.kr')) {
                 apiBaseUrl = '' // 상대 경로 사용
             } else {
                 apiBaseUrl = import.meta.env.VITE_API_URL || 'http://marryday.kro.kr'
@@ -498,6 +497,8 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
     const filteredDresses = selectedCategory === 'all'
         ? dresses
         : dresses.filter(dress => dress.category === selectedCategory)
+
+    const dressesToRender = isMobile ? filteredDresses : filteredDresses.slice(0, displayCount)
 
     const handleDressClick = (dress) => {
         if (isProcessing) return
@@ -794,6 +795,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                                 </div>
                                 <span className="progress-text">{Math.round(progress)}%</span>
                             </div>
+                            <p className="loading-notice">이미지의 해상도에따라 로딩 시간이 길어질 수 있습니다.</p>
                         </div>
                     )}
                     {showCheckmark && (
@@ -1108,6 +1110,26 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                     </div>
                 )}
                 {renderUploadArea()}
+                {!isProcessing && !generalResultImage && (uploadedImage || preview) && (
+                    <button
+                        type="button"
+                        className={`step-link-button step-3-back-button ${isMobile ? 'mobile-step-3-back-button' : ''}`}
+                        onClick={() => {
+                            setUploadedImage(null)
+                            setPreview(null)
+                            setGeneralResultImage(null)
+                            setOriginalResultImage(null)
+                            setSelectedFilter('none')
+                            setIsValidatingPerson(false)
+                            if (fileInputRef.current) {
+                                fileInputRef.current.value = ''
+                            }
+                            setCurrentStep(2)
+                        }}
+                    >
+                        STEP 2 · 이미지 다시 업로드
+                    </button>
+                )}
                 {renderResultActions()}
                 <div className="step-actions">
                     <button type="button" onClick={() => setCurrentStep(1)}>
@@ -1211,7 +1233,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                                                         등록된 드레스가 없습니다.
                                                     </div>
                                                 ) : (
-                                                    filteredDresses.slice(0, displayCount).map((dress) => (
+                                                    dressesToRender.map((dress) => (
                                                         <div
                                                             key={dress.id}
                                                             data-dress-id={dress.id}
