@@ -10,7 +10,7 @@
             "has": [
                 {
                     "type": "host",
-                    "value": "project.vercel.app"
+                    "value": "marryday-front.vercel.app"
                 }
             ],
             "destination": "https://www.marryday.co.kr/$1",
