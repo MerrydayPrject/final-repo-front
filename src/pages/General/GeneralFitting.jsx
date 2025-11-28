@@ -204,7 +204,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                     // DB에서 받은 URL을 백엔드 프록시를 통해 제공
                     // Vercel 프로덕션 환경에서는 상대 경로 사용
                     let apiBaseUrl = ''
-                    if (typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')) {
+                    if (typeof window !== 'undefined' && window.location.hostname.includes('marryday.co.kr')) {
                         apiBaseUrl = '' // 상대 경로 사용
                     } else {
                         apiBaseUrl = import.meta.env.VITE_API_URL || 'http://marryday.kro.kr'
@@ -278,7 +278,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
         try {
             // Vercel 프로덕션 환경에서는 상대 경로 사용
             let apiBaseUrl = ''
-            if (typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')) {
+            if (typeof window !== 'undefined' && window.location.hostname.includes('marryday.co.kr')) {
                 apiBaseUrl = '' // 상대 경로 사용
             } else {
                 apiBaseUrl = import.meta.env.VITE_API_URL || 'http://marryday.kro.kr'

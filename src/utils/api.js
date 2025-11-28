@@ -9,9 +9,9 @@ export const getApiBaseUrl = () => {
 
     // 런타임에 동적으로 결정 (빌드 타임이 아닌 실행 시점)
     if (typeof window !== 'undefined') {
-        // Vercel 프로덕션 환경 또는 marryday.co.kr 도메인에서는 상대 경로 사용 (rewrites를 통해 프록시)
+        // marryday.co.kr 도메인에서는 상대 경로 사용 (rewrites를 통해 프록시)
         const hostname = window.location.hostname
-        if (hostname.includes('vercel.app') || hostname.includes('vercel.com') || hostname.includes('marryday.co.kr')) {
+        if (hostname.includes('marryday.co.kr')) {
             return '' // 상대 경로 사용
         }
     }

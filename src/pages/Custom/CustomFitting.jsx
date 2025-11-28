@@ -137,7 +137,7 @@ const CustomFitting = ({ onBackToMain }) => {
         try {
             // Vercel 프로덕션 환경에서는 상대 경로 사용
             let apiBaseUrl = ''
-            if (typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')) {
+            if (typeof window !== 'undefined' && window.location.hostname.includes('marryday.co.kr')) {
                 apiBaseUrl = '' // 상대 경로 사용
             } else {
                 apiBaseUrl = import.meta.env.VITE_API_URL || 'http://marryday.kro.kr'
