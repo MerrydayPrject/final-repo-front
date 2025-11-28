@@ -273,9 +273,31 @@
 
 .step-guide-panel-step2 .step-panel-content .step-link-button {
     position: absolute;
-    top: 460px;
+    top: 520px;
     right: 20px;
     margin: 0;
+}
+
+.step-guide-panel-step3 .step-link-button.step-3-back-button {
+    position: absolute;
+    top: 610px;
+    right: 50px;
+    margin: 0;
+}
+
+/* 웹 버전에서는 step-panel-content가 이미지 영역 크기에 영향을 주지 않도록 */
+.step-guide-panel-step3 .step-panel-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+    align-items: flex-end;
+}
+
+.step-guide-panel-step3 .step-panel-content .image-upload-wrapper {
+    width: auto;
+    max-width: none;
 }
 
 .step-guide-panel-step2 .step-panel-content .image-upload-wrapper {
@@ -1205,6 +1227,25 @@
         top: auto;
         right: auto;
         margin: 0;
+    }
+
+    .step-guide-panel-step3 .step-panel-content {
+        gap: 12px;
+        align-items: center;
+    }
+
+    /* 모바일 전용: step3 버튼을 이미지 영역 위에 배치 */
+    .step-guide-panel-step3 .step-link-button.step-3-back-button.mobile-step-3-back-button {
+        position: absolute;
+        top: 85px;
+        right: 20px;
+        margin: 0 !important;
+        z-index: 10;
+    }
+
+    /* 모바일에서 step3 이미지 영역에 간격 추가 (버튼이 위에 있으므로) */
+    .step-guide-panel-step3 .image-upload-wrapper {
+        margin-top: 20px !important;
     }
 
     .step-guide-panel-step2 .step-panel-content .image-upload-wrapper {
