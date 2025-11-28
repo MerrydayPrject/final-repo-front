@@ -487,6 +487,7 @@ const CustomFitting = ({ onBackToMain }) => {
                                     </div>
                                     <span className="progress-text">{Math.round(progress)}%</span>
                                 </div>
+                                <p className="loading-notice">이미지의 해상도에따라 로딩 시간이 길어질 수 있습니다.</p>
                             </div>
                         </div>
                     </div>
