@@ -7,6 +7,12 @@
     "redirects": [
         {
             "source": "/(.*)",
+            "has": [
+                {
+                    "type": "host",
+                    "value": "project.vercel.app"
+                }
+            ],
             "destination": "https://www.marryday.co.kr/$1",
             "permanent": true
         }
