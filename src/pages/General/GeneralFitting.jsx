@@ -1110,24 +1110,26 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                     </div>
                 )}
                 {renderUploadArea()}
-                <button
-                    type="button"
-                    className={`step-link-button step-3-back-button ${isMobile ? 'mobile-step-3-back-button' : ''}`}
-                    onClick={() => {
-                        setUploadedImage(null)
-                        setPreview(null)
-                        setGeneralResultImage(null)
-                        setOriginalResultImage(null)
-                        setSelectedFilter('none')
-                        setIsValidatingPerson(false)
-                        if (fileInputRef.current) {
-                            fileInputRef.current.value = ''
-                        }
-                        setCurrentStep(2)
-                    }}
-                >
-                    STEP 2 · 이미지 다시 업로드
-                </button>
+                {!isProcessing && !generalResultImage && (uploadedImage || preview) && (
+                    <button
+                        type="button"
+                        className={`step-link-button step-3-back-button ${isMobile ? 'mobile-step-3-back-button' : ''}`}
+                        onClick={() => {
+                            setUploadedImage(null)
+                            setPreview(null)
+                            setGeneralResultImage(null)
+                            setOriginalResultImage(null)
+                            setSelectedFilter('none')
+                            setIsValidatingPerson(false)
+                            if (fileInputRef.current) {
+                                fileInputRef.current.value = ''
+                            }
+                            setCurrentStep(2)
+                        }}
+                    >
+                        STEP 2 · 이미지 다시 업로드
+                    </button>
+                )}
                 {renderResultActions()}
                 <div className="step-actions">
                     <button type="button" onClick={() => setCurrentStep(1)}>
