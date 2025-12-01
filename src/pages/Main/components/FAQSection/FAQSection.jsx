@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import '../../styles/Main/FAQSection.css'
+import './FAQSection.css'
 
 const faqs = [
     {

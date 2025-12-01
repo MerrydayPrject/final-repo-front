@@ -1,4 +1,4 @@
-import '../styles/Modal.css'
+import './Modal.css'
 
 const Modal = ({ isOpen, onClose, message, children, center = false, hideFooter = false, onConfirm }) => {
     if (!isOpen) return null

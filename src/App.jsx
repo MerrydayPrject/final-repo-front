@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import Header from './components/Header'
+import Header from './components/Header/Header'
 import MainPage from './pages/Main/MainPage'
 import GeneralFitting from './pages/General/GeneralFitting'
 import CustomFitting from './pages/Custom/CustomFitting'

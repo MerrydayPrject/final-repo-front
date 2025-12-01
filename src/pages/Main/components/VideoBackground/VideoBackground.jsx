@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import '../../styles/Main/VideoBackground.css'
+import './VideoBackground.css'
 
 const VideoBackground = ({ onNavigateToFitting }) => {
     const videoRef = useRef(null)

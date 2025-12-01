@@ -1,13 +1,13 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import Lottie from 'lottie-react'
 import { MdOutlineDownload } from 'react-icons/md'
-import Modal from '../../components/Modal'
-import ReviewModal from '../../components/ReviewModal'
+import Modal from '../../components/Modal/Modal'
+import ReviewModal from '../../components/ReviewModal/ReviewModal'
 import { autoMatchImageV4, getDresses, applyImageFilter, validatePerson } from '../../utils/api'
 import { isReviewCompleted } from '../../utils/cookies'
 import '../../styles/App.css'
-import '../../styles/General/ImageUpload.css'
-import '../../styles/General/DressSelection.css'
+import './ImageUpload.css'
+import './DressSelection.css'
 
 const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
     // General Fitting 상태

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Lottie from 'lottie-react'
-import '../../styles/Main/UsageGuideSection.css'
+import './UsageGuideSection.css'
 
 const UsageGuideSection = () => {
     const containerRef = useRef(null)
@@ -193,5 +193,4 @@ const UsageGuideSection = () => {
 }
 
 export default UsageGuideSection
-
 

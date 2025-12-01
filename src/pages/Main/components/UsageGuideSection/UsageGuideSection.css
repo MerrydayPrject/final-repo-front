@@ -117,7 +117,7 @@
     display: block;
 }
 
-/* ex_B 이미지 (좌측) 위치 조정 */
+/* ex_B ?��?지 (좌측) ?�치 조정 */
 .slider-image-ex-b {
     z-index: 1;
 }
@@ -130,7 +130,7 @@
     display: block;
 }
 
-/* ex_A 이미지 (우측) 위치 조정 */
+/* ex_A ?��?지 (?�측) ?�치 조정 */
 .slider-image-ex-a {
     z-index: 2;
     pointer-events: none;

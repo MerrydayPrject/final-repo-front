@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useCallback } from 'react'
 import { useGesture } from '@use-gesture/react'
-import '../../styles/Main/DomeGallery.css'
+import './DomeGallery.css'
 
 const DEFAULT_IMAGES = [
     { src: '/Image/main/Adress1.png', alt: 'Adress1.png' },

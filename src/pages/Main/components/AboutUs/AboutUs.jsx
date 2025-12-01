@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import '../../styles/Main/AboutUs.css'
+import './AboutUs.css'
 
 const AboutUs = ({ onNavigateToGeneral, onNavigateToCustom, onNavigateToAnalysis }) => {
     const sectionRef = useRef(null)

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import { submitReview } from '../utils/api'
-import { setReviewCompleted } from '../utils/cookies'
-import '../styles/ReviewModal.css'
+import { submitReview } from '../../utils/api'
+import { setReviewCompleted } from '../../utils/cookies'
+import './ReviewModal.css'
 
 const ReviewModal = ({ isOpen, onClose, pageType }) => {
     const [rating, setRating] = useState(0)

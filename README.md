@@ -122,42 +122,62 @@ Fi_marryday_front/          # 프론트엔드 프로젝트 루트
 │   └── google*.html       # Google 검증 파일
 │
 ├── src/                   # 소스 코드 루트
-│   ├── components/        # 공통 UI 컴포넌트 모음
-│   │   ├── Header.jsx     # 헤더 네비게이션 컴포넌트
-│   │   ├── Modal.jsx     # 모달 컴포넌트
-│   │   └── ReviewModal.jsx # 리뷰 모달 컴포넌트
+│   ├── components/        # 공통 UI 컴포넌트 모음 (컴포넌트 + 스타일 함께)
+│   │   ├── Header/
+│   │   │   ├── Header.jsx
+│   │   │   └── Header.css
+│   │   ├── Modal/
+│   │   │   ├── Modal.jsx
+│   │   │   └── Modal.css
+│   │   └── ReviewModal/
+│   │       ├── ReviewModal.jsx
+│   │       └── ReviewModal.css
 │   │
 │   ├── pages/             # 페이지별 컴포넌트
-│   │   ├── Main/          # 메인 페이지 컴포넌트
-│   │   │   ├── MainPage.jsx           # 메인 페이지 메인 컴포넌트
-│   │   │   ├── VideoBackground.jsx    # 비디오 배경 컴포넌트
-│   │   │   ├── DressCollection.jsx    # 드레스 컬렉션 컴포넌트
-│   │   │   ├── DressSlider.jsx        # 드레스 슬라이더 컴포넌트
-│   │   │   ├── DomeGallery.jsx        # 돔 갤러리 컴포넌트
-│   │   │   ├── AboutUs.jsx            # 회사 소개 컴포넌트
-│   │   │   ├── FAQSection.jsx         # FAQ 섹션 컴포넌트
-│   │   │   ├── UsageGuideSection.jsx  # 사용 가이드 섹션 컴포넌트
-│   │   │   ├── NextSection.jsx        # 다음 섹션 컴포넌트
-│   │   │   └── ScrollToTop.jsx        # 스크롤 탑 버튼 컴포넌트
+│   │   ├── Main/          # 메인 페이지
+│   │   │   ├── MainPage.jsx
+│   │   │   └── components/     # Main 페이지 전용 컴포넌트들
+│   │   │       ├── VideoBackground/
+│   │   │       │   ├── VideoBackground.jsx
+│   │   │       │   └── VideoBackground.css
+│   │   │       ├── AboutUs/
+│   │   │       │   ├── AboutUs.jsx
+│   │   │       │   └── AboutUs.css
+│   │   │       ├── DomeGallery/
+│   │   │       │   ├── DomeGallery.jsx
+│   │   │       │   └── DomeGallery.css
+│   │   │       ├── DressCollection/
+│   │   │       │   ├── DressCollection.jsx
+│   │   │       │   └── DressCollection.css
+│   │   │       ├── FAQSection/
+│   │   │       │   ├── FAQSection.jsx
+│   │   │       │   └── FAQSection.css
+│   │   │       ├── UsageGuideSection/
+│   │   │       │   ├── UsageGuideSection.jsx
+│   │   │       │   └── UsageGuideSection.css
+│   │   │       ├── NextSection/
+│   │   │       │   ├── NextSection.jsx
+│   │   │       │   └── NextSection.css
+│   │   │       └── ScrollToTop/
+│   │   │           ├── ScrollToTop.jsx
+│   │   │           └── ScrollToTop.css
 │   │   │
 │   │   ├── General/       # 일반피팅 페이지
-│   │   │   └── GeneralFitting.jsx     # 일반피팅 메인 컴포넌트
+│   │   │   ├── GeneralFitting.jsx
+│   │   │   ├── ImageUpload.css
+│   │   │   └── DressSelection.css
 │   │   │
 │   │   ├── Custom/        # 커스텀피팅 페이지
-│   │   │   └── CustomFitting.jsx      # 커스텀피팅 메인 컴포넌트
+│   │   │   ├── CustomFitting.jsx
+│   │   │   ├── CustomUpload.css
+│   │   │   └── CustomResult.css
 │   │   │
 │   │   └── Analysis/      # 체형분석 페이지
-│   │       └── BodyAnalysis.jsx       # 체형분석 메인 컴포넌트
+│   │       ├── BodyAnalysis.jsx
+│   │       └── BodyTypeFitting.css
 │   │
-│   ├── styles/            # 스타일시트 파일
-│   │   ├── Main/          # 메인 페이지 스타일
-│   │   ├── General/       # 일반피팅 페이지 스타일
-│   │   ├── Custom/        # 커스텀피팅 페이지 스타일
-│   │   ├── Analysis/      # 체형분석 페이지 스타일
+│   ├── styles/            # 전역 스타일만 (공통 스타일)
 │   │   ├── App.css        # 앱 전역 스타일
-│   │   ├── Header.css     # 헤더 스타일
-│   │   ├── Modal.css      # 모달 스타일
-│   │   ├── ReviewModal.css # 리뷰 모달 스타일
 │   │   └── index.css      # 전역 스타일 정의
 │   │
 │   ├── utils/             # 유틸리티 함수

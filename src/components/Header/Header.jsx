@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { FiMenu, FiX } from 'react-icons/fi'
-import '../styles/Header.css'
+import './Header.css'
 
 const Header = ({ onBackToMain, onMenuClick, onLogoClick, currentPage }) => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)

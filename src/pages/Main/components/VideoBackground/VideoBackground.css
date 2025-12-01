@@ -30,11 +30,11 @@
     height: auto;
     transform: translate(-50%, -55%);
     object-fit: cover;
-    /* 천천히 재생되도록 */
+    /* 천천???�생?�도�?*/
     filter: brightness(1);
 }
 
-/* 텍스트 오버레이 */
+/* ?�스???�버?�이 */
 .video-text-overlay {
     position: absolute;
     top: 50%;
@@ -46,7 +46,7 @@
     max-width: 62.5rem;
 }
 
-/* 인트로 스킵 시 딜레이 제거 */
+/* ?�트�??�킵 ???�레???�거 */
 .video-text-overlay.no-delay .video-text-line1,
 .video-text-overlay.no-delay .video-text-line2,
 .video-text-overlay.no-delay .video-fitting-button {
@@ -92,7 +92,7 @@
     }
 }
 
-/* 피팅하러 가기 버튼 */
+/* ?�팅?�러 가�?버튼 */
 .video-fitting-button {
     font-size: 19.2px;
     padding: 19.2px 40px;
@@ -141,7 +141,7 @@
     transform: translateX(-50%) scale(0.92);
 }
 
-/* 우측 텍스트 */
+/* ?�측 ?�스??*/
 .video-side-text {
     position: absolute;
     right: 5rem;
@@ -183,7 +183,7 @@
     font-style: italic;
 }
 
-/* 모바일에서도 잘 보이도록 */
+/* 모바?�에?�도 ??보이?�록 */
 @media (max-width: 48rem) {
     .video-background {
         padding-top: 6rem;

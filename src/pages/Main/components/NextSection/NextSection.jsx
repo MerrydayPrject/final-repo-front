@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import '../../styles/Main/NextSection.css'
+import './NextSection.css'
 
 const NextSection = () => {
     const sectionRef = useRef(null)
@@ -68,9 +68,9 @@ const NextSection = () => {
                 </video>
                 <div className="next-section-video-overlay"></div>
                 <div className="next-section-video-text">
-                    <span className="video-text-line">“ 당신의 가장 아름다운 순간,</span>
+                    <span className="video-text-line">" 당신의 가장 아름다운 순간,</span>
                     <br className="video-text-break" />
-                    <span className="video-text-line">지금부터 시작됩니다 ”</span>
+                    <span className="video-text-line">지금부터 시작됩니다 "</span>
                 </div>
             </div>
 
