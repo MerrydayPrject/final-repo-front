@@ -4,11 +4,12 @@ import MainPage from './pages/Main/MainPage'
 import GeneralFitting from './pages/General/GeneralFitting'
 import CustomFitting from './pages/Custom/CustomFitting'
 import BodyAnalysis from './pages/Analysis/BodyAnalysis'
+import FuturePage from './pages/Future/FuturePage'
 import { addPlatformClasses } from './utils/platform'
 import './styles/App.css'
 
 function App() {
-    const [currentPage, setCurrentPage] = useState('main') // 'main', 'general', 'custom', 'analysis'
+    const [currentPage, setCurrentPage] = useState('main') // 'main', 'general', 'custom', 'analysis', 'future'
 
     // 일반피팅 페이지로 전달할 카테고리
     const [selectedCategoryForFitting, setSelectedCategoryForFitting] = useState(null)
@@ -71,6 +72,8 @@ function App() {
             setCurrentPage('custom')
         } else if (menuType === 'analysis') {
             setCurrentPage('analysis')
+        } else if (menuType === 'future') {
+            setCurrentPage('future')
         }
     }
 
@@ -113,6 +116,11 @@ function App() {
                 <BodyAnalysis
                     onBackToMain={handleBackToMain}
                     onNavigateToFittingWithCategory={handleNavigateToFittingWithCategory}
+                />
+            )}
+            {currentPage === 'future' && (
+                <FuturePage
+                    onBackToMain={handleBackToMain}
                 />
             )}
         </div>

@@ -206,8 +206,8 @@
 /* step3에서 필터 버튼들을 우측에 세로 배치 */
 .step-guide-panel-step3 .step-result-actions {
     position: absolute;
-    right: 30px;
-    top: 50%;
+    right: 10px;
+    top: 48%;
     transform: translateY(-50%);
     display: flex;
     flex-direction: column;
@@ -312,14 +312,14 @@
 .step-guide-panel-step2 .step-panel-content .step-link-button {
     position: absolute;
     top: 520px;
-    right: 20px;
+    right: -5px;
     margin: 0;
 }
 
 .step-guide-panel-step3 .step-link-button.step-3-back-button {
     position: absolute;
-    top: 610px;
-    right: 50px;
+    top: 600px;
+    right: -5px;
     margin: 0;
 }
 
@@ -466,7 +466,7 @@
    웹 버전 - Upload Area
    ============================================ */
 .upload-area {
-    background: hsla(75, 6%, 88%, 0.514);
+    background: hsl(0, 0%, 100%);
     border: 5px solid #f8f8f800;
     border-radius: 2px;
     padding: 40px 20px;
@@ -492,7 +492,10 @@
     height: 100%;
     animation: gentleJump 7s ease-in-out infinite;
     margin-top: 30px;
+    position: relative;
+    overflow: hidden;
 }
+
 
 /* 일반피팅에서 upload-area 높이만 줄임 */
 .fitting-container .upload-area {
@@ -519,7 +522,7 @@
 
 .upload-area:hover {
     border-color: #f8f8f800;
-    background: #c2c1c183;
+    background: #e2e2e283;
     animation: gentleJump 7s ease-in-out infinite;
     transform: none;
     cursor: pointer;
@@ -599,9 +602,9 @@
 .fitting-container .step-guide-panel .preview-container {
     width: 100% !important;
     max-width: 900px !important;
-    height: 600px !important;
+    height: 550px !important;
     max-height: 600px !important;
-    margin-top: -10px;
+    margin-top: 10px;
     margin-left: -80px !important;
 }
 
@@ -1071,9 +1074,16 @@
 .image-upload-wrapper .preview-container .processing-overlay .loading-notice {
     font-size: 12px;
     color: rgba(102, 102, 102, 0.842);
-    margin-top: 80px;
+    margin-top: -20px !important;
     text-align: center;
     font-weight: 400;
+}
+
+/* 일반피팅 화면에서 loading-notice 위치 조정 */
+.fitting-container .processing-overlay .loading-notice,
+.fitting-container .preview-container .processing-overlay .loading-notice,
+.fitting-container .image-upload-wrapper .preview-container .processing-overlay .loading-notice {
+    margin-top: 140px !important;
 }
 
 .spinner-lottie+p {
@@ -1188,6 +1198,24 @@
 
 @media (max-width: 768px) {
 
+    /* 일반피팅 모바일 - 모든 preview-container height 강제 설정 */
+    .fitting-container .step-guide-panel .preview-container,
+    .fitting-container .step-guide-panel-step2 .preview-container,
+    .fitting-container .step-guide-panel-step3 .preview-container,
+    .fitting-container .preview-container {
+        height: 310px !important;
+        max-height: 310px !important;
+        min-height: 310px !important;
+    }
+
+    .fitting-container .step-guide-panel .upload-area,
+    .fitting-container .step-guide-panel-step2 .upload-area,
+    .fitting-container .step-guide-panel-step3 .upload-area {
+        height: 220px !important;
+        max-height: 220px !important;
+        min-height: 220px !important;
+    }
+
     /* 모바일에서 매칭 중 요소들을 위로 올리기 */
     .processing-overlay {
         justify-content: flex-start !important;
@@ -1198,18 +1226,19 @@
     .processing-overlay .spinner-lottie {
         width: 180px !important;
         height: 180px !important;
-        margin-top: -20px !important;
+        margin-top: 30px !important;
         margin-bottom: -30px !important;
     }
 
     .processing-overlay .loading-message {
-        margin-top: -10px !important;
+        margin-top: 10px !important;
         font-size: 14px !important;
     }
 
     .processing-overlay .progress-bar-container {
-        margin-top: 15px !important;
+        margin-top: 25px !important;
         width: 90% !important;
+        margin-bottom: 5px !important;
     }
 
     .processing-overlay .loading-notice,
@@ -1217,9 +1246,42 @@
     .image-upload-wrapper .preview-container .processing-overlay .loading-notice {
         font-size: 10px !important;
         color: rgba(102, 102, 102, 0.842) !important;
-        margin-top: 10px !important;
+        margin-top: 8px !important;
         text-align: center !important;
         font-weight: 400 !important;
+    }
+
+    /* 모바일 버전 - 이미지 분석 중 문구 크기 조정 */
+    .validation-loader-wrapper .upload-text,
+    .step-guide-panel-loader-wrapper .upload-text {
+        font-size: 13px !important;
+        color: #212121 !important;
+        margin: 0 !important;
+        text-align: center !important;
+    }
+
+    /* 모바일 버전 - 로딩 아이콘 크기 조정 */
+    .upload-area .validation-loader-wrapper .loader,
+    .upload-area .step-guide-panel-loader-wrapper .loader,
+    .step-guide-panel .validation-loader-wrapper .loader,
+    .step-guide-panel .step-guide-panel-loader-wrapper .loader,
+    .validation-loader-wrapper .loader,
+    .step-guide-panel-loader-wrapper .loader {
+        width: 90px !important;
+        height: 90px !important;
+        border-width: 3px !important;
+    }
+
+    .upload-area .validation-loader-wrapper .loader::before,
+    .upload-area .step-guide-panel-loader-wrapper .loader::before,
+    .step-guide-panel .validation-loader-wrapper .loader::before,
+    .step-guide-panel .step-guide-panel-loader-wrapper .loader::before,
+    .validation-loader-wrapper .loader::before,
+    .step-guide-panel-loader-wrapper .loader::before {
+        top: 13px !important;
+        left: 13px !important;
+        right: 13px !important;
+        bottom: 13px !important;
     }
 
     /* 모바일에서 매칭 완료 시 위치 조정 */
@@ -1270,14 +1332,14 @@
     .step-guide-panel .preview-container {
         width: 100%;
         max-width: 100%;
-        height: 300px;
-        max-height: 300px;
+        height: 220px !important;
+        max-height: 220px !important;
     }
 
     .fitting-container .step-guide-panel .preview-container {
         max-width: 100% !important;
-        height: 300px !important;
-        max-height: 300px !important;
+        height: 220px !important;
+        max-height: 220px !important;
         margin-left: 0 !important;
         margin-top: 0;
     }
@@ -1335,8 +1397,8 @@
     .step-guide-panel-step2 .step-panel-content .upload-area {
         width: 100% !important;
         max-width: 100% !important;
-        height: 300px !important;
-        max-height: 300px !important;
+        height: 220px !important;
+        max-height: 220px !important;
         margin-left: 0 !important;
     }
 
@@ -1393,6 +1455,7 @@
     .step-guide-panel-step3 .filter-label.filter-toggle-button {
         margin-right: 8px;
         margin-bottom: 0;
+        height: 35px;
         flex-shrink: 0;
         background: #97916e;
         color: white;
@@ -1431,6 +1494,7 @@
     }
 
     .step-guide-panel-step3 .filter-buttons {
+        height: 35px;
         flex-direction: row !important;
         flex-wrap: nowrap !important;
         justify-content: flex-start !important;
@@ -1470,7 +1534,7 @@
     }
 
     .step-guide-panel-step3 .filter-button {
-        min-width: calc(33.333% - 4px);
+        min-width: calc(40.333% - 4px);
         max-width: calc(33.333% - 4px);
         padding: 8px 10px;
         font-size: 11px;
@@ -1504,8 +1568,8 @@
 
     .step-guide-panel-step3 .step-result-actions .download-button {
         position: absolute !important;
-        right: -15px !important;
-        bottom: 80px !important;
+        right: -10px !important;
+        bottom: 65px !important;
         left: auto !important;
         margin-top: 0 !important;
         margin-right: 0 !important;
@@ -1761,19 +1825,19 @@
 
     .step-guide-panel .upload-area,
     .step-guide-panel .preview-container {
-        height: 250px;
-        max-height: 250px;
+        height: 200px !important;
+        max-height: 220px !important;
     }
 
     .fitting-container .step-guide-panel .preview-container {
-        height: 250px !important;
-        max-height: 250px !important;
+        height: 220px !important;
+        max-height: 220px !important;
     }
 
     .step-guide-panel-step2 .step-panel-content .preview-container,
     .step-guide-panel-step2 .step-panel-content .upload-area {
-        height: 250px !important;
-        max-height: 250px !important;
+        height: 220px !important;
+        max-height: 220px !important;
     }
 
     .step-background-selector {

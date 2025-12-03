@@ -30,6 +30,7 @@ const Header = ({ onBackToMain, onMenuClick, onLogoClick, currentPage }) => {
         { label: '일반피팅', key: 'general' },
         { label: '커스텀피팅', key: 'custom' },
         { label: '체형 분석', key: 'analysis' },
+        { label: 'Our Future', key: 'future' },
     ]
 
     return (
