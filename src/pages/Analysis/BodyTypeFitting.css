@@ -188,7 +188,7 @@
     display: grid;
     grid-template-columns: 1fr 2.5fr;
     gap: 40px;
-    margin-top: 10px;
+    margin-top: -28px;
     margin-bottom: 0;
     width: 100%;
     max-width: 100%;
@@ -223,7 +223,7 @@
     border-radius: 12px;
     padding: 15px;
     background: rgba(255, 255, 255, 0.02);
-    margin-top: -10px;
+    margin-top: 10px;
     max-height: 640px;
     overflow-y: auto;
     box-sizing: border-box;
@@ -1228,13 +1228,14 @@
     .analysis-main-section {
         grid-template-columns: 1fr;
         gap: 20px;
-        margin-top: 20px;
+        margin-top: 30px;
     }
 
     .analysis-main-section .upload-area {
         width: 100% !important;
         max-width: 100% !important;
         margin-left: 0 !important;
+        margin-top: -10px !important;
     }
 
     .general-fitting-header {
@@ -1390,15 +1391,18 @@
     }
 
     .input-group input {
-        padding: 8px 10px;
+        padding: 12px 10px;
         font-size: 0.85rem;
+        height: 44px;
+        min-height: 44px;
     }
 
     .analysis-main-section .upload-area .analyze-button {
         width: 100% !important;
+        height: 50px;
         max-width: 100% !important;
         margin-left: 0 !important;
-        margin-top: 12px !important;
+        margin-top: 10px !important;
         transform: none !important;
         padding: 12px;
         font-size: 0.95rem;
@@ -1571,8 +1575,10 @@
     }
 
     .input-group input {
-        padding: 7px 8px;
+        padding: 12px 8px;
         font-size: 0.8rem;
+        height: 40px;
+        min-height: 30px;
     }
 
     .analysis-main-section .upload-area .analyze-button {

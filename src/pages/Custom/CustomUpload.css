@@ -48,8 +48,8 @@
 }
 
 .content-wrapper.custom-wrapper .step-guide-panel-step3 .step-result-actions .download-button {
-    margin-top: 150px !important;
-    margin-right: 290px !important;
+    margin-top: 170px !important;
+    margin-right: 320px !important
 }
 
 .content-wrapper.custom-wrapper .step-guide-panel-step3 .filter-buttons-container {
@@ -157,6 +157,7 @@
     padding: 16px;
     background: #ffffff;
     margin-left: 40px;
+    margin-bottom: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     border-radius: 12px;
 }
@@ -461,26 +462,26 @@
 
 .custom-upload-area {
     background: #f1efef;
-    border: 2px dashed #d0d0d0;
-    border-radius: 12px;
+    border: 1px solid #b4b3b3;
+    border-radius: 5px;
     padding: 20px 16px;
-    margin-top: 30px;
+    margin-top: 20px;
     text-align: center;
     cursor: pointer;
     transition: var(--transition);
     width: 100%;
-    height: 80%;
+    height: 90%;
     min-height: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.05);
 }
 
 .custom-upload-area:hover {
-    background: #fff;
+    background: #e0e0e0;
     border-color: #e0e0e0;
     transform: none;
     box-shadow: none;
@@ -828,7 +829,12 @@
 
     /* STEP 3 모바일 조정 */
     .content-wrapper.custom-wrapper .step-guide-panel-step3 {
-        padding: 20px 12px;
+        padding: 12px 12px !important;
+        gap: 8px !important;
+        min-height: auto !important;
+        max-height: 500px !important;
+        height: auto !important;
+        margin-top: -10px !important;
     }
 
     /* 일반 피팅과 완전히 동일하게 필터 버튼 스타일 적용 */
@@ -840,7 +846,8 @@
         flex-direction: row !important;
         align-items: flex-start !important;
         gap: 12px !important;
-        margin-top: 16px !important;
+        margin-top: 20px !important;
+        margin-bottom: -10px !important;
         margin-left: 0 !important;
         width: 100% !important;
         flex-wrap: wrap !important;
@@ -873,7 +880,7 @@
         color: #333 !important;
         white-space: nowrap !important;
         margin-right: 8px !important;
-        margin-bottom: 0 !important;
+        margin-bottom: -20px !important;
         margin-left: 0 !important;
         display: flex !important;
         align-items: center !important;
@@ -974,7 +981,7 @@
         right: auto !important;
         bottom: auto !important;
         left: auto !important;
-        top: auto !important;
+        top: 10px !important;
         transform: none !important;
         background: #70964e !important;
         color: white !important;
@@ -986,8 +993,8 @@
         border: none !important;
         cursor: pointer !important;
         width: auto !important;
-        margin-top: -115px !important;
-        margin-right: 12px !important;
+        margin-top: -90px !important;
+        margin-right: 4px !important;
     }
 
     .content-wrapper.custom-wrapper .step-guide-panel-step3 .step-result-actions .download-button:hover {
@@ -1028,11 +1035,15 @@
         min-height: 80px;
     }
 
-    /* preview-container 모바일 조정 */
+    /* preview-container 모바일 조정 - step3 가이드 패널과 크기 맞추기 */
     .fitting-container .content-wrapper.custom-wrapper .step-guide-panel .preview-container {
         margin-top: 0 !important;
-        height: 300px !important;
+        height: auto !important;
         max-height: 300px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        border-width: 8px !important;
     }
 
     .preview-container .processing-overlay .loading-notice,
@@ -1046,6 +1057,10 @@
 
     .content-wrapper.custom-wrapper .step-guide-panel {
         margin-top: 0 !important;
-        padding: 20px 12px;
+        padding: 12px 12px !important;
+        gap: 8px !important;
+        min-height: auto !important;
+        max-height: 450px !important;
+        height: auto !important;
     }
 }

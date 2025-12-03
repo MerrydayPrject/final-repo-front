@@ -1,3 +1,7 @@
+/* ============================================
+   웹 버전 기본 스타일 (Desktop)
+   ============================================ */
+
 .image-upload {
     width: 100%;
     flex: 1;
@@ -61,10 +65,10 @@
 }
 
 .step-guide-panel {
-    width: 100%;
+    width: 95%;
     flex: 1;
-    background: linear-gradient(145deg, #ffffff 0%, #f8f6f4 100%);
-    border-radius: 24px;
+    background: linear-gradient(145deg, #faf8f3 0%, #f5f0e8 100%);
+    border-radius: 15px;
     border: 1px solid rgba(0, 0, 0, 0.04);
     padding: 52px 24px;
     display: flex;
@@ -156,6 +160,9 @@
     margin-top: -40px;
 }
 
+/* ============================================
+   웹 버전 - Step Guide Panel
+   ============================================ */
 .step-guide-panel .image-upload-wrapper {
     width: 100%;
     max-width: 520px;
@@ -164,16 +171,19 @@
 .step-guide-panel .upload-area,
 .step-guide-panel .preview-container {
     width: 100%;
-    max-width: 380px;
-    height: 496px;
-    max-height: 496px;
-    aspect-ratio: 380 / 496;
+    max-width: 500px;
+    height: 500px;
+    max-height: 500px;
+    aspect-ratio: 500 / 500;
     flex: 0 0 auto;
+    margin-left: -80px;
+    margin-top: 10px;
+
 }
 
 /* 일반피팅에서 preview-container 오버라이드 */
 .fitting-container .step-guide-panel .preview-container {
-    max-width: 600px !important;
+    max-width: 800px !important;
 }
 
 .step-guide-panel-step3 {
@@ -196,7 +206,7 @@
 /* step3에서 필터 버튼들을 우측에 세로 배치 */
 .step-guide-panel-step3 .step-result-actions {
     position: absolute;
-    right: 35px;
+    right: 30px;
     top: 50%;
     transform: translateY(-50%);
     display: flex;
@@ -213,8 +223,8 @@
 }
 
 .step-guide-panel-step3 .step-result-actions .download-button {
-    margin-top: 140px !important;
-    margin-right: 50px !important;
+    margin-top: 190px !important;
+    margin-right: 80px !important;
 }
 
 .step-guide-panel-step3 .filter-buttons-container {
@@ -222,7 +232,7 @@
     flex-direction: column !important;
     align-items: flex-end !important;
     gap: 8px !important;
-    margin-right: -2px !important;
+    margin-right: 20px !important;
     margin-top: 30px !important;
 }
 
@@ -232,7 +242,7 @@
     color: #333;
     white-space: nowrap;
     margin-bottom: 4px;
-    margin-right: 60px;
+    margin-right: 80px;
     display: flex;
     align-items: center;
     gap: 6px;
@@ -249,12 +259,40 @@
     display: flex !important;
     flex-direction: column !important;
     gap: 12px !important;
-    margin-right: 20px !important;
+    margin-right: 40px !important;
 }
 
 .step-guide-panel-step3 .filter-button {
     min-width: 80px;
     text-align: center;
+}
+
+/* ============================================
+   웹 버전 - Step3 Preview Container Download Button
+   ============================================ */
+.step-guide-panel-step3 .preview-container>.download-button,
+.step-guide-panel-step3 .preview-container:not(.step-result-actions) .download-button {
+    position: absolute !important;
+    right: 50px !important;
+    bottom: 10px !important;
+    left: auto !important;
+    top: auto !important;
+    transform: translateX(0) !important;
+    background: #70964e !important;
+    color: white !important;
+    padding: 6px 12px !important;
+    border-radius: 6px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    transition: var(--transition) !important;
+    z-index: 10 !important;
+    box-shadow: 0 2px 8px #70964e !important;
+    border: none !important;
+    cursor: pointer !important;
+    width: auto !important;
+    margin: 0 !important;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
 }
 
 .step-guide-panel-step2 {
@@ -359,6 +397,10 @@
     text-align: left;
 }
 
+/* ============================================
+   모바일 버전 스타일 (max-width: 768px)
+   ============================================ */
+
 @media (max-width: 768px) {
     .step-3-header {
         flex-direction: column;
@@ -420,9 +462,12 @@
     margin-top: 40px;
 }
 
+/* ============================================
+   웹 버전 - Upload Area
+   ============================================ */
 .upload-area {
-    background: #f8f6f683;
-    border: 15px solid #f8f8f800;
+    background: hsla(75, 6%, 88%, 0.514);
+    border: 5px solid #f8f8f800;
     border-radius: 2px;
     padding: 40px 20px;
     text-align: center;
@@ -446,6 +491,7 @@
         0 16px 32px rgba(0, 0, 0, 0.06);
     height: 100%;
     animation: gentleJump 7s ease-in-out infinite;
+    margin-top: 30px;
 }
 
 /* 일반피팅에서 upload-area 높이만 줄임 */
@@ -473,7 +519,7 @@
 
 .upload-area:hover {
     border-color: #f8f8f800;
-    background: #f8f6f683;
+    background: #c2c1c183;
     animation: gentleJump 7s ease-in-out infinite;
     transform: none;
     cursor: pointer;
@@ -514,13 +560,15 @@
     cursor: pointer;
 }
 
+/* ============================================
+   웹 버전 - Preview Container
+   ============================================ */
 .preview-container {
     position: relative;
     background: #fdfbfb;
     border-radius: 2px;
     padding: 0;
     /* 사진 액자 프레임 효과 */
-    border: 15px solid #f8f8f8fb;
     box-shadow:
         /* 안쪽 베벨 효과 */
         inset 0 0 0 1px rgba(0, 0, 0, 0.1),
@@ -529,16 +577,19 @@
         0 4px 8px rgba(0, 0, 0, 0.1),
         0 8px 16px rgba(0, 0, 0, 0.08),
         0 16px 32px rgba(0, 0, 0, 0.06);
-    width: 80%;
+    width: 90%;
     flex: 1;
     min-height: 0;
     height: 100%;
+    min-height: 400px;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: var(--transition);
     overflow: hidden;
     box-sizing: border-box;
+    margin-left: -80px;
+    margin-top: -20px;
 }
 
 .fitting-container .step-guide-panel {
@@ -547,11 +598,11 @@
 
 .fitting-container .step-guide-panel .preview-container {
     width: 100% !important;
-    max-width: 700px !important;
-    height: 700px !important;
-    max-height: 520px !important;
-    margin-top: 10px;
-    margin-left: -30px !important;
+    max-width: 900px !important;
+    height: 600px !important;
+    max-height: 600px !important;
+    margin-top: -10px;
+    margin-left: -80px !important;
 }
 
 .fitting-container .step-guide-panel .preview-container .preview-image {
@@ -569,10 +620,13 @@
 }
 
 .fitting-container .preview-container {
-    width: 95%;
+    width: 98%;
 
     max-height: 100%;
     height: 100%;
+    min-height: 500px;
+    margin-left: -80px;
+    margin-top: -20px;
 }
 
 .fitting-container .upload-area {
@@ -585,6 +639,9 @@
     cursor: copy;
 }
 
+/* ============================================
+   웹 버전 - Preview Image
+   ============================================ */
 .preview-image {
     max-width: 100%;
     max-height: 100%;
@@ -596,7 +653,10 @@
     transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
 }
 
-/* 모바일에서만 이미지 클릭 가능 */
+/* ============================================
+   모바일 버전 - 이미지 클릭 가능 (max-width: 768px)
+   ============================================ */
+
 @media (max-width: 768px) {
     .preview-image.clickable {
         pointer-events: auto;
@@ -659,13 +719,16 @@
     border: none;
 }
 
-.preview-container .download-button {
+/* ============================================
+   웹 버전 - Preview Container Download Button
+   ============================================ */
+.preview-container>.download-button {
     position: absolute !important;
-    right: 4px !important;
-    bottom: 8px !important;
+    right: 50px !important;
+    bottom: 10px !important;
     left: auto !important;
     top: auto !important;
-    transform: none !important;
+    transform: translateX(0) !important;
     background: #70964e !important;
     color: white !important;
     padding: 6px 12px !important;
@@ -678,6 +741,9 @@
     border: none !important;
     cursor: pointer !important;
     width: auto !important;
+    margin: 0 !important;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
 }
 
 
@@ -727,7 +793,9 @@
     transform: scale(1.1);
 }
 
-/* 필터 버튼 스타일 - 가로 배치 */
+/* ============================================
+   웹 버전 - Filter Buttons
+   ============================================ */
 .filter-buttons-container {
     display: flex;
     align-items: center;
@@ -925,6 +993,9 @@
     pointer-events: none;
 }
 
+/* ============================================
+   웹 버전 - Processing Overlay
+   ============================================ */
 .processing-overlay {
     position: absolute;
     top: 0;
@@ -1110,6 +1181,10 @@
     background: rgba(146, 145, 145, 0.5);
     pointer-events: none;
 }
+
+/* ============================================
+   모바일 버전 - 매칭/처리 오버레이 (max-width: 768px)
+   ============================================ */
 
 @media (max-width: 768px) {
 
@@ -1661,6 +1736,10 @@
     }
 }
 
+/* ============================================
+   작은 모바일 버전 스타일 (max-width: 480px)
+   ============================================ */
+
 @media (max-width: 480px) {
     .step-guide-panel {
         padding: 20px 12px;
@@ -1741,6 +1820,9 @@
 
 }
 
+/* ============================================
+   웹 버전 - Background Selector
+   ============================================ */
 .background-selector {
     position: absolute;
     right: -60px;
@@ -1816,8 +1898,10 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Android - General fitting font adjustments */
-.android .fitting-container .upload-text {
+/* ============================================
+   웹 버전 - Background Selector
+   ============================================ */
+.background-selector {
     font-size: 16px;
 }
 
