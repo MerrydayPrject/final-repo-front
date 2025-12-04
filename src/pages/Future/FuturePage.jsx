@@ -643,6 +643,38 @@ const FuturePage = ({ onBackToMain }) => {
         // ScrollTrigger도 리셋
         ScrollTrigger.refresh()
 
+        // 모바일에서 스크롤 방지
+        const isMobile = window.innerWidth <= 768
+        if (isMobile) {
+            // 모바일에서 스크롤 방지 핸들러
+            const preventScroll = (e) => {
+                // 3D 캔버스 영역에서는 드래그 허용 (이미 canvas에 이벤트 리스너가 있음)
+                const target = e.target
+                const canvas = canvasRef.current
+                if (target === canvas || canvas?.contains(target)) {
+                    return // canvas 영역은 드래그 허용
+                }
+                // 스크롤 다운 아이콘 클릭은 허용
+                if (target.closest('.scroll_down_icon')) {
+                    return
+                }
+                // 나머지 영역에서는 스크롤 방지
+                e.preventDefault()
+            }
+
+            // touchmove와 wheel 이벤트로 스크롤 방지
+            document.addEventListener('touchmove', preventScroll, { passive: false })
+            document.addEventListener('wheel', preventScroll, { passive: false })
+            document.addEventListener('scroll', preventScroll, { passive: false })
+
+            return () => {
+                clearTimeout(scrollResetTimer)
+                document.removeEventListener('touchmove', preventScroll)
+                document.removeEventListener('wheel', preventScroll)
+                document.removeEventListener('scroll', preventScroll)
+            }
+        }
+
         return () => {
             clearTimeout(scrollResetTimer)
         }
@@ -655,6 +687,184 @@ const FuturePage = ({ onBackToMain }) => {
             .then(data => setScrollDownAnimation(data))
             .catch(error => console.error('마우스 스크롤 아이콘 로드 실패:', error))
     }, [])
+
+    // 모바일에서 스크롤 다운 아이콘 클릭 핸들러
+    const handleScrollDownClick = () => {
+        const isMobile = window.innerWidth <= 768
+        if (!isMobile) return
+
+        // 모바일에서는 스크롤 없이 바로 애니메이션 완료 처리
+        if (visionRef.current && fullImgRef.current && bgRef.current) {
+            // 모든 ScrollTrigger 애니메이션을 즉시 완료 상태로 설정
+            const allTriggers = ScrollTrigger.getAll()
+
+            // bgAnimation 완료 (clip-path와 scale)
+            gsap.to(bgRef.current, {
+                clipPath: "inset(0% 0% 0% 0%)",
+                scale: 1.3,
+                duration: 0.5,
+                ease: "power2.out"
+            })
+
+            // 텍스트 즉시 숨김 (모바일 클릭 후)
+            const bTxtContainer = document.querySelector('#vision1012 .b_txt')
+            if (bTxtContainer) {
+                // 클래스 추가로 숨김
+                bTxtContainer.classList.add('mobile-clicked-hide')
+                bTxtContainer.style.display = 'none'
+                bTxtContainer.style.visibility = 'hidden'
+                bTxtContainer.style.opacity = '0'
+            }
+
+            if (topTxtRef.current) {
+                topTxtRef.current.classList.add('mobile-clicked-hide')
+                topTxtRef.current.style.display = 'none'
+                topTxtRef.current.style.visibility = 'hidden'
+                topTxtRef.current.style.opacity = '0'
+            }
+
+            if (btmTxtRef.current) {
+                btmTxtRef.current.classList.add('mobile-clicked-hide')
+                btmTxtRef.current.style.display = 'none'
+                btmTxtRef.current.style.visibility = 'hidden'
+                btmTxtRef.current.style.opacity = '0'
+            }
+
+            // 추가로 모든 b_txt 관련 요소 숨김
+            setTimeout(() => {
+                const allBTxtElements = document.querySelectorAll('#vision1012 .b_txt, #vision1012 .top_txt, #vision1012 .btm_txt')
+                allBTxtElements.forEach(el => {
+                    el.classList.add('mobile-clicked-hide')
+                    el.style.display = 'none'
+                    el.style.visibility = 'hidden'
+                    el.style.opacity = '0'
+                })
+            }, 100)
+
+            // 모든 ScrollTrigger를 강제로 완료 상태로 설정
+            allTriggers.forEach(trigger => {
+                try {
+                    if (trigger.vars) {
+                        const triggerElement = trigger.vars.trigger || trigger.trigger
+                        if (triggerElement === fullImgRef.current ||
+                            triggerElement === visionRef.current ||
+                            triggerElement === topTxtRef.current ||
+                            triggerElement === btmTxtRef.current) {
+                            // ScrollTrigger를 강제로 완료 상태로 만들기 위해 progress 업데이트
+                            if (trigger.progress !== undefined && trigger.progress < 1) {
+                                // progress를 1로 설정하기 위해 내부적으로 업데이트
+                                trigger.progress = 1
+                                trigger.update()
+                            }
+                        }
+                    }
+                } catch (e) {
+                    // ignore
+                }
+            })
+
+            // 컨트롤 활성화
+            if (modelRef.current) {
+                controlsEnabledRef.current = true
+            }
+
+            // 안내 문구 표시 (좌측 상단에 배치)
+            const showInstruction = () => {
+                // 여러 방법으로 요소 찾기
+                let instructionEl = instructionRef.current
+                if (!instructionEl) {
+                    instructionEl = document.querySelector('#vision1012 .instruction_txt')
+                }
+                if (!instructionEl) {
+                    instructionEl = document.querySelector('.instruction_txt')
+                }
+                if (!instructionEl && fullImgRef.current) {
+                    instructionEl = fullImgRef.current.querySelector('.instruction_txt')
+                }
+
+                if (instructionEl) {
+                    // 클래스 추가로 표시
+                    instructionEl.classList.add('mobile-clicked-show')
+                    instructionEl.classList.add('mobile-show-force')
+
+                    // setProperty로 !important 적용
+                    instructionEl.style.setProperty('display', 'block', 'important')
+                    instructionEl.style.setProperty('visibility', 'visible', 'important')
+                    instructionEl.style.setProperty('opacity', '1', 'important')
+                    instructionEl.style.setProperty('position', 'absolute', 'important')
+                    // 모바일에서 헤더 아래에 위치 (헤더 높이 + 여유 공간)
+                    const isMobile = window.innerWidth <= 768
+                    const topValue = isMobile ? '80px' : '20px'
+
+                    instructionEl.style.setProperty('top', topValue, 'important')
+                    instructionEl.style.setProperty('left', '20px', 'important')
+                    instructionEl.style.setProperty('bottom', 'auto', 'important')
+                    instructionEl.style.setProperty('right', 'auto', 'important')
+                    instructionEl.style.setProperty('z-index', '99', 'important')
+                    instructionEl.style.setProperty('text-align', 'left', 'important')
+                    instructionEl.style.setProperty('pointer-events', 'none', 'important')
+
+                    // 직접 스타일도 설정 (이중 보장)
+                    instructionEl.style.display = 'block'
+                    instructionEl.style.visibility = 'visible'
+                    instructionEl.style.opacity = '1'
+                    instructionEl.style.position = 'absolute'
+                    instructionEl.style.top = topValue
+                    instructionEl.style.left = '20px'
+                    instructionEl.style.zIndex = '99'
+
+                    // 애니메이션
+                    gsap.killTweensOf(instructionEl)
+                    gsap.fromTo(instructionEl,
+                        { opacity: 0, y: -10 },
+                        { opacity: 1, y: 0, duration: 0.3 }
+                    )
+                }
+            }
+
+            // 즉시 실행
+            showInstruction()
+
+            // 추가로 안내 문구 강제 표시 (지연 후)
+            setTimeout(() => {
+                showInstruction()
+            }, 10)
+
+            setTimeout(() => {
+                showInstruction()
+            }, 50)
+
+            setTimeout(() => {
+                showInstruction()
+            }, 100)
+
+            setTimeout(() => {
+                showInstruction()
+            }, 300)
+
+            setTimeout(() => {
+                showInstruction()
+            }, 500)
+
+            setTimeout(() => {
+                showInstruction()
+            }, 1000)
+
+            // 스크롤 다운 아이콘 숨김
+            if (scrollDownIconRef.current) {
+                gsap.to(scrollDownIconRef.current, {
+                    opacity: 0,
+                    y: -10,
+                    duration: 0.3,
+                    onComplete: () => {
+                        if (scrollDownIconRef.current) {
+                            scrollDownIconRef.current.style.display = 'none'
+                        }
+                    }
+                })
+            }
+        }
+    }
 
     // GSAP ScrollTrigger 애니메이션
     // useLayoutEffect를 사용하여 React의 DOM 제거보다 먼저 cleanup 실행
@@ -706,10 +916,34 @@ const FuturePage = ({ onBackToMain }) => {
                             scrub: 0.5,
                             start: "top top",
                             end: pinEnd,
-                            pinSpacing: false,
+                            pinSpacing: isMobile ? false : false,
                             invalidateOnRefresh: true,
                             anticipatePin: 1,
-                            markers: false
+                            markers: false,
+                            onLeave: () => {
+                                // 모바일에서 pin이 해제되면 스크롤을 정확히 멈춤
+                                if (isMobile && visionRef.current) {
+                                    // ScrollTrigger의 end 지점 계산
+                                    const triggerTop = visionRef.current.offsetTop
+                                    const scrollEnd = triggerTop + 500 // end: "+=500"에 맞춤
+
+                                    // 즉시 스크롤 위치 고정
+                                    requestAnimationFrame(() => {
+                                        window.scrollTo({ top: scrollEnd, behavior: 'instant' })
+                                        document.documentElement.scrollTop = scrollEnd
+                                        document.body.scrollTop = scrollEnd
+                                    })
+                                }
+                            },
+                            onEnterBack: () => {
+                                // 모바일에서 다시 진입할 때도 스크롤 제한
+                                if (isMobile && visionRef.current) {
+                                    const triggerTop = visionRef.current.offsetTop
+                                    if (window.scrollY < triggerTop) {
+                                        window.scrollTo({ top: triggerTop, behavior: 'instant' })
+                                    }
+                                }
+                            }
                         }
                     });
                     if (pinAnimation && pinAnimation.scrollTrigger) {
@@ -1081,7 +1315,8 @@ const FuturePage = ({ onBackToMain }) => {
                     <p>드래그하여 드레스를 둘러보세요</p>
                     <p className="sub">마우스 휠로 확대/축소 가능</p>
                 </div>
-                <div className="scroll_down_icon" ref={scrollDownIconRef}>
+                <div className="scroll_down_icon" ref={scrollDownIconRef} onClick={handleScrollDownClick}>
+                    <p className="scroll-click-text">click</p>
                     {scrollDownAnimation && (
                         <Lottie
                             animationData={scrollDownAnimation}
