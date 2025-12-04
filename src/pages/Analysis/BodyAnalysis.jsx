@@ -1,8 +1,8 @@
 import { useState, useRef } from 'react'
 import { HiQuestionMarkCircle } from 'react-icons/hi'
-import Modal from '../../components/Modal'
-import ReviewModal from '../../components/ReviewModal'
-import '../../styles/Analysis/BodyTypeFitting.css'
+import Modal from '../../components/Modal/Modal'
+import ReviewModal from '../../components/ReviewModal/ReviewModal'
+import './BodyTypeFitting.css'
 import { analyzeBody, validatePerson } from '../../utils/api'
 import { isReviewCompleted } from '../../utils/cookies'
 

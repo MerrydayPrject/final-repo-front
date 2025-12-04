@@ -1,14 +1,14 @@
 import { useState, useRef, useEffect } from 'react'
 import Lottie from 'lottie-react'
 import { MdOutlineDownload } from 'react-icons/md'
-import Modal from '../../components/Modal'
-import ReviewModal from '../../components/ReviewModal'
+import Modal from '../../components/Modal/Modal'
+import ReviewModal from '../../components/ReviewModal/ReviewModal'
 import { customV4MatchImage, applyImageFilter, validatePerson } from '../../utils/api'
 import { isReviewCompleted } from '../../utils/cookies'
 import '../../styles/App.css'
-import '../../styles/General/ImageUpload.css'
-import '../../styles/Custom/CustomUpload.css'
-import '../../styles/Custom/CustomResult.css'
+import '../General/ImageUpload.css'
+import './CustomUpload.css'
+import './CustomResult.css'
 
 const CustomFitting = ({ onBackToMain }) => {
     // Custom Fitting 상태
