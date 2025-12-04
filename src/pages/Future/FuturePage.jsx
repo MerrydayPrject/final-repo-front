@@ -629,9 +629,33 @@ const FuturePage = ({ onBackToMain }) => {
         // ref는 useEffect의 클린업에서 처리하므로 여기서는 초기화하지 않음
         // (씬과 렌더러는 useEffect에서 새로 생성됨)
 
-        window.scrollTo(0, 0)
+        // 배포 환경에서 스크롤 위치 복원 문제 해결을 위해 강제로 리셋
+        // 즉시 실행
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+        document.documentElement.scrollTop = 0
+        document.body.scrollTop = 0
+
+        // ScrollTrigger 메모리 클리어
+        try {
+            ScrollTrigger.clearScrollMemory()
+        } catch (e) {
+            // ignore
+        }
+
+        // 약간의 지연 후 다시 한 번 확인 (배포 환경 대응)
+        const scrollResetTimer = setTimeout(() => {
+            window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+            document.documentElement.scrollTop = 0
+            document.body.scrollTop = 0
+            ScrollTrigger.refresh()
+        }, 100)
+
         // ScrollTrigger도 리셋
         ScrollTrigger.refresh()
+
+        return () => {
+            clearTimeout(scrollResetTimer)
+        }
     }, [])
 
     // 마우스 스크롤 다운 아이콘 애니메이션 로드
@@ -659,6 +683,11 @@ const FuturePage = ({ onBackToMain }) => {
 
         // DOM이 렌더링된 후 실행
         timer = setTimeout(() => {
+            // 스크롤 위치 다시 한 번 확인 및 리셋 (배포 환경 대응)
+            window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+            document.documentElement.scrollTop = 0
+            document.body.scrollTop = 0
+
             // 초기 스크롤 다운 아이콘 표시
             if (scrollDownIconRef.current && !controlsEnabledRef.current) {
                 scrollDownIconRef.current.style.display = 'block'
@@ -1003,9 +1032,13 @@ const FuturePage = ({ onBackToMain }) => {
                     // ignore getAll errors
                 }
 
-                // ScrollTrigger 전체 정리
+                // ScrollTrigger 전체 정리 및 스크롤 위치 리셋
                 try {
                     ScrollTrigger.clearScrollMemory();
+                    // 언마운트 시에도 스크롤 위치 리셋
+                    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+                    document.documentElement.scrollTop = 0
+                    document.body.scrollTop = 0
                 } catch (e) {
                     // ignore clearScrollMemory errors
                 }
