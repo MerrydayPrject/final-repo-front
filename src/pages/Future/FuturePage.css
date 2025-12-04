@@ -333,6 +333,7 @@
         flex-direction: column !important;
         align-items: center !important;
         gap: 8px !important;
+        bottom: 70px !important;
     }
 
     #vision1012 .scroll_down_icon .scroll-click-text {
@@ -389,7 +390,7 @@
     }
 
     #vision1012 .scroll_down_icon {
-        bottom: 30px;
+        bottom: 60px !important;
     }
 
     #vision1012 .scroll_down_icon .scroll-down-lottie {
@@ -585,7 +586,7 @@
     }
 
     #vision1012 .scroll_down_icon {
-        bottom: 25px;
+        bottom: 55px !important;
     }
 
     #vision1012 .scroll_down_icon .scroll-down-lottie {
@@ -759,7 +760,7 @@
     }
 
     #vision1012 .scroll_down_icon {
-        bottom: 20px;
+        bottom: 50px !important;
     }
 
     #vision1012 .scroll_down_icon .scroll-down-lottie {
