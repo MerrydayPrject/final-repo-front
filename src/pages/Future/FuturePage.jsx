@@ -173,8 +173,19 @@ const FuturePage = ({ onBackToMain }) => {
             powerPreference: 'high-performance'
         })
         renderer.setSize(width, height)
-        // 최고 화질을 위해 pixelRatio를 최대 3까지 설정
-        const pixelRatio = Math.min(window.devicePixelRatio, 3)
+        // 최고 화질을 위해 pixelRatio 설정
+        // 웹버전에서는 최소 2를 보장하여 고해상도 화면에서도 선명하게 표시
+        const isMobile = window.innerWidth <= 768
+        let pixelRatio = window.devicePixelRatio || 1
+
+        if (!isMobile) {
+            // 웹버전: 최소 2를 보장하되 최대 3까지
+            pixelRatio = Math.max(Math.min(pixelRatio, 3), 2)
+        } else {
+            // 모바일: devicePixelRatio를 그대로 사용하되 최대 3까지
+            pixelRatio = Math.min(pixelRatio, 3)
+        }
+
         renderer.setPixelRatio(pixelRatio)
         renderer.shadowMap.enabled = true
         renderer.shadowMap.type = THREE.PCFSoftShadowMap
@@ -417,8 +428,18 @@ const FuturePage = ({ onBackToMain }) => {
             }
             if (rendererRef.current) {
                 rendererRef.current.setSize(newWidth, newHeight)
-                // 리사이즈 시에도 pixelRatio 유지 (최대 3)
-                const pixelRatio = Math.min(window.devicePixelRatio, 3)
+                // 리사이즈 시에도 pixelRatio 유지
+                const isMobile = window.innerWidth <= 768
+                let pixelRatio = window.devicePixelRatio || 1
+
+                if (!isMobile) {
+                    // 웹버전: 최소 2를 보장하되 최대 3까지
+                    pixelRatio = Math.max(Math.min(pixelRatio, 3), 2)
+                } else {
+                    // 모바일: devicePixelRatio를 그대로 사용하되 최대 3까지
+                    pixelRatio = Math.min(pixelRatio, 3)
+                }
+
                 rendererRef.current.setPixelRatio(pixelRatio)
             }
         }
