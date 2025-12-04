@@ -1,6 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Instrument+Serif:ital@0;1&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Gowun+Batang:wght@400;700&family=Cormorant+Garamond:wght@300;400;500;600&display=swap');
 
+/* 창원단감둥근체 폰트 추가 */
+@font-face {
+    font-family: 'ChangwonDangamRounded';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2511-1@1.0/ChangwonDangamRound-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-display: swap;
+}
+
 :root {
     --mainsize: 1400px;
     --e-font: "Anton", sans-serif;
@@ -14,6 +22,14 @@
     position: relative;
     height: calc(100vh + 1000px);
     /* 뷰포트 높이 + 스크롤 애니메이션 공간 */
+}
+
+/* 모바일에서 하단 공백 제거 */
+@media (max-width: 768px) {
+    #vision1012 {
+        height: calc(100vh + 500px);
+        overflow: visible;
+    }
 }
 
 #vision1012 .full_img {
@@ -125,8 +141,32 @@
 #vision1012 .full_img p {
     font-size: 80px;
     line-height: 1.15;
-    font-family: 'Gowun Batang', 'Cormorant Garamond', 'Playfair Display', serif;
-    font-weight: 500;
+    font-family: 'ChangwonDangamRounded', 'Gowun Batang', 'Cormorant Garamond', 'Playfair Display', serif;
+    font-weight: normal;
+    letter-spacing: 0.08em;
+    color: #8b7a3a;
+    -webkit-text-stroke: 0.8px #ad9f41;
+    text-shadow:
+        0 2px 4px rgba(255, 255, 255, 0.6),
+        0 4px 12px rgba(255, 255, 255, 0.5),
+        0 0 20px rgba(255, 255, 255, 0.4);
+}
+
+/* 웨딩드레스 전체를 하얀색으로, 크기도 키움 */
+#vision1012 .full_img p.btm_txt {
+    font-size: 100px;
+    color: #ffffff;
+    -webkit-text-stroke: 1.5px #ad9f41;
+    text-shadow:
+        0 2px 4px rgba(255, 255, 255, 0.6),
+        0 4px 14px rgba(255, 255, 255, 0.5),
+        0 0 22px rgba(255, 255, 255, 0.4);
+}
+
+#vision1012 .full_img p.top_txt span {
+    font-size: 80px;
+    font-family: 'ChangwonDangamRounded', 'Gowun Batang', 'Cormorant Garamond', 'Playfair Display', serif;
+    font-weight: normal;
     letter-spacing: 0.08em;
     color: #8b7a3a;
     -webkit-text-stroke: 1.5px #ad9f41;
@@ -136,12 +176,12 @@
         0 0 20px rgba(255, 255, 255, 0.4);
 }
 
-#vision1012 .full_img p.top_txt span {
+#vision1012 .full_img p span {
     font-size: 92px;
-    font-family: 'Gowun Batang', 'Cormorant Garamond', 'Playfair Display', serif;
-    font-weight: 600;
+    font-family: 'ChangwonDangamRounded', 'Gowun Batang', 'Cormorant Garamond', 'Playfair Display', serif;
+    font-weight: normal;
     letter-spacing: 0.1em;
-    color: #ffffff;
+    color: #8b7a3a;
     -webkit-text-stroke: 1.5px #ad9f41;
     text-shadow:
         0 2px 4px rgba(255, 255, 255, 0.6),
@@ -149,13 +189,11 @@
         0 0 22px rgba(255, 255, 255, 0.4);
 }
 
-#vision1012 .full_img p span {
-    font-size: 92px;
-    font-family: 'Gowun Batang', 'Cormorant Garamond', 'Playfair Display', serif;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    color: #8b7a3a;
-    -webkit-text-stroke: 1.5px #ad9f41;
+/* 3D 웨딩드레스의 '3D' 부분만 새로운 경험과 같은 색상으로, 크기도 키움 */
+#vision1012 .full_img p.btm_txt span {
+    font-size: 110px;
+    color: #ffffff;
+    -webkit-text-stroke: 0.8px #ad9f41;
     text-shadow:
         0 2px 4px rgba(255, 255, 255, 0.6),
         0 4px 14px rgba(255, 255, 255, 0.5),
@@ -288,6 +326,8 @@
 @media (max-width: 768px) {
     #vision1012 .full_img p {
         font-size: 32px;
+        font-family: 'ChangwonDangamRounded', 'Gowun Batang', 'Cormorant Garamond', 'Playfair Display', serif;
+        font-weight: normal;
         color: #8b7a3a;
         -webkit-text-stroke: 1.5px #ad9f41;
         text-shadow:
@@ -298,6 +338,8 @@
 
     #vision1012 .full_img p span {
         font-size: 40px;
+        font-family: 'ChangwonDangamRounded', 'Gowun Batang', 'Cormorant Garamond', 'Playfair Display', serif;
+        font-weight: normal;
         color: #8b7a3a;
         -webkit-text-stroke: 1.5px #ad9f41;
         text-shadow:
@@ -306,9 +348,18 @@
             0 0 15px rgba(173, 159, 65, 0.2);
     }
 
-    /* 모바일(태블릿)에서 '3D기능'도 함께 축소 */
+    /* 모바일(태블릿)에서 '새로운 경험' 크기를 '곧 만나게 될'과 동일하게 */
     #vision1012 .full_img p.top_txt span {
+        font-size: 20px !important;
+    }
+
+    /* 모바일(태블릿)에서 '3D 웨딩드레스' 크기 키움 */
+    #vision1012 .full_img p.btm_txt {
         font-size: 40px;
+    }
+
+    #vision1012 .full_img p.btm_txt span {
+        font-size: 44px;
     }
 
     #vision1012 .b_txt {
@@ -321,7 +372,9 @@
 
     #vision1012 .b_txt .top_txt {
         will-change: transform !important;
-        font-size: 24px !important;
+        font-size: 20px !important;
+        font-family: 'Danjo', 'Gowun Batang', 'Cormorant Garamond', 'Playfair Display', serif !important;
+        font-weight: normal !important;
         display: block !important;
         visibility: visible !important;
         opacity: 1 !important;
@@ -335,29 +388,36 @@
     }
 
     #vision1012 .b_txt .top_txt span {
-        font-size: 28px !important;
-        color: #ffffff !important;
+        font-size: 20px !important;
+        font-family: 'Danjo', 'Gowun Batang', 'Cormorant Garamond', 'Playfair Display', serif !important;
+        font-weight: normal !important;
+        color: #8b7a3a !important;
         -webkit-text-stroke: 1.5px #ad9f41 !important;
     }
 
     #vision1012 .b_txt .btm_txt {
         will-change: transform !important;
-        font-size: 24px !important;
+        font-size: 30px !important;
+        font-family: 'Danjo', 'Gowun Batang', 'Cormorant Garamond', 'Playfair Display', serif !important;
+        font-weight: normal !important;
         display: block !important;
         visibility: visible !important;
         opacity: 1 !important;
-        color: #8b7a3a !important;
+        color: #ffffff !important;
         -webkit-text-stroke: 1.5px #ad9f41 !important;
         text-shadow:
-            0 2px 4px rgba(0, 0, 0, 0.3),
-            0 4px 8px rgba(0, 0, 0, 0.4),
-            0 0 15px rgba(173, 159, 65, 0.2) !important;
+            0 2px 4px rgba(255, 255, 255, 0.6),
+            0 4px 14px rgba(255, 255, 255, 0.5),
+            0 0 22px rgba(255, 255, 255, 0.4) !important;
         white-space: nowrap !important;
     }
 
     #vision1012 .b_txt .btm_txt span {
-        font-size: 28px !important;
-        color: #8b7a3a !important;
+        font-size: 32px !important;
+        font-family: 'Danjo', 'Gowun Batang', 'Cormorant Garamond', 'Playfair Display', serif !important;
+        font-weight: normal !important;
+        color: #ffffff !important;
+        -webkit-text-stroke: 1.5px #ad9f41 !important;
     }
 
     #vision1012 .instruction_txt {
@@ -399,8 +459,10 @@
 
     #vision1012 .full_img p {
         font-size: 45px !important;
+        font-family: 'Danjo', 'Gowun Batang', 'Cormorant Garamond', 'Playfair Display', serif !important;
+        font-weight: normal !important;
         color: #8b7a3a !important;
-        -webkit-text-stroke: 1.5px #ad9f41 !important;
+        -webkit-text-stroke: 0.8px #ad9f41 !important;
         text-shadow:
             0 2px 3px rgba(0, 0, 0, 0.3),
             0 3px 6px rgba(0, 0, 0, 0.4),
@@ -409,6 +471,8 @@
 
     #vision1012 .full_img p span {
         font-size: 36px !important;
+        font-family: 'Danjo', 'Gowun Batang', 'Cormorant Garamond', 'Playfair Display', serif !important;
+        font-weight: normal !important;
         color: #8b7a3a !important;
         -webkit-text-stroke: 1.5px #ad9f41 !important;
         text-shadow:
@@ -417,9 +481,20 @@
             0 0 12px rgba(173, 159, 65, 0.2) !important;
     }
 
-    /* 모바일(폰)에서 '3D기능'도 함께 축소 */
+    /* 모바일(폰)에서 '새로운 경험' 크기를 '곧 만나게 될'과 동일하게 */
     #vision1012 .full_img p.top_txt span {
-        font-size: 36px !important;
+        font-size: 24px !important;
+        font-family: 'Danjo', 'Gowun Batang', 'Cormorant Garamond', 'Playfair Display', serif !important;
+        font-weight: normal !important;
+    }
+
+    /* 모바일(폰)에서 '3D 웨딩드레스' 크기 키움 */
+    #vision1012 .full_img p.btm_txt {
+        font-size: 40px !important;
+    }
+
+    #vision1012 .full_img p.btm_txt span {
+        font-size: 45px !important;
     }
 
     #vision1012 .b_txt {
@@ -432,7 +507,9 @@
 
     #vision1012 .b_txt .top_txt {
         will-change: transform !important;
-        font-size: 30px !important;
+        font-size: 24px !important;
+        font-family: 'Danjo', 'Gowun Batang', 'Cormorant Garamond', 'Playfair Display', serif !important;
+        font-weight: normal !important;
         display: block !important;
         visibility: visible !important;
         opacity: 1 !important;
@@ -446,29 +523,36 @@
     }
 
     #vision1012 .b_txt .top_txt span {
-        font-size: 36px !important;
-        color: #ffffff !important;
+        font-size: 24px !important;
+        font-family: 'Danjo', 'Gowun Batang', 'Cormorant Garamond', 'Playfair Display', serif !important;
+        font-weight: normal !important;
+        color: #8b7a3a !important;
         -webkit-text-stroke: 1.5px #ad9f41 !important;
     }
 
     #vision1012 .b_txt .btm_txt {
         will-change: transform !important;
-        font-size: 30px !important;
+        font-size: 36px !important;
+        font-family: 'Danjo', 'Gowun Batang', 'Cormorant Garamond', 'Playfair Display', serif !important;
+        font-weight: normal !important;
         display: block !important;
         visibility: visible !important;
         opacity: 1 !important;
-        color: #8b7a3a !important;
+        color: #ffffff !important;
         -webkit-text-stroke: 1.5px #ad9f41 !important;
         text-shadow:
-            0 2px 3px rgba(0, 0, 0, 0.3),
-            0 3px 6px rgba(0, 0, 0, 0.4),
-            0 0 12px rgba(173, 159, 65, 0.2) !important;
+            0 2px 4px rgba(255, 255, 255, 0.6),
+            0 4px 14px rgba(255, 255, 255, 0.5),
+            0 0 22px rgba(255, 255, 255, 0.4) !important;
         white-space: nowrap !important;
     }
 
     #vision1012 .b_txt .btm_txt span {
-        font-size: 36px !important;
-        color: #8b7a3a !important;
+        font-size: 40px !important;
+        font-family: 'Danjo', 'Gowun Batang', 'Cormorant Garamond', 'Playfair Display', serif !important;
+        font-weight: normal !important;
+        color: #ffffff !important;
+        -webkit-text-stroke: 1.5px #ad9f41 !important;
     }
 
     #vision1012 .instruction_txt {

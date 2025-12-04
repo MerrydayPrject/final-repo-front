@@ -376,38 +376,28 @@ const FuturePage = ({ onBackToMain }) => {
                 // 모델 로드 후 자동회전은 즉시 시작됨 (애니메이션 루프에서 처리)
                 // 드래그 컨트롤은 ScrollTrigger 완료 후 활성화되지만,
                 // 모델이 로드된 후 일정 시간이 지나면 자동으로 활성화 (안전장치)
-                const isMobile = window.innerWidth <= 768
-
-                // 모바일에서는 즉시 활성화, 웹버전은 ScrollTrigger 대기
-                if (isMobile) {
-                    // 모바일에서는 즉시 활성화
-                    if (modelRef.current) {
-                        controlsEnabledRef.current = true
-                    }
-                } else {
-                    // 웹버전은 기존 로직 유지
-                    setTimeout(() => {
-                        if (modelRef.current && !controlsEnabledRef.current) {
-                            // ScrollTrigger가 아직 완료되지 않았어도 모델이 로드되었으면 컨트롤 활성화
-                            // (사용자가 스크롤하지 않고 바로 드래그할 수 있도록)
-                            const allTriggers = ScrollTrigger.getAll()
-                            const bgTrigger = allTriggers.find(trigger => {
-                                try {
-                                    return trigger.vars &&
-                                        (trigger.vars.trigger === fullImgRef.current ||
-                                            trigger.trigger === fullImgRef.current)
-                                } catch (e) {
-                                    return false
-                                }
-                            })
-
-                            // ScrollTrigger가 없거나 progress가 0.95 이상이면 활성화
-                            if (!bgTrigger || (bgTrigger.progress && bgTrigger.progress >= 0.95)) {
-                                controlsEnabledRef.current = true
+                // 모바일과 웹버전 모두 ScrollTrigger 대기
+                setTimeout(() => {
+                    if (modelRef.current && !controlsEnabledRef.current) {
+                        // ScrollTrigger가 아직 완료되지 않았어도 모델이 로드되었으면 컨트롤 활성화
+                        // (사용자가 스크롤하지 않고 바로 드래그할 수 있도록)
+                        const allTriggers = ScrollTrigger.getAll()
+                        const bgTrigger = allTriggers.find(trigger => {
+                            try {
+                                return trigger.vars &&
+                                    (trigger.vars.trigger === fullImgRef.current ||
+                                        trigger.trigger === fullImgRef.current)
+                            } catch (e) {
+                                return false
                             }
+                        })
+
+                        // ScrollTrigger가 없거나 progress가 0.95 이상이면 활성화
+                        if (!bgTrigger || (bgTrigger.progress && bgTrigger.progress >= 0.95)) {
+                            controlsEnabledRef.current = true
                         }
-                    }, 500) // 0.5초 후 안전장치로 활성화
-                }
+                    }
+                }, 500) // 0.5초 후 안전장치로 활성화
             },
             undefined,
             (error) => {
@@ -705,13 +695,17 @@ const FuturePage = ({ onBackToMain }) => {
             if (visionRef.current && fullImgRef.current && isMounted) {
                 // 부모 노드가 존재하는지 확인
                 if (visionRef.current.parentNode && fullImgRef.current.parentNode) {
+                    // 모바일에서는 스크롤 범위 제한
+                    const isMobile = window.innerWidth <= 768
+                    const pinEnd = isMobile ? "+=500" : "bottom bottom"
+
                     const pinAnimation = gsap.to(fullImgRef.current, {
                         scrollTrigger: {
                             trigger: visionRef.current,
                             pin: true,
                             scrub: 0.5,
                             start: "top top",
-                            end: "bottom bottom",
+                            end: pinEnd,
                             pinSpacing: false,
                             invalidateOnRefresh: true,
                             anticipatePin: 1,
@@ -727,27 +721,29 @@ const FuturePage = ({ onBackToMain }) => {
 
             // 3D 뷰어 확대 및 clip-path 애니메이션
             if (bgRef.current && fullImgRef.current && isMounted) {
+                // 모바일에서는 스크롤 범위 제한
+                const isMobile = window.innerWidth <= 768
+                const scrollEnd = isMobile ? "+=500" : "+=1000"
+
                 const bgAnimation = gsap.to(bgRef.current, {
                     clipPath: "inset(0% 0% 0% 0%)",
                     scale: 1.3,
                     scrollTrigger: {
                         trigger: fullImgRef.current,
                         start: "top top",
-                        end: "+=1000",
+                        end: scrollEnd,
                         scrub: 0.5,
                         onEnter: () => {
                             // 스크롤이 시작될 때 모델이 이미 로드되어 있으면 컨트롤 활성화
-                            const isMobile = window.innerWidth <= 768
+                            // 모바일과 웹버전 모두 동일하게 처리
                             if (modelRef.current) {
-                                // 모바일에서는 즉시 활성화, 웹버전도 활성화
                                 controlsEnabledRef.current = true
                             }
                         },
                         onComplete: () => {
                             // 애니메이션 완료 시 컨트롤 활성화 (강제로 활성화)
-                            const isMobile = window.innerWidth <= 768
+                            // 모바일과 웹버전 모두 동일하게 처리
                             if (modelRef.current) {
-                                // 모바일과 웹버전 모두 활성화
                                 controlsEnabledRef.current = true
                             }
 
@@ -776,10 +772,8 @@ const FuturePage = ({ onBackToMain }) => {
                         },
                         onUpdate: (self) => {
                             // 스크롤이 끝에 도달했을 때 (progress >= 0.98로 더 엄격하게)
-                            const isMobile = window.innerWidth <= 768
-                            // 모바일에서는 progress가 0.5 이상이면 활성화, 웹버전은 0.98 이상
-                            const threshold = isMobile ? 0.5 : 0.98
-                            if (self.progress >= threshold) {
+                            // 모바일과 웹버전 모두 동일한 기준 적용
+                            if (self.progress >= 0.98) {
                                 // 컨트롤 강제 활성화 (모델이 로드되었는지 확인)
                                 if (modelRef.current) {
                                     controlsEnabledRef.current = true
@@ -884,6 +878,9 @@ const FuturePage = ({ onBackToMain }) => {
                     immediateRender: true
                 })
 
+                // 모바일에서는 스크롤 범위 제한
+                const scrollEnd = isMobile ? "+=500" : "+=1000"
+
                 const topTxtAnimation = gsap.to(topTxtRef.current, {
                     x: endX, // 화면 크기에 따라 다른 값
                     opacity: 0,
@@ -892,7 +889,7 @@ const FuturePage = ({ onBackToMain }) => {
                     scrollTrigger: {
                         trigger: fullImgRef.current,
                         start: "top top",
-                        end: "+=1000",
+                        end: scrollEnd,
                         scrub: 1,
                         invalidateOnRefresh: true,
                         refreshPriority: -1,
@@ -934,6 +931,9 @@ const FuturePage = ({ onBackToMain }) => {
                     immediateRender: true
                 })
 
+                // 모바일에서는 스크롤 범위 제한
+                const scrollEnd = isMobile ? "+=500" : "+=1000"
+
                 const btmTxtAnimation = gsap.to(btmTxtRef.current, {
                     x: endX, // 화면 크기에 따라 다른 값
                     opacity: 0,
@@ -942,7 +942,7 @@ const FuturePage = ({ onBackToMain }) => {
                     scrollTrigger: {
                         trigger: fullImgRef.current,
                         start: "top top",
-                        end: "+=1000",
+                        end: scrollEnd,
                         scrub: 1,
                         invalidateOnRefresh: true,
                         refreshPriority: -1,
@@ -1074,8 +1074,8 @@ const FuturePage = ({ onBackToMain }) => {
                     </div>
                 )}
                 <div className="b_txt">
-                    <p className="top_txt" ref={topTxtRef}>웨딩드레스 <span>3D기능</span></p>
-                    <p className="btm_txt" ref={btmTxtRef}><span>곧</span> 만나보세요</p>
+                    <p className="top_txt" ref={topTxtRef}>곧 만나게 될 <span>새로운 경험</span></p>
+                    <p className="btm_txt" ref={btmTxtRef}><span>3D</span>웨딩드레스</p>
                 </div>
                 <div className="instruction_txt" ref={instructionRef}>
                     <p>드래그하여 드레스를 둘러보세요</p>
