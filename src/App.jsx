@@ -120,6 +120,7 @@ function App() {
             )}
             {currentPage === 'future' && (
                 <FuturePage
+                    key="future-page"
                     onBackToMain={handleBackToMain}
                 />
             )}

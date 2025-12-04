@@ -1,87 +1,498 @@
-.future-page {
-    min-height: 100vh;
-    padding-top: 80px;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Instrument+Serif:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Gowun+Batang:wght@400;700&family=Cormorant+Garamond:wght@300;400;500;600&display=swap');
+
+:root {
+    --mainsize: 1400px;
+    --e-font: "Anton", sans-serif;
+    --p-font: "Instrument Serif", serif;
 }
 
-.future-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 60px 20px;
-}
-
-.future-title {
-    font-size: 3rem;
-    font-weight: 700;
+#vision1012 {
+    overflow: visible;
     text-align: center;
-    margin-bottom: 40px;
-    color: #2c3e50;
-    letter-spacing: 2px;
+    background: #f5f1e8;
+    position: relative;
+    height: calc(100vh + 1000px);
+    /* 뷰포트 높이 + 스크롤 애니메이션 공간 */
 }
 
-.future-content {
-    background: white;
-    border-radius: 20px;
-    padding: 60px 40px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+#vision1012 .full_img {
+    position: relative;
+    overflow: hidden;
+    height: 100vh;
 }
 
-.future-description {
-    font-size: 1.2rem;
-    text-align: center;
-    color: #555;
-    margin-bottom: 50px;
-    line-height: 1.8;
+
+#vision1012 .full_img .bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    clip-path: inset(30% 30% 30% 30%);
+    z-index: 0;
+    transition: all 0.3s;
+    transform: translate(-50%, -50%);
 }
 
-.future-sections {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 40px;
-    margin-top: 40px;
+/* 3D 로딩 중 전체 화면 블러 처리 */
+#vision1012 .full_img:has(.future-loading-overlay) .bg {
+    filter: blur(15px);
+    transition: filter 0.4s ease;
 }
 
-.future-section {
-    padding: 30px;
-    background: #f8f9fa;
-    border-radius: 15px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+#vision1012 .full_img:has(.future-loading-overlay) .b_txt {
+    filter: blur(15px);
+    transition: filter 0.4s ease;
 }
 
-.future-section:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+#vision1012 .full_img .bg.bg-loading {
+    filter: blur(10px);
+    transform: translate(-50%, -50%) scale(1.02);
+    transition: filter 0.4s ease, transform 0.4s ease;
 }
 
-.future-section h2 {
-    font-size: 1.8rem;
-    color: #2c3e50;
-    margin-bottom: 20px;
-    border-bottom: 3px solid #3498db;
-    padding-bottom: 10px;
+/* 3D 로딩 오버레이 */
+#vision1012 .future-loading-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    z-index: 999 !important;
+    pointer-events: none;
+    background: rgba(0, 0, 0, 0.1);
+    filter: none !important;
 }
 
-.future-section p {
-    font-size: 1rem;
-    color: #666;
-    line-height: 1.8;
+#vision1012 .future-loading-inner {
+    position: relative;
+    z-index: 1000 !important;
+    background: transparent !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    backdrop-filter: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#vision1012 .future-loading-overlay .future-loading-inner .future-loading-title,
+#vision1012 .future-loading-title {
+    margin: 0 !important;
+    font-family: 'Gowun Batang', 'Cormorant Garamond', 'Playfair Display', serif !important;
+    font-size: 20px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.08em !important;
+    color: #ffffff !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    z-index: 1001 !important;
+    position: relative;
+    filter: none !important;
+    -webkit-text-stroke: 0 !important;
+    text-shadow: none !important;
+}
+
+#vision1012 .future-loading-overlay .future-loading-inner .future-loading-sub,
+#vision1012 .future-loading-sub {
+    margin: 2px 0 0 !important;
+    font-family: 'Gowun Batang', 'Cormorant Garamond', 'Playfair Display', serif !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    letter-spacing: 0.06em !important;
+    color: #ffffff !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    z-index: 1001 !important;
+    position: relative;
+    filter: none !important;
+    -webkit-text-stroke: 0 !important;
+    text-shadow: none !important;
+}
+
+#vision1012 .full_img .bg .future-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+#vision1012 .full_img p {
+    font-size: 80px;
+    line-height: 1.15;
+    font-family: 'Gowun Batang', 'Cormorant Garamond', 'Playfair Display', serif;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: #8b7a3a;
+    -webkit-text-stroke: 1.5px #ad9f41;
+    text-shadow:
+        0 2px 4px rgba(255, 255, 255, 0.6),
+        0 4px 12px rgba(255, 255, 255, 0.5),
+        0 0 20px rgba(255, 255, 255, 0.4);
+}
+
+#vision1012 .full_img p.top_txt span {
+    font-size: 92px;
+    font-family: 'Gowun Batang', 'Cormorant Garamond', 'Playfair Display', serif;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: #ffffff;
+    -webkit-text-stroke: 1.5px #ad9f41;
+    text-shadow:
+        0 2px 4px rgba(255, 255, 255, 0.6),
+        0 4px 14px rgba(255, 255, 255, 0.5),
+        0 0 22px rgba(255, 255, 255, 0.4);
+}
+
+#vision1012 .full_img p span {
+    font-size: 92px;
+    font-family: 'Gowun Batang', 'Cormorant Garamond', 'Playfair Display', serif;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: #8b7a3a;
+    -webkit-text-stroke: 1.5px #ad9f41;
+    text-shadow:
+        0 2px 4px rgba(255, 255, 255, 0.6),
+        0 4px 14px rgba(255, 255, 255, 0.5),
+        0 0 22px rgba(255, 255, 255, 0.4);
+}
+
+#vision1012 .b_txt {
+    position: absolute;
+    z-index: 10;
+    top: 50%;
+    left: 50%;
+    color: #fff;
+    transform: translate(-50%, -50%);
+}
+
+#vision1012 .b_txt .top_txt {
+    transform: translateX(-350px);
+    cursor: default;
+}
+
+#vision1012 .b_txt .btm_txt {
+    transform: translateX(350px);
+    cursor: default;
+}
+
+#vision1012 .instruction_txt {
+    position: absolute;
+    bottom: 60px;
+    left: 60px;
+    z-index: 20;
+    display: none;
+    text-align: left;
+    pointer-events: none;
+}
+
+#vision1012 .instruction_txt p {
+    font-family: 'Gowun Batang', 'Cormorant Garamond', 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: #ffffff !important;
+    margin: 0;
+    -webkit-text-stroke: 0 !important;
+    text-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(0, 0, 0, 0.3) !important;
+    letter-spacing: 0.03em;
+    line-height: 1.6;
+}
+
+#vision1012 .instruction_txt p.sub {
+    font-size: 14px;
+    font-weight: 400;
+    margin-top: 6px;
+    opacity: 0.9;
+    color: #ffffff !important;
+    -webkit-text-stroke: 0 !important;
+    text-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+#vision1012 .scroll_down_icon {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 15;
+    display: none;
+    pointer-events: none;
+}
+
+/* 로딩 중일 때 스크롤 다운 아이콘 숨김 */
+#vision1012 .full_img:has(.future-loading-overlay) .scroll_down_icon {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
+#vision1012 .scroll_down_icon .scroll-down-lottie {
+    width: 50px;
+    height: 90px;
+    opacity: 0.9;
+}
+
+/* 반응형 [s] */
+@media (max-width: 1024px) {
+    #vision1012 .b_txt {
+        width: 100%;
+    }
+
+    #vision1012 .b_txt .top_txt {
+        transform: translateX(-200px);
+    }
+
+    #vision1012 .b_txt .btm_txt {
+        transform: translateX(200px);
+    }
+
+    #vision1012 .instruction_txt {
+        bottom: 50px;
+        left: 40px;
+    }
+
+    #vision1012 .instruction_txt p {
+        font-size: 18px;
+    }
+
+    #vision1012 .instruction_txt p.sub {
+        font-size: 13px;
+    }
+
+    #vision1012 .scroll_down_icon {
+        bottom: 30px;
+    }
+
+    #vision1012 .scroll_down_icon .scroll-down-lottie {
+        width: 40px;
+        height: 72px;
+    }
+
+    #vision1012 .full_img p {
+        font-size: 50px;
+    }
+
+    #vision1012 .full_img p span {
+        font-size: 65px;
+    }
 }
 
 @media (max-width: 768px) {
-    .future-title {
-        font-size: 2rem;
+    #vision1012 .full_img p {
+        font-size: 32px;
+        color: #8b7a3a;
+        -webkit-text-stroke: 1.5px #ad9f41;
+        text-shadow:
+            0 2px 4px rgba(0, 0, 0, 0.3),
+            0 4px 8px rgba(0, 0, 0, 0.4),
+            0 0 15px rgba(173, 159, 65, 0.2);
     }
 
-    .future-content {
-        padding: 40px 20px;
+    #vision1012 .full_img p span {
+        font-size: 40px;
+        color: #8b7a3a;
+        -webkit-text-stroke: 1.5px #ad9f41;
+        text-shadow:
+            0 2px 4px rgba(0, 0, 0, 0.3),
+            0 4px 8px rgba(0, 0, 0, 0.4),
+            0 0 15px rgba(173, 159, 65, 0.2);
     }
 
-    .future-sections {
-        grid-template-columns: 1fr;
-        gap: 30px;
+    /* 모바일(태블릿)에서 '3D기능'도 함께 축소 */
+    #vision1012 .full_img p.top_txt span {
+        font-size: 40px;
     }
 
-    .future-section {
-        padding: 20px;
+    #vision1012 .b_txt {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: absolute !important;
+        z-index: 10 !important;
+    }
+
+    #vision1012 .b_txt .top_txt {
+        will-change: transform !important;
+        font-size: 24px !important;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        color: #8b7a3a !important;
+        -webkit-text-stroke: 1.5px #ad9f41 !important;
+        text-shadow:
+            0 2px 4px rgba(0, 0, 0, 0.3),
+            0 4px 8px rgba(0, 0, 0, 0.4),
+            0 0 15px rgba(173, 159, 65, 0.2) !important;
+        white-space: nowrap !important;
+    }
+
+    #vision1012 .b_txt .top_txt span {
+        font-size: 28px !important;
+        color: #ffffff !important;
+        -webkit-text-stroke: 1.5px #ad9f41 !important;
+    }
+
+    #vision1012 .b_txt .btm_txt {
+        will-change: transform !important;
+        font-size: 24px !important;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        color: #8b7a3a !important;
+        -webkit-text-stroke: 1.5px #ad9f41 !important;
+        text-shadow:
+            0 2px 4px rgba(0, 0, 0, 0.3),
+            0 4px 8px rgba(0, 0, 0, 0.4),
+            0 0 15px rgba(173, 159, 65, 0.2) !important;
+        white-space: nowrap !important;
+    }
+
+    #vision1012 .b_txt .btm_txt span {
+        font-size: 28px !important;
+        color: #8b7a3a !important;
+    }
+
+    #vision1012 .instruction_txt {
+        bottom: 20px;
+        left: 20px;
+    }
+
+    #vision1012 .instruction_txt p {
+        font-size: 14px !important;
+        color: #ffffff !important;
+        -webkit-text-stroke: 0 !important;
+        text-shadow: none !important;
+    }
+
+    #vision1012 .full_img .instruction_txt p {
+        color: #ffffff !important;
+        -webkit-text-stroke: 0 !important;
+        text-shadow: none !important;
+    }
+
+    #vision1012 .instruction_txt p.sub {
+        display: none !important;
+    }
+
+    #vision1012 .scroll_down_icon {
+        bottom: 25px;
+    }
+
+    #vision1012 .scroll_down_icon .scroll-down-lottie {
+        width: 35px;
+        height: 64px;
     }
 }
+
+@media (max-width: 480px) {
+    #vision1012 {
+        font-size: 14px;
+    }
+
+    #vision1012 .full_img p {
+        font-size: 45px !important;
+        color: #8b7a3a !important;
+        -webkit-text-stroke: 1.5px #ad9f41 !important;
+        text-shadow:
+            0 2px 3px rgba(0, 0, 0, 0.3),
+            0 3px 6px rgba(0, 0, 0, 0.4),
+            0 0 12px rgba(173, 159, 65, 0.2) !important;
+    }
+
+    #vision1012 .full_img p span {
+        font-size: 36px !important;
+        color: #8b7a3a !important;
+        -webkit-text-stroke: 1.5px #ad9f41 !important;
+        text-shadow:
+            0 2px 3px rgba(0, 0, 0, 0.3),
+            0 3px 6px rgba(0, 0, 0, 0.4),
+            0 0 12px rgba(173, 159, 65, 0.2) !important;
+    }
+
+    /* 모바일(폰)에서 '3D기능'도 함께 축소 */
+    #vision1012 .full_img p.top_txt span {
+        font-size: 36px !important;
+    }
+
+    #vision1012 .b_txt {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: absolute !important;
+        z-index: 10 !important;
+    }
+
+    #vision1012 .b_txt .top_txt {
+        will-change: transform !important;
+        font-size: 30px !important;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        color: #8b7a3a !important;
+        -webkit-text-stroke: 1.5px #ad9f41 !important;
+        text-shadow:
+            0 2px 3px rgba(0, 0, 0, 0.3),
+            0 3px 6px rgba(0, 0, 0, 0.4),
+            0 0 12px rgba(173, 159, 65, 0.2) !important;
+        white-space: nowrap !important;
+    }
+
+    #vision1012 .b_txt .top_txt span {
+        font-size: 36px !important;
+        color: #ffffff !important;
+        -webkit-text-stroke: 1.5px #ad9f41 !important;
+    }
+
+    #vision1012 .b_txt .btm_txt {
+        will-change: transform !important;
+        font-size: 30px !important;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        color: #8b7a3a !important;
+        -webkit-text-stroke: 1.5px #ad9f41 !important;
+        text-shadow:
+            0 2px 3px rgba(0, 0, 0, 0.3),
+            0 3px 6px rgba(0, 0, 0, 0.4),
+            0 0 12px rgba(173, 159, 65, 0.2) !important;
+        white-space: nowrap !important;
+    }
+
+    #vision1012 .b_txt .btm_txt span {
+        font-size: 36px !important;
+        color: #8b7a3a !important;
+    }
+
+    #vision1012 .instruction_txt {
+        bottom: 20px;
+        left: 15px;
+    }
+
+    #vision1012 .instruction_txt p {
+        font-size: 14px !important;
+        color: #ffffff !important;
+    }
+
+    #vision1012 .instruction_txt p.sub {
+        display: none !important;
+    }
+
+    #vision1012 .scroll_down_icon {
+        bottom: 20px;
+    }
+
+    #vision1012 .scroll_down_icon .scroll-down-lottie {
+        width: 30px;
+        height: 56px;
+    }
+}
+
+/* 반응형 [e] */
