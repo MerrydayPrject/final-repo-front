@@ -40,15 +40,15 @@ const FuturePage = ({ onBackToMain }) => {
         scene.background = new THREE.Color(0x111111)
         sceneRef.current = scene
 
-        // 스튜디오 조명 설정 (밝게)
-        const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x444444, 1.2)
+        // 스튜디오 조명 설정 (천 느낌을 위해 부드러운 조명)
+        const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.9)
         hemisphereLight.position.set(0, 4, 0)
         scene.add(hemisphereLight)
 
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8)
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6)
         scene.add(ambientLight)
 
-        const directionalLight1 = new THREE.DirectionalLight(0xffffff, 1.5)
+        const directionalLight1 = new THREE.DirectionalLight(0xffffff, 1.0)
         directionalLight1.position.set(1.5, 5, 2)
         directionalLight1.castShadow = true
         directionalLight1.shadow.mapSize.width = 4096
@@ -58,7 +58,7 @@ const FuturePage = ({ onBackToMain }) => {
         directionalLight1.shadow.radius = 8
         scene.add(directionalLight1)
 
-        const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.8)
+        const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.6)
         directionalLight2.position.set(0, 3, 3)
         directionalLight2.castShadow = true
         directionalLight2.shadow.mapSize.width = 4096
@@ -66,15 +66,15 @@ const FuturePage = ({ onBackToMain }) => {
         directionalLight2.shadow.radius = 8
         scene.add(directionalLight2)
 
-        const directionalLight3 = new THREE.DirectionalLight(0xffffff, 0.6)
+        const directionalLight3 = new THREE.DirectionalLight(0xffffff, 0.4)
         directionalLight3.position.set(-2, 3, -2)
         scene.add(directionalLight3)
 
-        const pointLight1 = new THREE.PointLight(0xffffff, 1.0, 10)
+        const pointLight1 = new THREE.PointLight(0xffffff, 0.7, 10)
         pointLight1.position.set(2, 2, 1)
         scene.add(pointLight1)
 
-        const pointLight2 = new THREE.PointLight(0xffffff, 0.8, 10)
+        const pointLight2 = new THREE.PointLight(0xffffff, 0.6, 10)
         pointLight2.position.set(-2, 2, 1)
         scene.add(pointLight2)
 
@@ -145,7 +145,7 @@ const FuturePage = ({ onBackToMain }) => {
                     texture.magFilter = THREE.LinearFilter
                     texture.generateMipmaps = false
                     scene.environment = texture
-                    scene.environmentIntensity = 2.0
+                    scene.environmentIntensity = 0.3  // 환경맵 강도 대폭 감소 (천 느낌)
                     scene.background = new THREE.Color(0x111111)
                 },
                 undefined,
@@ -326,16 +326,31 @@ const FuturePage = ({ onBackToMain }) => {
                                 }
                             }
 
+                            // 천 느낌을 위해 반사 최소화
                             if (mat.roughness !== undefined) {
-                                mat.roughness = 1.0
+                                mat.roughness = 1.0  // 최대 거칠기 (반사 최소)
                             }
 
                             if (mat.metalness !== undefined) {
-                                mat.metalness = 0.0
+                                mat.metalness = 0.0  // 비금속 (천 재질)
                             }
 
                             if (mat.envMapIntensity !== undefined) {
-                                mat.envMapIntensity = 0.0
+                                mat.envMapIntensity = 0.0  // 환경맵 반사 제거
+                            }
+
+                            // 추가 반사 제거 설정
+                            if (mat.specular !== undefined) {
+                                mat.specular = new THREE.Color(0x000000)  // 스펙큘러 반사 제거
+                            }
+
+                            // clearcoat 제거 (반짝임 효과 제거)
+                            if (mat.clearcoat !== undefined) {
+                                mat.clearcoat = 0.0
+                            }
+
+                            if (mat.clearcoatRoughness !== undefined) {
+                                mat.clearcoatRoughness = 1.0
                             }
 
                             if (mat.specular !== undefined) {
