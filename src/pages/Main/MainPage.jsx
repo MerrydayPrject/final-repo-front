@@ -14,6 +14,18 @@ const MainPage = ({ onNavigateToFitting, onNavigateToGeneral, onNavigateToCustom
     const [showBetaModal, setShowBetaModal] = useState(false)
 
     useEffect(() => {
+        // 새로고침 시 스크롤을 맨 위로 리셋
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+        document.documentElement.scrollTop = 0
+        document.body.scrollTop = 0
+
+        // 약간의 지연 후 다시 한 번 확인 (배포 환경 대응)
+        const scrollResetTimer = setTimeout(() => {
+            window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+            document.documentElement.scrollTop = 0
+            document.body.scrollTop = 0
+        }, 100)
+
         // sessionStorage에서 이미 모달을 봤는지 확인
         const hasSeenBetaModal = sessionStorage.getItem('hasSeenBetaModal')
 
@@ -27,7 +39,14 @@ const MainPage = ({ onNavigateToFitting, onNavigateToGeneral, onNavigateToCustom
                 })
             }, 2000)
 
-            return () => clearTimeout(timer)
+            return () => {
+                clearTimeout(timer)
+                clearTimeout(scrollResetTimer)
+            }
+        }
+
+        return () => {
+            clearTimeout(scrollResetTimer)
         }
         // 새로고침 시에는 sessionStorage에 값이 있어서 모달이 안 뜨고, 카운팅도 안 됨
     }, [])
