@@ -3,7 +3,7 @@ import Lottie from 'lottie-react'
 import { MdOutlineDownload } from 'react-icons/md'
 import Modal from '../../components/Modal/Modal'
 import ReviewModal from '../../components/ReviewModal/ReviewModal'
-import { customV5V5MatchImage, applyImageFilter, validatePerson } from '../../utils/api'
+import { customV5V5MatchImage, applyImageFilter, validatePerson, validateDress } from '../../utils/api'
 import { isReviewCompleted } from '../../utils/cookies'
 import '../../styles/App.css'
 import '../General/ImageUpload.css'
@@ -20,6 +20,7 @@ const CustomFitting = ({ onBackToMain }) => {
     const [isApplyingFilter, setIsApplyingFilter] = useState(false)
     const [isMatching, setIsMatching] = useState(false)
     const [isValidatingPerson, setIsValidatingPerson] = useState(false)
+    const [isValidatingDress, setIsValidatingDress] = useState(false)
     const [loadingAnimation, setLoadingAnimation] = useState(null)
     const [errorModalOpen, setErrorModalOpen] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
@@ -356,20 +357,60 @@ const CustomFitting = ({ onBackToMain }) => {
         }
     }
 
-    const handleDressFileChange = (e) => {
+    const handleDressFileChange = async (e) => {
         const file = e.target.files[0]
         if (file && file.type.startsWith('image/')) {
-            handleDressFile(file)
+            await handleDressFile(file)
         }
     }
 
-    const handleDressFile = (file) => {
-        const reader = new FileReader()
-        reader.onloadend = () => {
-            setDressPreview(reader.result)
-            handleCustomDressUpload(file)
+    const handleDressFile = async (file) => {
+        if (isValidatingDress) return
+        try {
+            setIsValidatingDress(true)
+            const validationResponse = await validateDress(file, { mode: 'fast' })
+            const validationResult = validationResponse?.result || validationResponse
+            const category = (validationResult?.category || '').toString()
+            const isDress = Boolean(validationResult?.dress)
+            const isWeddingCategory = /웨딩|wedding|브라이덜|bridal/i.test(category)
+            const isWeddingDress = Boolean(validationResponse?.success) && isDress && isWeddingCategory
+
+            if (!isWeddingDress) {
+                const readableCategory = category || '미확인'
+                const reason =
+                    !validationResponse?.success
+                        ? validationResponse?.message || '드레스 판별에 실패했습니다.'
+                        : isDress
+                            ? `웨딩드레스 이미지만 업로드할 수 있습니다. (감지됨: ${readableCategory})`
+                            : '드레스가 아닌 이미지입니다. 웨딩드레스 사진을 올려주세요.'
+                setErrorMessage(reason)
+                setErrorModalOpen(true)
+                setDressPreview(null)
+                handleCustomDressUpload(null)
+                if (dressInputRef.current) {
+                    dressInputRef.current.value = ''
+                }
+                return
+            }
+
+            const reader = new FileReader()
+            reader.onloadend = () => {
+                setDressPreview(reader.result)
+                handleCustomDressUpload(file)
+            }
+            reader.readAsDataURL(file)
+        } catch (error) {
+            console.error('드레스 판별 오류:', error)
+            setErrorMessage('웨딩드레스 판별 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.')
+            setErrorModalOpen(true)
+            setDressPreview(null)
+            handleCustomDressUpload(null)
+            if (dressInputRef.current) {
+                dressInputRef.current.value = ''
+            }
+        } finally {
+            setIsValidatingDress(false)
         }
-        reader.readAsDataURL(file)
     }
 
     useEffect(() => {
@@ -403,13 +444,13 @@ const CustomFitting = ({ onBackToMain }) => {
         }
     }
 
-    const handleDressDrop = (e) => {
+    const handleDressDrop = async (e) => {
         e.preventDefault()
         setIsDraggingDress(false)
 
         const file = e.dataTransfer.files[0]
         if (file && file.type.startsWith('image/')) {
-            handleDressFile(file)
+            await handleDressFile(file)
         }
     }
 
@@ -912,16 +953,28 @@ const CustomFitting = ({ onBackToMain }) => {
 
                                 {!dressPreview ? (
                                     <div
-                                        className={`custom-upload-area ${isDraggingDress ? 'dragging' : ''}`}
+                                        className={`custom-upload-area ${isDraggingDress ? 'dragging' : ''} ${isValidatingDress ? 'processing' : ''}`}
                                         onDragOver={handleDressDragOver}
                                         onDragLeave={handleDressDragLeave}
                                         onDrop={handleDressDrop}
-                                        onClick={handleDressClick}
+                                        onClick={isValidatingDress ? undefined : handleDressClick}
                                     >
-                                        <div className="upload-icon">
-                                            <img src="/Image/custom/dress_icon.png" alt="드레스 아이콘" />
-                                        </div>
-                                        <p className="upload-text">드레스 사진을 업로드 해주세요</p>
+                                        {isValidatingDress ? (
+                                            <>
+                                                <div className="validation-overlay"></div>
+                                                <div className="validation-loader-wrapper">
+                                                    <div className="loader"><span></span></div>
+                                                    <p className="upload-text">웨딩드레스 여부를 확인하고 있어요<br />잠시만 기다려주세요</p>
+                                                </div>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <div className="upload-icon">
+                                                    <img src="/Image/custom/dress_icon.png" alt="드레스 아이콘" />
+                                                </div>
+                                                <p className="upload-text">드레스 사진을 업로드 해주세요</p>
+                                            </>
+                                        )}
                                     </div>
                                 ) : (
                                     <div
@@ -944,7 +997,14 @@ const CustomFitting = ({ onBackToMain }) => {
                             <button
                                 className="analyze-button"
                                 onClick={handleManualMatch}
-                                disabled={isMatching || !fullBodyImage || !customDressImage || !!customResultImage}
+                                disabled={
+                                    isMatching ||
+                                    isValidatingPerson ||
+                                    isValidatingDress ||
+                                    !fullBodyImage ||
+                                    !customDressImage ||
+                                    !!customResultImage
+                                }
                             >
                                 {isMatching
                                     ? '매칭 중...'

@@ -262,6 +262,37 @@ export const validatePerson = async (image) => {
 }
 
 /**
+ * 드레스 여부 판별 API 호출 (웨딩드레스 필터링에 사용)
+ * @param {File} image - 드레스 이미지
+ * @param {Object} options - 추가 옵션
+ * @param {string} options.model - 사용할 모델 (기본: gpt-4o-mini)
+ * @param {string} options.mode - 판별 모드 (fast | accurate, 기본: fast)
+ * @returns {Promise} 드레스 판별 결과 { success, result: { dress, confidence, category, ... }, message }
+ */
+export const validateDress = async (image, { model = 'gpt-4o-mini', mode = 'fast' } = {}) => {
+    try {
+        const formData = new FormData()
+        formData.append('file', image)
+        formData.append('model', model)
+        formData.append('mode', mode)
+
+        const response = await api.post('/api/dress/check', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+
+        return response.data
+    } catch (error) {
+        console.error('드레스 판별 오류:', error)
+        if (error.response?.data) {
+            return error.response.data
+        }
+        throw error
+    }
+}
+
+/**
  * 체형 분석 API 호출 (MediaPipe 기반 체형 분석)
  * @param {File} image - 전신 이미지 파일
  * @param {number} height - 키 (cm)
