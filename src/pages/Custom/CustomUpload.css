@@ -24,6 +24,13 @@
     margin-top: -80px;
 }
 
+/* 웹 버전에서 step-guide-panel을 우측으로 이동 */
+@media (min-width: 769px) {
+    .content-wrapper.custom-wrapper .step-guide-panel {
+        margin-left: 30px !important;
+    }
+}
+
 /* 커스텀 피팅 step3에서 필터 버튼들을 우측에 세로 배치 */
 .content-wrapper.custom-wrapper .step-guide-panel-step3 {
     position: relative;
@@ -1064,5 +1071,12 @@
         max-height: 450px !important;
         height: auto !important;
         width: 105% !important;
+    }
+}
+
+/* 웹 버전에서 step-guide-panel을 우측으로 이동 (모바일 미디어 쿼리 뒤에 배치) */
+@media (min-width: 769px) {
+    .content-wrapper.custom-wrapper .step-guide-panel {
+        margin-left: 30px !important;
     }
 }
