@@ -3,6 +3,7 @@ import Lottie from 'lottie-react'
 import { MdOutlineDownload } from 'react-icons/md'
 import Modal from '../../components/Modal/Modal'
 import ReviewModal from '../../components/ReviewModal/ReviewModal'
+import ImageSelectionModal from '../../components/ImageSelectionModal/ImageSelectionModal'
 import { customV5V5MatchImage, applyImageFilter, validatePerson } from '../../utils/api'
 import { isReviewCompleted } from '../../utils/cookies'
 import '../../styles/App.css'
@@ -26,6 +27,8 @@ const CustomFitting = ({ onBackToMain }) => {
     const [currentStep, setCurrentStep] = useState(1)
     const [loadingMessageIndex, setLoadingMessageIndex] = useState(0)
     const [progress, setProgress] = useState(0)
+    const [imageSelectionModalOpen, setImageSelectionModalOpen] = useState(false)
+    const [resultImages, setResultImages] = useState([]) // 두 개의 결과 이미지 저장
 
     // 로딩 메시지 목록 (순차적으로 표시, 마지막은 고정)
     const loadingMessages = [
@@ -132,6 +135,19 @@ const CustomFitting = ({ onBackToMain }) => {
             .catch(error => console.error('Lottie 로드 실패:', error))
     }, [])
 
+    // 이미지 선택 모달이 열릴 때 body에 클래스 추가하여 헤더 숨기기
+    useEffect(() => {
+        if (imageSelectionModalOpen) {
+            document.body.classList.add('image-selection-modal-open')
+        } else {
+            document.body.classList.remove('image-selection-modal-open')
+        }
+
+        return () => {
+            document.body.classList.remove('image-selection-modal-open')
+        }
+    }, [imageSelectionModalOpen])
+
     // 배경 이미지 URL을 File 객체로 변환하는 함수
     const urlToFile = async (url, filename = 'background.jpg') => {
         try {
@@ -226,23 +242,62 @@ const CustomFitting = ({ onBackToMain }) => {
 
             const result = await customV5V5MatchImage(fullBody, dress, backgroundFile)
 
-            if (result.success && result.result_image) {
-                setProgress(100)
-                setCustomResultImage(result.result_image)
-                setOriginalResultImage(result.result_image) // 원본 이미지 저장
-                setSelectedFilter('none') // 필터 초기화
-                setIsMatching(false)
-                setCurrentStep(3)
+            setProgress(100)
+            setSelectedFilter('none') // 필터 초기화
+            setIsMatching(false)
+            setCurrentStep(3)
+
+            // /tryon/compare/custom 엔드포인트는 V4V5CustomCompareResponse를 반환 (v4_result와 v5_result 포함)
+            const images = []
+
+            // v4_result에서 이미지 추출
+            if (result.v4_result) {
+                const v4Result = result.v4_result
+                const v4Image = v4Result.result_image
+                if (v4Image && typeof v4Image === 'string' && v4Image.trim().length > 0) {
+                    images.push(v4Image)
+                }
+            }
+
+            // v5_result에서 이미지 추출
+            if (result.v5_result) {
+                const v5Result = result.v5_result
+                const v5Image = v5Result.result_image
+                if (v5Image && typeof v5Image === 'string' && v5Image.trim().length > 0) {
+                    images.push(v5Image)
+                }
+            }
+
+            // 두 개의 이미지가 있는 경우 모달 표시
+            if (images.length >= 2) {
+                setResultImages(images)
+                setImageSelectionModalOpen(true)
+            } else if (images.length === 1) {
+                // 하나의 이미지만 있는 경우
+                setCustomResultImage(images[0])
+                setOriginalResultImage(images[0])
 
                 // 리뷰 모달 표시 (1번만, 쿠키 확인)
                 if (!isReviewCompleted('custom')) {
-                    // 결과 이미지가 화면에 표시된 후 2~3초 후 모달 표시
+                    setTimeout(() => {
+                        setReviewModalOpen(true)
+                    }, 3000)
+                }
+            } else if (result.success && result.result_image) {
+                // 단일 이미지 응답인 경우 (기존 동작 유지, 호환성)
+                setCustomResultImage(result.result_image)
+                setOriginalResultImage(result.result_image)
+
+                // 리뷰 모달 표시 (1번만, 쿠키 확인)
+                if (!isReviewCompleted('custom')) {
                     setTimeout(() => {
                         setReviewModalOpen(true)
                     }, 3000)
                 }
             } else {
-                throw new Error(result.message || '매칭에 실패했습니다.')
+                // 이미지가 없는 경우 에러 메시지 확인
+                const errorMsg = result.message || result.v4_result?.message || result.v5_result?.message || '결과 이미지를 찾을 수 없습니다.'
+                throw new Error(errorMsg)
             }
         } catch (error) {
             console.error('커스텀 매칭 중 오류 발생:', error)
@@ -980,6 +1035,26 @@ const CustomFitting = ({ onBackToMain }) => {
                     </div>
                 </div>
             )}
+
+            {/* 리뷰 모달 */}
+            {/* 이미지 선택 모달 */}
+            <ImageSelectionModal
+                isOpen={imageSelectionModalOpen}
+                onClose={() => setImageSelectionModalOpen(false)}
+                images={resultImages}
+                onSelect={(selectedImage) => {
+                    setCustomResultImage(selectedImage)
+                    setOriginalResultImage(selectedImage)
+                    setImageSelectionModalOpen(false)
+
+                    // 리뷰 모달 표시 (1번만, 쿠키 확인)
+                    if (!isReviewCompleted('custom')) {
+                        setTimeout(() => {
+                            setReviewModalOpen(true)
+                        }, 3000)
+                    }
+                }}
+            />
 
             {/* 리뷰 모달 */}
             <ReviewModal

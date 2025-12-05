@@ -158,13 +158,14 @@ export const autoMatchImageV5V5 = async (personImage, dressData, backgroundImage
         }
         formData.append('background_image', backgroundImage)
 
-        const response = await api.post('/fit/v5v5/compose', formData, {
+        // /tryon/compare 엔드포인트를 사용하여 v4_result와 v5_result를 모두 받음
+        const response = await api.post('/tryon/compare', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
         })
 
-        // V5V5 일반 파이프라인은 UnifiedTryonResponse를 직접 반환
+        // V4V5CompareResponse 반환 (v4_result와 v5_result를 모두 포함)
         return response.data
     } catch (error) {
         console.error('자동 매칭 V5V5 일반 오류:', error)
@@ -186,13 +187,14 @@ export const customV5V5MatchImage = async (fullBodyImage, dressImage, background
         formData.append('garment_image', dressImage)
         formData.append('background_image', backgroundImage)
 
-        const response = await api.post('/fit/v5v5-custom/compose', formData, {
+        // /tryon/compare/custom 엔드포인트를 사용하여 v4_result와 v5_result를 모두 받음
+        const response = await api.post('/tryon/compare/custom', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
         })
 
-        // V5V5 커스텀 파이프라인은 UnifiedTryonResponse를 직접 반환
+        // V4V5CustomCompareResponse 반환 (v4_result와 v5_result를 모두 포함)
         return response.data
     } catch (error) {
         console.error('CustomV5V5 매칭 오류:', error)
