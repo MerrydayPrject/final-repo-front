@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 import Header from './components/Header/Header'
 import MainPage from './pages/Main/MainPage'
 import GeneralFitting from './pages/General/GeneralFitting'
@@ -9,7 +10,21 @@ import { addPlatformClasses } from './utils/platform'
 import './styles/App.css'
 
 function App() {
-    const [currentPage, setCurrentPage] = useState('main') // 'main', 'general', 'custom', 'analysis', 'future'
+    const navigate = useNavigate()
+    const location = useLocation()
+
+    // 현재 페이지 경로에서 페이지 이름 추출
+    const getCurrentPage = () => {
+        const path = location.pathname
+        if (path === '/') return 'main'
+        if (path === '/general') return 'general'
+        if (path === '/custom') return 'custom'
+        if (path === '/analysis') return 'analysis'
+        if (path === '/future') return 'future'
+        return 'main'
+    }
+
+    const currentPage = getCurrentPage()
 
     // 일반피팅 페이지로 전달할 카테고리
     const [selectedCategoryForFitting, setSelectedCategoryForFitting] = useState(null)
@@ -40,11 +55,11 @@ function App() {
 
 
     const handleNavigateToFitting = () => {
-        setCurrentPage('general')
+        navigate('/general')
     }
 
     const handleBackToMain = () => {
-        setCurrentPage('main')
+        navigate('/')
         // 메인 페이지로 스크롤
         window.scrollTo({
             top: 0,
@@ -66,33 +81,25 @@ function App() {
 
     const handleMenuClick = (menuType) => {
         if (menuType === 'general') {
-            setCurrentPage('general')
+            navigate('/general')
             setSelectedCategoryForFitting(null) // 메뉴에서 직접 이동 시 카테고리 초기화
         } else if (menuType === 'custom') {
-            setCurrentPage('custom')
+            navigate('/custom')
         } else if (menuType === 'analysis') {
-            setCurrentPage('analysis')
+            navigate('/analysis')
         } else if (menuType === 'future') {
-            setCurrentPage('future')
+            navigate('/future')
         }
     }
 
     // 카테고리 선택하여 일반피팅으로 이동
     const handleNavigateToFittingWithCategory = (category) => {
         setSelectedCategoryForFitting(category)
-        setCurrentPage('general')
+        navigate('/general')
     }
 
     return (
         <div className="app">
-            {currentPage === 'main' && (
-                <MainPage
-                    onNavigateToFitting={handleNavigateToFitting}
-                    onNavigateToGeneral={() => handleMenuClick('general')}
-                    onNavigateToCustom={() => handleMenuClick('custom')}
-                    onNavigateToAnalysis={() => handleMenuClick('analysis')}
-                />
-            )}
             <Header
                 currentPage={currentPage}
                 onBackToMain={currentPage !== 'main' ? handleBackToMain : null}
@@ -100,30 +107,55 @@ function App() {
                 onLogoClick={handleLogoClick}
             />
 
-            {currentPage === 'general' && (
-                <GeneralFitting
-                    onBackToMain={handleBackToMain}
-                    initialCategory={selectedCategoryForFitting}
-                    onCategorySet={() => setSelectedCategoryForFitting(null)}
+            <Routes>
+                <Route
+                    path="/"
+                    element={
+                        <MainPage
+                            onNavigateToFitting={handleNavigateToFitting}
+                            onNavigateToGeneral={() => handleMenuClick('general')}
+                            onNavigateToCustom={() => handleMenuClick('custom')}
+                            onNavigateToAnalysis={() => handleMenuClick('analysis')}
+                        />
+                    }
                 />
-            )}
-            {currentPage === 'custom' && (
-                <CustomFitting
-                    onBackToMain={handleBackToMain}
+                <Route
+                    path="/general"
+                    element={
+                        <GeneralFitting
+                            onBackToMain={handleBackToMain}
+                            initialCategory={selectedCategoryForFitting}
+                            onCategorySet={() => setSelectedCategoryForFitting(null)}
+                        />
+                    }
                 />
-            )}
-            {currentPage === 'analysis' && (
-                <BodyAnalysis
-                    onBackToMain={handleBackToMain}
-                    onNavigateToFittingWithCategory={handleNavigateToFittingWithCategory}
+                <Route
+                    path="/custom"
+                    element={
+                        <CustomFitting
+                            onBackToMain={handleBackToMain}
+                        />
+                    }
                 />
-            )}
-            {currentPage === 'future' && (
-                <FuturePage
-                    key="future-page"
-                    onBackToMain={handleBackToMain}
+                <Route
+                    path="/analysis"
+                    element={
+                        <BodyAnalysis
+                            onBackToMain={handleBackToMain}
+                            onNavigateToFittingWithCategory={handleNavigateToFittingWithCategory}
+                        />
+                    }
                 />
-            )}
+                <Route
+                    path="/future"
+                    element={
+                        <FuturePage
+                            key="future-page"
+                            onBackToMain={handleBackToMain}
+                        />
+                    }
+                />
+            </Routes>
         </div>
     )
 }
