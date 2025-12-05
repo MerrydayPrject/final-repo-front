@@ -599,6 +599,13 @@
     margin-top: -70px;
 }
 
+/* Step1 영역 컨텐츠를 아래로 이동 (웹 버전만) */
+@media (min-width: 769px) {
+    .fitting-container .step-guide-panel:not(.step-guide-panel-step2):not(.step-guide-panel-step3) {
+        padding-top: 120px;
+    }
+}
+
 .fitting-container .step-guide-panel .preview-container {
     width: 100% !important;
     max-width: 900px !important;
