@@ -1678,3 +1678,39 @@
     max-width: 95% !important;
     transform: none !important;
 }
+
+/* AOS에서만 로딩 아이콘 바로 위에 문구가 나오도록 수정 */
+.android .validation-loader-wrapper {
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 20px !important;
+}
+
+.android .validation-loader-wrapper .loader {
+    order: 1 !important;
+}
+
+.android .validation-loader-wrapper p {
+    order: 2 !important;
+    margin: 0 !important;
+    text-align: center !important;
+}
+
+/* iOS에서도 로딩 아이콘 바로 아래에 문구가 나오도록 수정 */
+.ios .validation-loader-wrapper {
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 20px !important;
+}
+
+.ios .validation-loader-wrapper .loader {
+    order: 1 !important;
+}
+
+.ios .validation-loader-wrapper p {
+    order: 2 !important;
+    margin: 0 !important;
+    text-align: center !important;
+}

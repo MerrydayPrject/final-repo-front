@@ -218,3 +218,20 @@
         display: none;
     }
 }
+
+/* AOS에서만 메인 영상의 왼쪽이 잘리지 않도록 수정 */
+.android .video-background-video {
+    min-width: 115% !important;
+    object-position: left center !important;
+    transform: translate(-70%, -55%) !important;
+}
+
+/* AOS 모바일에서도 메인 영상의 왼쪽이 잘리지 않도록 수정 */
+@media (max-width: 48rem) {
+    .android .video-background-video {
+        min-width: 115% !important;
+        width: 115% !important;
+        object-position: left center !important;
+        transform: translate(-52%, 0) !important;
+    }
+}
