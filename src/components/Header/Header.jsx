@@ -34,7 +34,7 @@ const Header = ({ onBackToMain, onMenuClick, onLogoClick, currentPage }) => {
     ]
 
     return (
-        <header className={`header ${currentPage !== 'main' ? 'header-in-menu' : ''}`}>
+        <header className={`header ${currentPage !== 'main' ? 'header-in-menu' : ''} ${currentPage === 'future' ? 'header-in-future' : ''}`}>
             <div className="header-content">
                 <div className="logo-container">
                     <h1 className="logo-text" onClick={handleLogoClick} style={{ cursor: 'pointer' }}>

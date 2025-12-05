@@ -63,6 +63,16 @@ body.review-modal-open .header {
     color: #ad9f41;
 }
 
+/* Future 페이지에서의 헤더 스타일 - 배경만 하얀색 (문구 색은 메뉴 페이지와 동일하게 유지) */
+.header.header-in-future {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+}
+
+.header.header-in-future:hover {
+    background: rgba(255, 255, 255, 1);
+}
+
 .header-content {
     display: flex;
     align-items: center;
@@ -123,7 +133,7 @@ body.review-modal-open .header {
     color: #2c2c2c;
     font-size: 16px;
     font-weight: 700;
-    font-family: 'Orbit', 'Static', sans-serif;
+    font-family: 'GowoonDodum', sans-serif;
     cursor: pointer;
     padding: 8px 16px;
     border-radius: 20px;
@@ -204,7 +214,7 @@ body.review-modal-open .header {
         text-align: left;
         font-size: 15px;
         font-weight: 600;
-        font-family: 'Orbit', 'Static', sans-serif;
+        font-family: 'GowoonDodum', sans-serif;
         padding: 6px 0;
         color: #2c2c2c;
     }
@@ -223,4 +233,3 @@ body.review-modal-open .header {
         padding: 10px 14px 14px;
     }
 }
-

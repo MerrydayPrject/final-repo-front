@@ -26,7 +26,7 @@
 .about-us-title {
     font-size: 72px;
     font-weight: 400;
-    font-family: 'Playfair Display', serif;
+    font-family: 'GowoonDodum', sans-serif;
     color: var(--text-dark);
     text-align: center;
     margin: 0 0 60px 0;
@@ -91,7 +91,7 @@
     pointer-events: auto;
 }
 
-/* 마�?�??�스???�이??고정 - ???�래 ?�크롤해???��? */
+/* 마�?�??�스???�이??고정 - ???�래 ?�크롤해???��? */
 .about-us-text-content {
     position: relative;
 }
@@ -107,7 +107,7 @@
 .about-us-main-text {
     font-size: 48px;
     font-weight: 700;
-    font-family: 'Gowun Batang', 'Noto Sans KR', serif;
+    font-family: 'GowoonDodum', sans-serif;
     color: var(--text-dark);
     margin: 0;
     line-height: 1.4;
@@ -121,7 +121,7 @@
 .about-us-description {
     font-size: 18px;
     font-weight: 400;
-    font-family: 'Gowun Batang', 'Noto Sans KR', serif;
+    font-family: 'GowoonDodum', sans-serif;
     color: var(--text-light);
     margin: 0;
     line-height: 2;
@@ -154,7 +154,7 @@
     color: #333;
     transition: all 0.5s ease-in-out;
     margin-top: 20px;
-    font-family: 'Gowun Batang', 'Noto Sans KR', sans-serif;
+    font-family: 'GowoonDodum', sans-serif;
     align-self: flex-end;
     display: flex;
     align-items: center;

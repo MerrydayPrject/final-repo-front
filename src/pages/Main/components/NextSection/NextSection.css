@@ -67,7 +67,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     color: white;
-    font-family: 'Diphylleia', serif;
+    font-family: 'GowoonDodum', sans-serif;
     font-size: 30px;
     text-align: center;
     z-index: 3;
@@ -100,7 +100,7 @@
 .next-section-title {
     font-size: 72px;
     font-weight: 400;
-    font-family: 'Playfair Display', serif;
+    font-family: 'GowoonDodum', sans-serif;
     color: var(--text-dark);
     margin: 0;
     padding-bottom: 40px;
@@ -114,7 +114,7 @@
     display: flex;
     flex-direction: column;
     gap: 40px;
-    /* ?¬ê¸°??ì¶”ê? ?¤í??¼ì„ ?ìš©?˜ì„¸??*/
+    /* ?ï¿½ê¸°??ì¶”ï¿½? ?ï¿½ï¿½??ï¿½ì„ ?ï¿½ìš©?ï¿½ì„¸??*/
 }
 
 .next-section-description {
