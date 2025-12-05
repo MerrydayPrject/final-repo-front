@@ -31,6 +31,19 @@ const FuturePage = ({ onBackToMain }) => {
     const [scrollDownAnimation, setScrollDownAnimation] = useState(null)
     const [isModelLoaded, setIsModelLoaded] = useState(false)
 
+    // 모바일에서 Future 페이지일 때만 body 스크롤 막기
+    useEffect(() => {
+        if (window.innerWidth <= 768) {
+            document.body.classList.add('future-page-active')
+            document.documentElement.classList.add('future-page-active')
+        }
+
+        return () => {
+            document.body.classList.remove('future-page-active')
+            document.documentElement.classList.remove('future-page-active')
+        }
+    }, [])
+
     useEffect(() => {
         const canvas = canvasRef.current
         if (!canvas) return

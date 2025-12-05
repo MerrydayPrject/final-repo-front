@@ -33,15 +33,15 @@
         max-height: calc(100vh + 500px);
     }
 
-    /* 모바일에서 전체 페이지 스크롤 방지 */
-    body {
+    /* 모바일에서 Future 페이지일 때만 전체 페이지 스크롤 방지 */
+    body.future-page-active {
         overflow: hidden !important;
         position: fixed;
         width: 100%;
         height: 100%;
     }
 
-    html {
+    html.future-page-active {
         overflow: hidden !important;
         height: 100%;
     }

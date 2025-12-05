@@ -1057,10 +1057,12 @@
 
     .content-wrapper.custom-wrapper .step-guide-panel {
         margin-top: 0 !important;
+        margin-left: -10px !important;
         padding: 12px 12px !important;
         gap: 8px !important;
         min-height: auto !important;
         max-height: 450px !important;
         height: auto !important;
+        width: 105% !important;
     }
 }

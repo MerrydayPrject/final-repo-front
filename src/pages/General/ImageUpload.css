@@ -1353,6 +1353,7 @@
 
     .fitting-container .step-guide-panel {
         margin-top: 0;
+        margin-left: 10px;
     }
 
     .step-guide-panel-step2 {
