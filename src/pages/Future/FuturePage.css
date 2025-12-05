@@ -335,6 +335,40 @@
     display: none;
 }
 
+/* 웹 버전에서만 Scroll 문구 표시 */
+#vision1012 .scroll_down_icon .scroll-scroll-text {
+    display: none;
+}
+
+/* 웹 버전 스타일 */
+@media (min-width: 769px) {
+    #vision1012 .scroll_down_icon {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 8px !important;
+    }
+
+    #vision1012 .scroll_down_icon .scroll-scroll-text {
+        display: block !important;
+        color: #ffffff !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        letter-spacing: 0.5px !important;
+        text-transform: uppercase !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        opacity: 0.9 !important;
+        font-family: 'GowoonDodum', sans-serif !important;
+        order: -1 !important;
+        line-height: 1 !important;
+    }
+
+    #vision1012 .scroll_down_icon .scroll-down-lottie {
+        order: 1 !important;
+    }
+}
+
 @media (max-width: 768px) {
     #vision1012 .scroll_down_icon {
         display: flex !important;
@@ -357,6 +391,10 @@
         font-family: 'GowoonDodum', sans-serif !important;
         order: -1 !important;
         line-height: 1 !important;
+    }
+
+    #vision1012 .scroll_down_icon .scroll-scroll-text {
+        display: none !important;
     }
 
     #vision1012 .scroll_down_icon .scroll-down-lottie {

@@ -1419,6 +1419,7 @@ const FuturePage = ({ onBackToMain }) => {
                 )}
                 <div className="scroll_down_icon" ref={scrollDownIconRef} onClick={handleScrollDownClick}>
                     <p className="scroll-click-text">click</p>
+                    <p className="scroll-scroll-text">Scroll</p>
                     {scrollDownAnimation && (
                         <Lottie
                             animationData={scrollDownAnimation}
