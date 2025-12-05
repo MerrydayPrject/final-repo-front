@@ -1,4 +1,5 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { HiQuestionMarkCircle } from 'react-icons/hi'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import * as THREE from 'three'
@@ -30,6 +31,7 @@ const FuturePage = ({ onBackToMain }) => {
     const scrollDownIconRef = useRef(null)
     const [scrollDownAnimation, setScrollDownAnimation] = useState(null)
     const [isModelLoaded, setIsModelLoaded] = useState(false)
+    const [isViewerFullscreen, setIsViewerFullscreen] = useState(false)
 
     // 모바일에서 Future 페이지일 때만 body 스크롤 막기
     useEffect(() => {
@@ -1062,6 +1064,9 @@ const FuturePage = ({ onBackToMain }) => {
                                 controlsEnabledRef.current = true
                             }
 
+                            // 전체화면 상태로 설정
+                            setIsViewerFullscreen(true)
+
                             // 안내 문구 표시
                             if (instructionRef.current) {
                                 instructionRef.current.style.display = 'block'
@@ -1089,6 +1094,9 @@ const FuturePage = ({ onBackToMain }) => {
                             // 스크롤이 끝에 도달했을 때 (progress >= 0.98로 더 엄격하게)
                             // 모바일과 웹버전 모두 동일한 기준 적용
                             if (self.progress >= 0.98) {
+                                // 전체화면 상태로 설정
+                                setIsViewerFullscreen(true)
+
                                 // 컨트롤 강제 활성화 (모델이 로드되었는지 확인)
                                 if (modelRef.current) {
                                     controlsEnabledRef.current = true
@@ -1117,6 +1125,9 @@ const FuturePage = ({ onBackToMain }) => {
                                 }
                             } else {
                                 // 스크롤 진행 중일 때 (progress < 0.98)
+                                // 전체화면 상태 해제
+                                setIsViewerFullscreen(false)
+
                                 // 컨트롤 비활성화 (스크롤이 끝까지 내려가지 않았으면 비활성화)
                                 controlsEnabledRef.current = false
 
@@ -1396,6 +1407,17 @@ const FuturePage = ({ onBackToMain }) => {
                     <p>드래그하여 드레스를 둘러보세요</p>
                     <p className="sub">마우스 휠로 확대/축소 가능</p>
                 </div>
+                {isViewerFullscreen && (
+                    <div className="future-viewer-tooltip">
+                        <button className="future-faq-button">
+                            <HiQuestionMarkCircle />
+                            <div className="future-tooltip">
+                                <span>웨딩드레스의 선택은 디테일에서 시작됩니다.</span>
+                                <span>3D로 회전하거나 확대하며 라인과 구조를 직접 탐색해볼 수 있습니다.</span>
+                            </div>
+                        </button>
+                    </div>
+                )}
                 <div className="scroll_down_icon" ref={scrollDownIconRef} onClick={handleScrollDownClick}>
                     <p className="scroll-click-text">click</p>
                     {scrollDownAnimation && (

@@ -770,3 +770,105 @@
 }
 
 /* 반응형 [e] */
+
+/* Future 3D 뷰어 전체화면 툴팁 */
+.future-viewer-tooltip {
+    position: absolute;
+    top: 120px;
+    left: 60px;
+    z-index: 100;
+}
+
+.future-faq-button {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    position: relative;
+    flex-shrink: 0;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.future-faq-button svg {
+    height: 3em;
+    width: 3em;
+    fill: #ffffff;
+    transition: transform 0.5s ease-in-out;
+}
+
+.future-faq-button:hover svg {
+    transform: rotate(360deg) scale(1.2);
+}
+
+.future-tooltip {
+    visibility: hidden;
+    width: auto;
+    min-width: 300px;
+    max-width: 500px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    text-align: left;
+    border-radius: 8px;
+    padding: 15px;
+    position: absolute;
+    top: 50%;
+    left: calc(100% + 15px);
+    transform: translateY(-50%) translateX(10px);
+    opacity: 0;
+    transition: opacity 0.5s, transform 0.5s;
+    pointer-events: none;
+    z-index: 1001;
+    font-size: 14px;
+    line-height: 1.6;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.future-tooltip span {
+    display: block;
+    line-height: 1.6;
+    white-space: nowrap;
+}
+
+.future-tooltip::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent rgba(0, 0, 0, 0.8) transparent transparent;
+}
+
+.future-faq-button:hover .future-tooltip {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+    animation: future-tooltip-bounce 0.6s ease;
+}
+
+@keyframes future-tooltip-bounce {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateY(-50%) translateX(0);
+    }
+
+    40% {
+        transform: translateY(-50%) translateX(-30px);
+    }
+
+    60% {
+        transform: translateY(-50%) translateX(-15px);
+    }
+}
