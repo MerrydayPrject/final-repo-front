@@ -9,6 +9,14 @@
     font-display: swap;
 }
 
+/* HS잔다리체 폰트 추가 */
+@font-face {
+    font-family: 'HsJandari';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2510-2@1.0/HSJandari.woff2') format('woff2');
+    font-weight: normal;
+    font-display: swap;
+}
+
 :root {
     --mainsize: 1400px;
     --e-font: "Anton", sans-serif;
@@ -156,7 +164,7 @@
 #vision1012 .full_img p {
     font-size: 80px;
     line-height: 1.15;
-    font-family: 'GowoonDodum', sans-serif;
+    font-family: 'HsJandari', serif;
     font-weight: normal;
     letter-spacing: 0.08em;
     color: #8b7a3a;
@@ -180,7 +188,7 @@
 
 #vision1012 .full_img p.top_txt span {
     font-size: 80px;
-    font-family: 'GowoonDodum', sans-serif;
+    font-family: 'HsJandari', serif;
     font-weight: 600;
     letter-spacing: 0.08em;
     color: #8b7a3a;
@@ -193,7 +201,7 @@
 
 #vision1012 .full_img p span {
     font-size: 92px;
-    font-family: 'GowoonDodum', sans-serif;
+    font-family: 'HsJandari', serif;
     font-weight: normal;
     letter-spacing: 0.1em;
     color: #8b7a3a;
@@ -410,7 +418,7 @@
 @media (max-width: 768px) {
     #vision1012 .full_img p {
         font-size: 32px;
-        font-family: 'GowoonDodum', sans-serif;
+        font-family: 'HsJandari', serif;
         font-weight: normal;
         color: #8b7a3a;
         -webkit-text-stroke: 1.5px #ad9f41;
@@ -422,7 +430,7 @@
 
     #vision1012 .full_img p span {
         font-size: 40px;
-        font-family: 'GowoonDodum', sans-serif;
+        font-family: 'HsJandari', serif;
         font-weight: normal;
         color: #8b7a3a;
         -webkit-text-stroke: 1.5px #ad9f41;
@@ -457,7 +465,7 @@
     #vision1012 .b_txt .top_txt {
         will-change: transform !important;
         font-size: 20px !important;
-        font-family: 'GowoonDodum', sans-serif !important;
+        font-family: 'HsJandari', serif !important;
         font-weight: normal !important;
         display: block !important;
         visibility: visible !important;
@@ -473,7 +481,7 @@
 
     #vision1012 .b_txt .top_txt span {
         font-size: 20px !important;
-        font-family: 'GowoonDodum', sans-serif !important;
+        font-family: 'HsJandari', serif !important;
         font-weight: normal !important;
         color: #8b7a3a !important;
         -webkit-text-stroke: 1.5px #ad9f41 !important;
@@ -482,7 +490,7 @@
     #vision1012 .b_txt .btm_txt {
         will-change: transform !important;
         font-size: 30px !important;
-        font-family: 'GowoonDodum', sans-serif !important;
+        font-family: 'HsJandari', serif !important;
         font-weight: normal !important;
         display: block !important;
         visibility: visible !important;
@@ -498,7 +506,7 @@
 
     #vision1012 .b_txt .btm_txt span {
         font-size: 32px !important;
-        font-family: 'GowoonDodum', sans-serif !important;
+        font-family: 'HsJandari', serif !important;
         font-weight: normal !important;
         color: #ffffff !important;
         -webkit-text-stroke: 1.5px #ad9f41 !important;
@@ -602,7 +610,7 @@
 
     #vision1012 .full_img p {
         font-size: 45px !important;
-        font-family: 'GowoonDodum', sans-serif !important;
+        font-family: 'HsJandari', serif !important;
         font-weight: normal !important;
         color: #8b7a3a !important;
         -webkit-text-stroke: 0.8px #ad9f41 !important;
@@ -614,7 +622,7 @@
 
     #vision1012 .full_img p span {
         font-size: 36px !important;
-        font-family: 'GowoonDodum', sans-serif !important;
+        font-family: 'HsJandari', serif !important;
         font-weight: normal !important;
         color: #8b7a3a !important;
         -webkit-text-stroke: 1.5px #ad9f41 !important;
@@ -627,7 +635,7 @@
     /* 모바일(폰)에서 '새로운 경험' 크기를 '곧 만나게 될'과 동일하게 */
     #vision1012 .full_img p.top_txt span {
         font-size: 24px !important;
-        font-family: 'GowoonDodum', sans-serif !important;
+        font-family: 'HsJandari', serif !important;
         font-weight: normal !important;
     }
 
@@ -651,7 +659,7 @@
     #vision1012 .b_txt .top_txt {
         will-change: transform !important;
         font-size: 24px !important;
-        font-family: 'GowoonDodum', sans-serif !important;
+        font-family: 'HsJandari', serif !important;
         font-weight: normal !important;
         display: block !important;
         visibility: visible !important;
@@ -667,7 +675,7 @@
 
     #vision1012 .b_txt .top_txt span {
         font-size: 24px !important;
-        font-family: 'GowoonDodum', sans-serif !important;
+        font-family: 'HsJandari', serif !important;
         font-weight: normal !important;
         color: #8b7a3a !important;
         -webkit-text-stroke: 1.5px #ad9f41 !important;
@@ -676,7 +684,7 @@
     #vision1012 .b_txt .btm_txt {
         will-change: transform !important;
         font-size: 36px !important;
-        font-family: 'GowoonDodum', sans-serif !important;
+        font-family: 'HsJandari', serif !important;
         font-weight: normal !important;
         display: block !important;
         visibility: visible !important;
@@ -692,7 +700,7 @@
 
     #vision1012 .b_txt .btm_txt span {
         font-size: 40px !important;
-        font-family: 'GowoonDodum', sans-serif !important;
+        font-family: 'HsJandari', serif !important;
         font-weight: normal !important;
         color: #ffffff !important;
         -webkit-text-stroke: 1.5px #ad9f41 !important;

@@ -206,8 +206,9 @@ const FuturePage = ({ onBackToMain }) => {
         renderer.shadowMap.enabled = true
         renderer.shadowMap.type = THREE.PCFSoftShadowMap
         renderer.shadowMap.autoUpdate = true
-        renderer.outputEncoding = THREE.sRGBEncoding
-        renderer.physicallyCorrectLights = true
+        // Three.js r152+ 업데이트: outputEncoding → outputColorSpace
+        renderer.outputColorSpace = THREE.SRGBColorSpace
+        // Three.js r155+ 업데이트: physicallyCorrectLights 제거됨 (기본적으로 물리 기반 라이팅 사용)
         rendererRef.current = renderer
 
         // GLTF 모델 로드
@@ -614,11 +615,9 @@ const FuturePage = ({ onBackToMain }) => {
 
             // 모델이 로드되었고 드래그 중이 아닐 때 무조건 천천히 자동 회전
             // controlsEnabledRef와 관계없이 모델이 있으면 회전
+            // 모델이 씬에 추가되었는지는 scene.add()에서 이미 처리되므로 체크 불필요
             if (modelRef.current && !isDraggingRef.current) {
-                // 모델이 씬에 있는지 확인
-                if (sceneRef.current && sceneRef.current.children.includes(modelRef.current)) {
-                    modelRef.current.rotation.y += 0.003
-                }
+                modelRef.current.rotation.y += 0.003
             }
 
             if (rendererRef.current && cameraRef.current && sceneRef.current) {
