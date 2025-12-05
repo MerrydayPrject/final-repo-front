@@ -144,8 +144,9 @@ const FuturePage = ({ onBackToMain }) => {
                     texture.minFilter = THREE.LinearFilter
                     texture.magFilter = THREE.LinearFilter
                     texture.generateMipmaps = false
-                    scene.environment = texture
-                    scene.environmentIntensity = 0.3  // 환경맵 강도 대폭 감소 (천 느낌)
+                    // 환경맵을 완전히 제거하여 반사 방지 (천 재질)
+                    scene.environment = null
+                    scene.environmentIntensity = 0.0  // 환경맵 강도 완전 제거
                     scene.background = new THREE.Color(0x111111)
                 },
                 undefined,
@@ -164,12 +165,12 @@ const FuturePage = ({ onBackToMain }) => {
         defaultCameraZRef.current = defaultZ // 기본 Z 위치 저장
         cameraRef.current = camera
 
-        // 렌더러 설정
+        // 렌더러 설정 (천 재질 느낌을 위해 exposure 낮춤)
         const renderer = new THREE.WebGLRenderer({
             canvas,
             antialias: true,
             toneMapping: THREE.ACESFilmicToneMapping,
-            toneMappingExposure: 1.5,
+            toneMappingExposure: 1.0,  // 반사 효과를 줄이기 위해 낮춤
             powerPreference: 'high-performance'
         })
         renderer.setSize(width, height)
@@ -326,7 +327,7 @@ const FuturePage = ({ onBackToMain }) => {
                                 }
                             }
 
-                            // 천 느낌을 위해 반사 최소화
+                            // 천 느낌을 위해 반사 완전 제거
                             if (mat.roughness !== undefined) {
                                 mat.roughness = 1.0  // 최대 거칠기 (반사 최소)
                             }
@@ -335,39 +336,70 @@ const FuturePage = ({ onBackToMain }) => {
                                 mat.metalness = 0.0  // 비금속 (천 재질)
                             }
 
+                            // 환경맵 반사 완전 제거
+                            mat.envMap = null
                             if (mat.envMapIntensity !== undefined) {
-                                mat.envMapIntensity = 0.0  // 환경맵 반사 제거
+                                mat.envMapIntensity = 0.0
                             }
 
-                            // 추가 반사 제거 설정
+                            // 스펙큘러 반사 완전 제거
                             if (mat.specular !== undefined) {
-                                mat.specular = new THREE.Color(0x000000)  // 스펙큘러 반사 제거
+                                mat.specular = new THREE.Color(0x000000)
+                                mat.specular.set(0x000000)
+                            }
+                            if (mat.specularColor !== undefined) {
+                                mat.specularColor = new THREE.Color(0x000000)
+                            }
+                            if (mat.specularMap !== undefined) {
+                                mat.specularMap = null
                             }
 
-                            // clearcoat 제거 (반짝임 효과 제거)
+                            // clearcoat 완전 제거 (반짝임 효과 제거)
                             if (mat.clearcoat !== undefined) {
                                 mat.clearcoat = 0.0
                             }
-
                             if (mat.clearcoatRoughness !== undefined) {
                                 mat.clearcoatRoughness = 1.0
                             }
-
-                            if (mat.specular !== undefined) {
-                                mat.specular.set(0x000000)
+                            if (mat.clearcoatMap !== undefined) {
+                                mat.clearcoatMap = null
+                            }
+                            if (mat.clearcoatNormalMap !== undefined) {
+                                mat.clearcoatNormalMap = null
                             }
 
+                            // glossiness 제거
                             if (mat.glossiness !== undefined) {
                                 mat.glossiness = 0.0
                             }
 
+                            // sheen 제거 (천 재질에서 반짝임 제거)
                             if ('clearcoat' in mat) {
                                 mat.clearcoat = 0.0
                             }
-
                             if ('sheen' in mat) {
                                 mat.sheen = 0.0
                             }
+                            if (mat.sheenColor !== undefined) {
+                                mat.sheenColor = new THREE.Color(0x000000)
+                            }
+                            if (mat.sheenRoughness !== undefined) {
+                                mat.sheenRoughness = 1.0
+                            }
+                            if (mat.sheenMap !== undefined) {
+                                mat.sheenMap = null
+                            }
+
+                            // 반사 관련 모든 속성 제거
+                            if (mat.reflectivity !== undefined) {
+                                mat.reflectivity = 0.0
+                            }
+                            if (mat.refractionRatio !== undefined) {
+                                mat.refractionRatio = 1.0
+                            }
+
+                            // 천 재질 느낌을 위한 추가 설정
+                            mat.needsUpdate = true
                         })
                     }
                 })
