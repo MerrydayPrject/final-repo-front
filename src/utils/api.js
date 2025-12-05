@@ -129,6 +129,96 @@ export const autoMatchImageV4 = async (personImage, dressData, backgroundImage) 
 }
 
 /**
+ * 자동 매칭 API 호출 V5V5 일반 (일반 탭: 사람 + 드레스 + 배경) - V5 파이프라인 두 번 실행
+ * @param {File} personImage - 사용자 사진
+ * @param {Object|File} dressData - 드레스 데이터 (id, name, image, originalUrl) 또는 File 객체
+ * @param {File} backgroundImage - 배경 이미지 파일
+ * @returns {Promise} 매칭된 이미지 결과 (v5_result 사용)
+ */
+export const autoMatchImageV5V5 = async (personImage, dressData, backgroundImage) => {
+    try {
+        const formData = new FormData()
+        formData.append('person_image', personImage)
+
+        // 드레스 이미지 처리
+        if (dressData instanceof File) {
+            formData.append('garment_image', dressData)
+        } else if (dressData.originalUrl || dressData.image) {
+            // 드레스 URL이 있는 경우 File 객체로 변환
+            const dressUrl = dressData.originalUrl || dressData.image
+            const dressFile = await urlToFile(dressUrl, 'dress.jpg')
+            formData.append('garment_image', dressFile)
+        } else {
+            throw new Error('드레스 이미지가 필요합니다.')
+        }
+
+        // 배경 이미지 추가
+        if (!backgroundImage) {
+            throw new Error('배경 이미지가 필요합니다.')
+        }
+        formData.append('background_image', backgroundImage)
+
+        const response = await api.post('/tryon/compare', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+
+        // V5V5 일반 파이프라인은 v5_result를 반환 (v5_result 사용)
+        if (response.data.success && response.data.v5_result) {
+            return {
+                success: response.data.v5_result.success,
+                result_image: response.data.v5_result.result_image,
+                message: response.data.v5_result.message || response.data.message,
+                prompt: response.data.v5_result.prompt,
+            }
+        } else {
+            throw new Error(response.data.message || '매칭에 실패했습니다.')
+        }
+    } catch (error) {
+        console.error('자동 매칭 V5V5 일반 오류:', error)
+        throw error
+    }
+}
+
+/**
+ * 자동 매칭 API 호출 V5V5 커스텀 (커스텀 탭: 사람 + 드레스 + 배경) - CustomV5 파이프라인 두 번 실행
+ * @param {File} fullBodyImage - 전신 사진
+ * @param {File} dressImage - 드레스 이미지
+ * @param {File} backgroundImage - 배경 이미지
+ * @returns {Promise} 매칭된 이미지 결과 (v5_result 사용)
+ */
+export const customV5V5MatchImage = async (fullBodyImage, dressImage, backgroundImage) => {
+    try {
+        const formData = new FormData()
+        formData.append('person_image', fullBodyImage)
+        formData.append('garment_image', dressImage)
+        formData.append('background_image', backgroundImage)
+
+        const response = await api.post('/tryon/compare/custom', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+
+        // V5V5 커스텀 파이프라인은 v5_result를 반환 (v5_result 사용)
+        if (response.data.success && response.data.v5_result) {
+            return {
+                success: response.data.v5_result.success,
+                result_image: response.data.v5_result.result_image,
+                message: response.data.v5_result.message || response.data.message,
+                prompt: response.data.v5_result.prompt,
+            }
+        } else {
+            throw new Error(response.data.message || '매칭에 실패했습니다.')
+        }
+    } catch (error) {
+        console.error('CustomV5V5 매칭 오류:', error)
+        throw error
+    }
+}
+
+/**
  * CustomV4 매칭 API 호출 (의상 누끼 자동 처리 포함, Gemini 3 Flash)
  * @param {File} fullBodyImage - 전신 사진
  * @param {File} dressImage - 드레스 이미지
