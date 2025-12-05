@@ -133,7 +133,7 @@ body.review-modal-open .header {
     color: #2c2c2c;
     font-size: 16px;
     font-weight: 700;
-    font-family: 'Orbit', 'Static', sans-serif;
+    font-family: 'GowoonDodum', sans-serif;
     cursor: pointer;
     padding: 8px 16px;
     border-radius: 20px;
@@ -214,7 +214,7 @@ body.review-modal-open .header {
         text-align: left;
         font-size: 15px;
         font-weight: 600;
-        font-family: 'Orbit', 'Static', sans-serif;
+        font-family: 'GowoonDodum', sans-serif;
         padding: 6px 0;
         color: #2c2c2c;
     }

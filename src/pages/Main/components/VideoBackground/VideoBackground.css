@@ -63,7 +63,7 @@
 }
 
 .video-text-line1 {
-    font-family: 'Gowun Batang', 'Noto Sans KR', serif;
+    font-family: 'GowoonDodum', sans-serif;
     font-size: 2.5rem;
     font-weight: 400;
     letter-spacing: .125rem;
@@ -72,7 +72,7 @@
 }
 
 .video-text-line2 {
-    font-family: 'Cormorant Garamond', 'Gowun Batang', serif;
+    font-family: 'GowoonDodum', sans-serif;
     font-size: 1.625rem;
     font-weight: 300;
     letter-spacing: .1875rem;
@@ -164,7 +164,7 @@
 .video-side-text-line2 {
     color: #1d1d1d;
     margin: 0;
-    font-family: 'Gowun Batang', 'Noto Sans KR', serif;
+    font-family: 'GowoonDodum', sans-serif;
     line-height: 1.8;
     cursor: default;
 }

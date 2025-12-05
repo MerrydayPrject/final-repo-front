@@ -66,7 +66,7 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
     text-shadow: 0 10px 30px rgba(176, 137, 104, 0.3);
-    font-family: 'Montserrat', 'Noto Sans KR', sans-serif;
+    font-family: 'GowoonDodum', sans-serif;
     line-height: 1;
     animation: glow 2s ease-in-out infinite;
     cursor: default;
@@ -91,7 +91,7 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    font-family: 'Montserrat', 'Noto Sans KR', sans-serif;
+    font-family: 'GowoonDodum', sans-serif;
     animation: bounce 1s ease-in-out infinite;
     cursor: default;
 }
@@ -189,7 +189,7 @@
     }
 }
 
-/* 반응???�자??*/
+/* 반응???�자??*/
 @media (max-width: 768px) {
     .dress-collection-section {
         padding: 40px 20px 100px;
