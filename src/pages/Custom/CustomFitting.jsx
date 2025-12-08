@@ -435,7 +435,22 @@ const CustomFitting = ({ onBackToMain }) => {
             const checkResult = await checkDress(file, 'gpt-4o-mini', 'fast')
             console.log('[프론트] 드레스 체크 결과:', checkResult)
             if (checkResult.success && checkResult.result) {
-                setDressCheckResult(checkResult.result.dress)
+                const isDress = checkResult.result.dress
+                setDressCheckResult(isDress)
+
+                // 드레스가 아닌 경우 모달로 알림
+                if (!isDress) {
+                    setErrorMessage('드레스 사진을 넣어주세요')
+                    setErrorModalOpen(true)
+                    // 이미지 미리보기 제거
+                    setDressPreview(null)
+                    handleCustomDressUpload(null)
+                    if (dressInputRef.current) {
+                        dressInputRef.current.value = ''
+                    }
+                    setIsCheckingDress(false)
+                    return
+                }
             } else {
                 setDressCheckResult(null)
             }
@@ -1021,30 +1036,28 @@ const CustomFitting = ({ onBackToMain }) => {
                                         </div>
                                         {/* 드레스 체크 결과 표시 */}
                                         {isCheckingDress && (
-                                            <div style={{ 
-                                                marginTop: '8px', 
-                                                padding: '8px', 
-                                                textAlign: 'center', 
+                                            <div style={{
+                                                marginTop: '8px',
+                                                padding: '8px',
+                                                textAlign: 'center',
                                                 fontSize: '14px',
                                                 color: '#666'
                                             }}>
                                                 드레스 확인 중...
                                             </div>
                                         )}
-                                        {!isCheckingDress && dressCheckResult !== null && (
-                                            <div style={{ 
-                                                marginTop: '8px', 
-                                                padding: '8px', 
-                                                textAlign: 'center', 
+                                        {!isCheckingDress && dressCheckResult === true && (
+                                            <div style={{
+                                                marginTop: '8px',
+                                                padding: '8px',
+                                                textAlign: 'center',
                                                 fontSize: '14px',
-                                                backgroundColor: dressCheckResult ? '#e8f5e9' : '#ffebee',
-                                                color: dressCheckResult ? '#2e7d32' : '#c62828',
+                                                backgroundColor: '#e8f5e9',
+                                                color: '#2e7d32',
                                                 borderRadius: '4px',
                                                 fontWeight: '500'
                                             }}>
-                                                {dressCheckResult 
-                                                    ? '✓ 드레스로 확인됨'
-                                                    : '✗ 드레스가 아닐 수 있습니다'}
+                                                ✓ 드레스로 확인됨
                                             </div>
                                         )}
                                     </>
