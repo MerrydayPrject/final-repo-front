@@ -396,5 +396,42 @@ export const countVisitor = async () => {
     }
 }
 
+/**
+ * 드레스 체크 API 호출 (이미지가 드레스인지 확인)
+ * @param {File} imageFile - 드레스 이미지 파일
+ * @param {string} model - 사용할 모델 (gpt-4o-mini 또는 gpt-4o, 기본값: gpt-4o-mini)
+ * @param {string} mode - 체크 모드 (fast 또는 accurate, 기본값: fast)
+ * @returns {Promise} 드레스 체크 결과 { success: boolean, result: { dress: boolean } }
+ */
+export const checkDress = async (imageFile, model = 'gpt-4o-mini', mode = 'fast') => {
+    try {
+        const apiBaseUrl = getApiBaseUrl()
+        const url = `${apiBaseUrl}/api/dress/check`
+        console.log('[API] 드레스 체크 요청 URL:', url)
+        console.log('[API] 파일명:', imageFile.name, '크기:', imageFile.size)
+        
+        const formData = new FormData()
+        formData.append('file', imageFile)
+        formData.append('model', model)
+        formData.append('mode', mode)
+
+        console.log('[API] 요청 전송 중...')
+        const response = await api.post('/api/dress/check', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+        console.log('[API] 응답 받음:', response.status, response.data)
+
+        return response.data
+    } catch (error) {
+        console.error('[API] 드레스 체크 오류:', error)
+        console.error('[API] 에러 응답:', error.response?.data)
+        console.error('[API] 에러 상태:', error.response?.status)
+        console.error('[API] 요청 URL:', error.config?.url)
+        throw error
+    }
+}
+
 export default api
 

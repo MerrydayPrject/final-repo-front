@@ -4,7 +4,7 @@ import { MdOutlineDownload } from 'react-icons/md'
 import Modal from '../../components/Modal/Modal'
 import ReviewModal from '../../components/ReviewModal/ReviewModal'
 import ImageSelectionModal from '../../components/ImageSelectionModal/ImageSelectionModal'
-import { customV5V5MatchImage, applyImageFilter, validatePerson } from '../../utils/api'
+import { customV5V5MatchImage, applyImageFilter, validatePerson, checkDress } from '../../utils/api'
 import { isReviewCompleted } from '../../utils/cookies'
 import '../../styles/App.css'
 import '../General/ImageUpload.css'
@@ -21,6 +21,8 @@ const CustomFitting = ({ onBackToMain }) => {
     const [isApplyingFilter, setIsApplyingFilter] = useState(false)
     const [isMatching, setIsMatching] = useState(false)
     const [isValidatingPerson, setIsValidatingPerson] = useState(false)
+    const [isCheckingDress, setIsCheckingDress] = useState(false)
+    const [dressCheckResult, setDressCheckResult] = useState(null) // boolean: true면 드레스, false면 드레스 아님
     const [loadingAnimation, setLoadingAnimation] = useState(null)
     const [errorModalOpen, setErrorModalOpen] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
@@ -418,13 +420,35 @@ const CustomFitting = ({ onBackToMain }) => {
         }
     }
 
-    const handleDressFile = (file) => {
+    const handleDressFile = async (file) => {
         const reader = new FileReader()
         reader.onloadend = () => {
             setDressPreview(reader.result)
-            handleCustomDressUpload(file)
         }
         reader.readAsDataURL(file)
+
+        // 드레스 체크 수행
+        setIsCheckingDress(true)
+        setDressCheckResult(null)
+        try {
+            console.log('[프론트] 드레스 체크 시작:', file.name, file.size)
+            const checkResult = await checkDress(file, 'gpt-4o-mini', 'fast')
+            console.log('[프론트] 드레스 체크 결과:', checkResult)
+            if (checkResult.success && checkResult.result) {
+                setDressCheckResult(checkResult.result.dress)
+            } else {
+                setDressCheckResult(null)
+            }
+        } catch (error) {
+            console.error('[프론트] 드레스 체크 실패:', error)
+            console.error('[프론트] 에러 상세:', error.response?.data || error.message)
+            setDressCheckResult(null)
+        } finally {
+            setIsCheckingDress(false)
+        }
+
+        // 드레스 이미지 설정 (체크 결과와 관계없이 업로드 허용)
+        handleCustomDressUpload(file)
     }
 
     useEffect(() => {
@@ -474,6 +498,8 @@ const CustomFitting = ({ onBackToMain }) => {
 
     const handleDressRemove = () => {
         setDressPreview(null)
+        setDressCheckResult(null)
+        setIsCheckingDress(false)
         handleCustomDressUpload(null)
         // 이미지 삭제 시 매칭 결과 초기화 및 STEP 2로 이동
         if (customResultImage) {
@@ -979,19 +1005,49 @@ const CustomFitting = ({ onBackToMain }) => {
                                         <p className="upload-text">드레스 사진을 업로드 해주세요</p>
                                     </div>
                                 ) : (
-                                    <div
-                                        className={`custom-preview-container ${isDraggingDress ? 'dragging' : ''}`}
-                                        onDragOver={handleDressDragOver}
-                                        onDragLeave={handleDressDragLeave}
-                                        onDrop={handleDressDrop}
-                                    >
-                                        <img src={dressPreview} alt="Dress" className="custom-preview-image" />
-                                        {!isMatching && (
-                                            <button className="custom-remove-button" onClick={handleDressRemove}>
-                                                ✕
-                                            </button>
+                                    <>
+                                        <div
+                                            className={`custom-preview-container ${isDraggingDress ? 'dragging' : ''}`}
+                                            onDragOver={handleDressDragOver}
+                                            onDragLeave={handleDressDragLeave}
+                                            onDrop={handleDressDrop}
+                                        >
+                                            <img src={dressPreview} alt="Dress" className="custom-preview-image" />
+                                            {!isMatching && (
+                                                <button className="custom-remove-button" onClick={handleDressRemove}>
+                                                    ✕
+                                                </button>
+                                            )}
+                                        </div>
+                                        {/* 드레스 체크 결과 표시 */}
+                                        {isCheckingDress && (
+                                            <div style={{ 
+                                                marginTop: '8px', 
+                                                padding: '8px', 
+                                                textAlign: 'center', 
+                                                fontSize: '14px',
+                                                color: '#666'
+                                            }}>
+                                                드레스 확인 중...
+                                            </div>
                                         )}
-                                    </div>
+                                        {!isCheckingDress && dressCheckResult !== null && (
+                                            <div style={{ 
+                                                marginTop: '8px', 
+                                                padding: '8px', 
+                                                textAlign: 'center', 
+                                                fontSize: '14px',
+                                                backgroundColor: dressCheckResult ? '#e8f5e9' : '#ffebee',
+                                                color: dressCheckResult ? '#2e7d32' : '#c62828',
+                                                borderRadius: '4px',
+                                                fontWeight: '500'
+                                            }}>
+                                                {dressCheckResult 
+                                                    ? '✓ 드레스로 확인됨'
+                                                    : '✗ 드레스가 아닐 수 있습니다'}
+                                            </div>
+                                        )}
+                                    </>
                                 )}
                             </div>
 
