@@ -53,6 +53,58 @@ function App() {
         }
     }, [])
 
+    // 페이지 전환 시 ScrollTrigger 정리 (모바일 오류 방지)
+    useEffect(() => {
+        return () => {
+            // 페이지 전환 시 남아있는 ScrollTrigger 정리
+            // 모바일에서 모든 화면에서 오류 발생 방지
+            try {
+                // gsap과 ScrollTrigger가 로드되어 있는지 확인
+                if (typeof window !== 'undefined' && window.gsap) {
+                    const gsap = window.gsap
+                    // ScrollTrigger는 gsap.plugins.scrollTrigger 또는 직접 접근 가능
+                    const ScrollTrigger = gsap.plugins?.scrollTrigger || gsap.ScrollTrigger
+
+                    if (ScrollTrigger && typeof ScrollTrigger.getAll === 'function') {
+                        // 모든 ScrollTrigger를 안전하게 정리
+                        const allTriggers = ScrollTrigger.getAll()
+                        if (allTriggers && allTriggers.length > 0) {
+                            allTriggers.forEach(trigger => {
+                                try {
+                                    // DOM이 여전히 존재하는지 확인 후 kill
+                                    if (trigger && trigger.trigger) {
+                                        const triggerElement = trigger.trigger
+                                        if (triggerElement && document.body.contains(triggerElement)) {
+                                            // DOM이 존재할 때만 disable
+                                            if (typeof trigger.disable === 'function') {
+                                                trigger.disable()
+                                            }
+                                        }
+                                        // kill은 DOM 존재 여부와 관계없이 실행 (false로 DOM 제거 방지)
+                                        if (typeof trigger.kill === 'function') {
+                                            trigger.kill(false)
+                                        }
+                                    } else {
+                                        // trigger 요소가 없으면 바로 kill
+                                        if (typeof trigger.kill === 'function') {
+                                            trigger.kill(false)
+                                        }
+                                    }
+                                } catch (e) {
+                                    // 개별 트리거 오류는 무시
+                                    console.debug('ScrollTrigger cleanup error on page change:', e)
+                                }
+                            })
+                        }
+                    }
+                }
+            } catch (e) {
+                // 전체 오류는 무시 (ScrollTrigger가 로드되지 않았을 수 있음)
+                console.debug('ScrollTrigger cleanup error:', e)
+            }
+        }
+    }, [location.pathname])
+
 
     const handleNavigateToFitting = () => {
         navigate('/general')

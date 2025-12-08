@@ -10,6 +10,92 @@ import './FuturePage.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
+// ScrollTrigger 자동 refresh 방지 및 안전한 refresh 패치
+// 모바일에서 removeChild 오류 방지
+if (typeof ScrollTrigger !== 'undefined') {
+    // ScrollTrigger의 자동 refresh 이벤트 제한 (resize 제거)
+    try {
+        ScrollTrigger.config({
+            autoRefreshEvents: "visibilitychange,DOMContentLoaded,load" // resize 이벤트 제거
+        })
+    } catch (e) {
+        // config가 지원되지 않을 수 있음
+        console.debug('ScrollTrigger.config error:', e)
+    }
+
+    // ScrollTrigger의 refresh 메서드를 안전하게 패치
+    const originalRefresh = ScrollTrigger.refresh
+    if (originalRefresh && typeof originalRefresh === 'function') {
+        ScrollTrigger.refresh = function() {
+            try {
+                // DOM이 안전한 상태인지 확인
+                if (!document.body || !document.documentElement) {
+                    return
+                }
+
+                // 모든 트리거를 안전하게 refresh
+                const allTriggers = ScrollTrigger.getAll()
+                if (allTriggers && allTriggers.length > 0) {
+                    allTriggers.forEach(trigger => {
+                        try {
+                            // DOM이 여전히 존재하는지 확인
+                            if (trigger && trigger.trigger) {
+                                const triggerElement = trigger.trigger
+                                // triggerElement가 DOM 노드인지 확인
+                                if (triggerElement && triggerElement.nodeType === 1) {
+                                    if (document.body.contains(triggerElement)) {
+                                        // DOM이 존재할 때만 refresh
+                                        if (typeof trigger.refresh === 'function') {
+                                            trigger.refresh()
+                                        }
+                                    }
+                                }
+                            }
+                        } catch (e) {
+                            // 개별 트리거 refresh 오류는 무시
+                            console.debug('ScrollTrigger individual refresh error:', e)
+                        }
+                    })
+                }
+            } catch (e) {
+                // refresh 오류는 무시
+                console.debug('ScrollTrigger.refresh error:', e)
+            }
+        }
+    }
+
+    // ScrollTrigger의 내부 refresh 함수들을 패치하기 위해
+    // 전역 오류 핸들러로 ScrollTrigger refresh 오류를 무시
+    const originalErrorHandler = window.onerror
+    window.onerror = function(message, source, lineno, colno, error) {
+        // ScrollTrigger의 removeChild 오류는 무시
+        if (message && typeof message === 'string' && 
+            (message.includes('removeChild') || message.includes('NotFoundError'))) {
+            if (source && source.includes('ScrollTrigger')) {
+                console.debug('ScrollTrigger removeChild error ignored:', message)
+                return true // 오류를 처리했음을 표시
+            }
+        }
+        // 다른 오류는 원래 핸들러로 전달
+        if (originalErrorHandler) {
+            return originalErrorHandler.call(this, message, source, lineno, colno, error)
+        }
+        return false
+    }
+
+    // unhandledrejection도 처리
+    window.addEventListener('unhandledrejection', function(event) {
+        if (event.reason && typeof event.reason === 'object') {
+            const errorMessage = event.reason.message || event.reason.toString()
+            if (errorMessage && errorMessage.includes('removeChild') && 
+                errorMessage.includes('ScrollTrigger')) {
+                console.debug('ScrollTrigger removeChild promise rejection ignored:', errorMessage)
+                event.preventDefault() // 오류 전파 방지
+            }
+        }
+    })
+}
+
 const FuturePage = ({ onBackToMain }) => {
     const visionRef = useRef(null)
     const fullImgRef = useRef(null)
@@ -452,23 +538,16 @@ const FuturePage = ({ onBackToMain }) => {
                 // 모델이 로드된 후 일정 시간이 지나면 자동으로 활성화 (안전장치)
                 // 모바일과 웹버전 모두 ScrollTrigger 대기
                 setTimeout(() => {
-                    if (modelRef.current && !controlsEnabledRef.current) {
-                        // ScrollTrigger가 아직 완료되지 않았어도 모델이 로드되었으면 컨트롤 활성화
-                        // (사용자가 스크롤하지 않고 바로 드래그할 수 있도록)
-                        const allTriggers = ScrollTrigger.getAll()
-                        const bgTrigger = allTriggers.find(trigger => {
-                            try {
-                                return trigger.vars &&
-                                    (trigger.vars.trigger === fullImgRef.current ||
-                                        trigger.trigger === fullImgRef.current)
-                            } catch (e) {
-                                return false
-                            }
-                        })
-
-                        // ScrollTrigger가 없거나 progress가 0.95 이상이면 활성화
-                        if (!bgTrigger || (bgTrigger.progress && bgTrigger.progress >= 0.95)) {
+                    // DOM이 여전히 존재하는지 확인
+                    if (modelRef.current && !controlsEnabledRef.current &&
+                        visionRef.current && document.body.contains(visionRef.current)) {
+                        try {
+                            // ScrollTrigger.getAll() 사용하지 않음 (이미 제거된 DOM 참조 오류 방지)
+                            // 대신 일정 시간 후 자동으로 컨트롤 활성화
                             controlsEnabledRef.current = true
+                        } catch (e) {
+                            // ignore errors
+                            console.debug('Control activation error:', e);
                         }
                     }
                 }, 500) // 0.5초 후 안전장치로 활성화
@@ -707,23 +786,30 @@ const FuturePage = ({ onBackToMain }) => {
         document.documentElement.scrollTop = 0
         document.body.scrollTop = 0
 
-        // ScrollTrigger 메모리 클리어
-        try {
-            ScrollTrigger.clearScrollMemory()
-        } catch (e) {
-            // ignore
-        }
+        // ScrollTrigger.clearScrollMemory() 제거
+        // clearScrollMemory()는 내부적으로 refresh를 호출할 수 있어서 이미 제거된 DOM을 참조할 수 있음
+        // 모바일에서 모든 화면에서 오류 발생 가능
 
         // 약간의 지연 후 다시 한 번 확인 (배포 환경 대응)
         const scrollResetTimer = setTimeout(() => {
-            window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
-            document.documentElement.scrollTop = 0
-            document.body.scrollTop = 0
-            ScrollTrigger.refresh()
+            try {
+                // DOM이 여전히 존재하는지 확인
+                if (visionRef.current && document.body.contains(visionRef.current)) {
+                    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+                    document.documentElement.scrollTop = 0
+                    document.body.scrollTop = 0
+                    // ScrollTrigger.refresh()는 호출하지 않음 (이미 제거된 DOM 참조 오류 방지)
+                    // 개별 트리거는 자동으로 refresh됨
+                }
+            } catch (e) {
+                // ignore errors
+                console.debug('Scroll reset error:', e);
+            }
         }, 100)
 
-        // ScrollTrigger도 리셋
-        ScrollTrigger.refresh()
+        // ScrollTrigger.refresh()는 호출하지 않음
+        // ScrollTrigger.refresh()는 모든 트리거를 refresh하는데, 이미 제거된 DOM을 참조할 수 있어 오류 발생
+        // 개별 트리거는 생성 시 자동으로 설정되므로 전체 refresh 불필요
 
         // 모바일에서 스크롤 방지
         const isMobile = window.innerWidth <= 768
@@ -777,8 +863,11 @@ const FuturePage = ({ onBackToMain }) => {
 
         // 모바일에서는 스크롤 없이 바로 애니메이션 완료 처리
         if (visionRef.current && fullImgRef.current && bgRef.current) {
-            // 모든 ScrollTrigger 애니메이션을 즉시 완료 상태로 설정
-            const allTriggers = ScrollTrigger.getAll()
+            // DOM이 여전히 존재하는지 확인
+            if (!document.body.contains(visionRef.current) ||
+                !document.body.contains(fullImgRef.current)) {
+                return
+            }
 
             // bgAnimation 완료 (clip-path와 scale)
             gsap.to(bgRef.current, {
@@ -790,7 +879,7 @@ const FuturePage = ({ onBackToMain }) => {
 
             // 텍스트 즉시 숨김 (모바일 클릭 후)
             const bTxtContainer = document.querySelector('#vision1012 .b_txt')
-            if (bTxtContainer) {
+            if (bTxtContainer && document.body.contains(bTxtContainer)) {
                 // 클래스 추가로 숨김
                 bTxtContainer.classList.add('mobile-clicked-hide')
                 bTxtContainer.style.display = 'none'
@@ -798,14 +887,14 @@ const FuturePage = ({ onBackToMain }) => {
                 bTxtContainer.style.opacity = '0'
             }
 
-            if (topTxtRef.current) {
+            if (topTxtRef.current && document.body.contains(topTxtRef.current)) {
                 topTxtRef.current.classList.add('mobile-clicked-hide')
                 topTxtRef.current.style.display = 'none'
                 topTxtRef.current.style.visibility = 'hidden'
                 topTxtRef.current.style.opacity = '0'
             }
 
-            if (btmTxtRef.current) {
+            if (btmTxtRef.current && document.body.contains(btmTxtRef.current)) {
                 btmTxtRef.current.classList.add('mobile-clicked-hide')
                 btmTxtRef.current.style.display = 'none'
                 btmTxtRef.current.style.visibility = 'hidden'
@@ -814,36 +903,25 @@ const FuturePage = ({ onBackToMain }) => {
 
             // 추가로 모든 b_txt 관련 요소 숨김
             setTimeout(() => {
-                const allBTxtElements = document.querySelectorAll('#vision1012 .b_txt, #vision1012 .top_txt, #vision1012 .btm_txt')
-                allBTxtElements.forEach(el => {
-                    el.classList.add('mobile-clicked-hide')
-                    el.style.display = 'none'
-                    el.style.visibility = 'hidden'
-                    el.style.opacity = '0'
-                })
+                try {
+                    const allBTxtElements = document.querySelectorAll('#vision1012 .b_txt, #vision1012 .top_txt, #vision1012 .btm_txt')
+                    allBTxtElements.forEach(el => {
+                        if (el && document.body.contains(el)) {
+                            el.classList.add('mobile-clicked-hide')
+                            el.style.display = 'none'
+                            el.style.visibility = 'hidden'
+                            el.style.opacity = '0'
+                        }
+                    })
+                } catch (e) {
+                    // ignore DOM errors
+                    console.debug('DOM query error:', e);
+                }
             }, 100)
 
-            // 모든 ScrollTrigger를 강제로 완료 상태로 설정
-            allTriggers.forEach(trigger => {
-                try {
-                    if (trigger.vars) {
-                        const triggerElement = trigger.vars.trigger || trigger.trigger
-                        if (triggerElement === fullImgRef.current ||
-                            triggerElement === visionRef.current ||
-                            triggerElement === topTxtRef.current ||
-                            triggerElement === btmTxtRef.current) {
-                            // ScrollTrigger를 강제로 완료 상태로 만들기 위해 progress 업데이트
-                            if (trigger.progress !== undefined && trigger.progress < 1) {
-                                // progress를 1로 설정하기 위해 내부적으로 업데이트
-                                trigger.progress = 1
-                                trigger.update()
-                            }
-                        }
-                    }
-                } catch (e) {
-                    // ignore
-                }
-            })
+            // ScrollTrigger.getAll() 사용하지 않음 (이미 제거된 DOM 참조 오류 방지)
+            // 대신 개별 트리거는 useLayoutEffect에서 관리하는 scrollTriggers 배열 사용
+            // 여기서는 직접 애니메이션을 완료 상태로 만들기만 함
 
             // 컨트롤 활성화
             if (modelRef.current) {
@@ -958,8 +1036,22 @@ const FuturePage = ({ onBackToMain }) => {
 
         // 리사이즈 핸들러
         const handleResize = () => {
-            if (isMounted) {
-                ScrollTrigger.refresh();
+            if (isMounted && visionRef.current && document.body.contains(visionRef.current)) {
+                try {
+                    // 개별 트리거만 refresh (전체 refresh는 오류 발생 가능)
+                    scrollTriggers.forEach(trigger => {
+                        if (trigger && typeof trigger.refresh === 'function') {
+                            try {
+                                trigger.refresh();
+                            } catch (e) {
+                                // ignore individual refresh errors
+                            }
+                        }
+                    });
+                } catch (e) {
+                    // ignore refresh errors
+                    console.debug('ScrollTrigger.refresh error in handleResize:', e);
+                }
             }
         };
 
@@ -979,8 +1071,10 @@ const FuturePage = ({ onBackToMain }) => {
                 )
                 gsapAnimations.push(iconAnimation)
             }
-            // ScrollTrigger 새로고침
-            ScrollTrigger.refresh();
+            // ScrollTrigger 새로고침 (개별 트리거만 refresh)
+            // 주의: ScrollTrigger.refresh()는 모든 트리거를 refresh하는데, 이미 제거된 DOM을 참조할 수 있음
+            // 따라서 개별 트리거만 refresh하거나, 트리거가 생성된 후에만 refresh
+            // 여기서는 트리거가 아직 생성되지 않았으므로 refresh하지 않음
 
             // ref를 사용해서 DOM 요소에 직접 접근
             // ScrollTrigger의 pin은 DOM에 wrapper를 추가하므로 주의 필요
@@ -1004,25 +1098,37 @@ const FuturePage = ({ onBackToMain }) => {
                             markers: false,
                             onLeave: () => {
                                 // 모바일에서 pin이 해제되면 스크롤을 정확히 멈춤
-                                if (isMobile && visionRef.current) {
-                                    // ScrollTrigger의 end 지점 계산
-                                    const triggerTop = visionRef.current.offsetTop
-                                    const scrollEnd = triggerTop + 500 // end: "+=500"에 맞춤
+                                if (isMobile && visionRef.current && document.body.contains(visionRef.current)) {
+                                    try {
+                                        // ScrollTrigger의 end 지점 계산
+                                        const triggerTop = visionRef.current.offsetTop
+                                        const scrollEnd = triggerTop + 500 // end: "+=500"에 맞춤
 
-                                    // 즉시 스크롤 위치 고정
-                                    requestAnimationFrame(() => {
-                                        window.scrollTo({ top: scrollEnd, behavior: 'instant' })
-                                        document.documentElement.scrollTop = scrollEnd
-                                        document.body.scrollTop = scrollEnd
-                                    })
+                                        // 즉시 스크롤 위치 고정
+                                        requestAnimationFrame(() => {
+                                            if (visionRef.current && document.body.contains(visionRef.current)) {
+                                                window.scrollTo({ top: scrollEnd, behavior: 'instant' })
+                                                document.documentElement.scrollTop = scrollEnd
+                                                document.body.scrollTop = scrollEnd
+                                            }
+                                        })
+                                    } catch (e) {
+                                        // ignore errors
+                                        console.debug('onLeave error:', e);
+                                    }
                                 }
                             },
                             onEnterBack: () => {
                                 // 모바일에서 다시 진입할 때도 스크롤 제한
-                                if (isMobile && visionRef.current) {
-                                    const triggerTop = visionRef.current.offsetTop
-                                    if (window.scrollY < triggerTop) {
-                                        window.scrollTo({ top: triggerTop, behavior: 'instant' })
+                                if (isMobile && visionRef.current && document.body.contains(visionRef.current)) {
+                                    try {
+                                        const triggerTop = visionRef.current.offsetTop
+                                        if (window.scrollY < triggerTop) {
+                                            window.scrollTo({ top: triggerTop, behavior: 'instant' })
+                                        }
+                                    } catch (e) {
+                                        // ignore errors
+                                        console.debug('onEnterBack error:', e);
                                     }
                                 }
                             }
@@ -1336,10 +1442,12 @@ const FuturePage = ({ onBackToMain }) => {
                 }
 
                 // 남은 모든 ScrollTrigger 정리
+                // 주의: ScrollTrigger.getAll()은 모든 트리거를 반환하는데, 이미 제거된 DOM을 참조하는 트리거도 포함될 수 있음
+                // 따라서 더 안전하게 처리
                 try {
-                    const allTriggers = ScrollTrigger.getAll();
-                    for (let i = allTriggers.length - 1; i >= 0; i--) {
-                        const trigger = allTriggers[i];
+                    // scrollTriggers 배열에 있는 트리거만 정리 (이미 추적 중인 것들)
+                    // ScrollTrigger.getAll()은 사용하지 않음 (다른 페이지의 트리거도 포함될 수 있고, 이미 제거된 DOM 참조 가능)
+                    scrollTriggers.forEach(trigger => {
                         if (trigger) {
                             try {
                                 // ref가 유효할 때만 disable
@@ -1357,22 +1465,22 @@ const FuturePage = ({ onBackToMain }) => {
                                 console.debug('ScrollTrigger cleanup error:', e);
                             }
                         }
-                    }
+                    });
                 } catch (e) {
-                    // ignore getAll errors
-                    console.debug('ScrollTrigger.getAll error:', e);
+                    // ignore cleanup errors
+                    console.debug('ScrollTrigger cleanup error:', e);
                 }
 
                 // ScrollTrigger 전체 정리 및 스크롤 위치 리셋
+                // 주의: clearScrollMemory나 refresh는 호출하지 않음 (이미 kill된 트리거에 대해 오류 발생 가능)
                 try {
-                    ScrollTrigger.clearScrollMemory();
                     // 언마운트 시에도 스크롤 위치 리셋
                     window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
                     document.documentElement.scrollTop = 0
                     document.body.scrollTop = 0
                 } catch (e) {
-                    // ignore clearScrollMemory errors
-                    console.debug('ScrollTrigger.clearScrollMemory error:', e);
+                    // ignore scroll errors
+                    console.debug('Scroll reset error:', e);
                 }
             } catch (e) {
                 // ignore ScrollTrigger cleanup errors
