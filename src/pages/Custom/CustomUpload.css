@@ -1074,6 +1074,43 @@
     }
 }
 
+/* 노트북 화면 스타일 (769px ~ 1440px) */
+@media (min-width: 48.0625rem) and (max-width: 90rem) {
+
+    /* 커스텀 피팅 preview-container 크기 축소 */
+    .fitting-container .content-wrapper.custom-wrapper .step-guide-panel .preview-container {
+        height: 450px !important;
+        max-height: 500px !important;
+        margin-top: -40px !important;
+    }
+
+    .content-wrapper.custom-wrapper .step-guide-panel {
+        margin-top: -60px !important;
+    }
+
+    /* 커스텀 피팅 필터 영역 우측 이동 */
+    .content-wrapper.custom-wrapper .step-guide-panel-step3 .step-result-actions {
+        right: -80px !important;
+        top: 45% !important;
+    }
+
+    .content-wrapper.custom-wrapper .step-guide-panel-step3 .filter-buttons-container {
+        margin-right: 30px !important;
+    }
+
+    .content-wrapper.custom-wrapper .step-guide-panel-step3 .filter-label {
+        margin-right: 160px !important;
+    }
+
+    .content-wrapper.custom-wrapper .step-guide-panel-step3 .filter-buttons {
+        margin-right: 100px !important;
+    }
+
+    .content-wrapper.custom-wrapper .step-guide-panel-step3 .step-result-actions .download-button {
+        margin-right: 220px !important;
+    }
+}
+
 /* 웹 버전에서 step-guide-panel을 우측으로 이동 (모바일 미디어 쿼리 뒤에 배치) */
 @media (min-width: 769px) {
     .content-wrapper.custom-wrapper .step-guide-panel {

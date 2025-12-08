@@ -219,11 +219,31 @@
     }
 }
 
-/* AOS에서만 메인 영상의 왼쪽이 잘리지 않도록 수정 */
-.android .video-background-video {
-    min-width: 115% !important;
-    object-position: left center !important;
-    transform: translate(-70%, -55%) !important;
+/* 노트북 화면 스타일 (769px ~ 1440px) */
+@media (min-width: 48.0625rem) and (max-width: 90rem) {
+    .video-background-video {
+        transform: translate(-50%, -55%) scale(0.7) !important;
+        min-width: 100% !important;
+    }
+
+    /* '입어보지 않아도~' 문구 제거 */
+    .video-side-text-line1 {
+        display: none !important;
+    }
+
+    /* 'AI가 완성하는 나만의 웨딩드레스 피팅룸' 문구 제거 */
+    .video-side-text-line2 {
+        display: none !important;
+    }
+}
+
+/* AOS에서만 메인 영상의 왼쪽이 잘리지 않도록 수정 (데스크톱만) */
+@media (min-width: 90.0625rem) {
+    .android .video-background-video {
+        min-width: 115% !important;
+        object-position: left center !important;
+        transform: translate(-70%, -55%) !important;
+    }
 }
 
 /* AOS 모바일에서도 메인 영상의 왼쪽이 잘리지 않도록 수정 */
@@ -233,5 +253,22 @@
         width: 115% !important;
         object-position: left center !important;
         transform: translate(-52%, 0) !important;
+    }
+}
+
+/* AOS 노트북 화면에서도 메인 영상 축소 및 텍스트 제거 */
+@media (min-width: 48.0625rem) and (max-width: 90rem) {
+    .android .video-background-video {
+        transform: translate(-50%, -55%) scale(0.7) !important;
+        min-width: 100% !important;
+        object-position: center center !important;
+    }
+
+    .android .video-side-text-line1 {
+        display: none !important;
+    }
+
+    .android .video-side-text-line2 {
+        display: none !important;
     }
 }

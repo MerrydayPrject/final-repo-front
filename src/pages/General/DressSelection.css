@@ -185,6 +185,103 @@
 }
 
 /* ============================================
+   노트북 화면 스타일 (769px ~ 1440px)
+   ============================================ */
+@media (min-width: 48.0625rem) and (max-width: 90rem) {
+    .dress-selection {
+        padding: 25px 0 0 !important;
+        padding-bottom: 0 !important;
+        margin-bottom: -20px !important;
+        transform: scale(0.95);
+        transform-origin: top center;
+        height: 100% !important;
+        min-height: 580px !important;
+    }
+
+    .dress-content-wrapper {
+        height: 95% !important;
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    .dress-grid-container {
+        height: 100% !important;
+        margin-bottom: 0 !important;
+        padding-bottom: 10px !important;
+    }
+
+    .category-buttons-wrapper {
+        margin-bottom: 10px !important;
+        margin-top: 15px !important;
+        padding-bottom: 0 !important;
+    }
+
+    .category-button {
+        padding: 7px 14px !important;
+        font-size: 12.5px !important;
+    }
+
+    .category-nav-button {
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 20px !important;
+    }
+
+    .category-nav-button.prev {
+        margin-right: 40px !important;
+    }
+
+    .category-nav-button.next {
+        margin-left: 40px !important;
+    }
+
+    .dress-card {
+        width: calc(47% - 6px) !important;
+        padding-top: calc((47% - 6px) * 0.65) !important;
+    }
+
+    .dress-category-badge {
+        font-size: 11.5px !important;
+        padding: 5.5px 11px !important;
+    }
+
+    .selected-badge {
+        width: 30px !important;
+        height: 30px !important;
+        font-size: 17px !important;
+    }
+
+    .drag-hint {
+        font-size: 11.5px !important;
+        padding: 5.5px 11px !important;
+    }
+
+    .vertical-slider {
+        width: 38px !important;
+    }
+
+    .slider-arrow {
+        width: 30px !important;
+        height: 30px !important;
+        font-size: 13px !important;
+    }
+
+    .slider-handle {
+        width: 19px !important;
+        height: 19px !important;
+    }
+
+    .dress-selection-overlay-text {
+        font-size: 14px !important;
+    }
+
+    .custom-message {
+        font-size: 15px !important;
+        padding: 70px 20px !important;
+    }
+}
+
+/* ============================================
    모바일 버전 (768px 이하) - 시작
    ============================================ */
 

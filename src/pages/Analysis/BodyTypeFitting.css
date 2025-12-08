@@ -1187,6 +1187,121 @@
     }
 }
 
+/* 노트북 화면 스타일 (769px ~ 1440px) */
+@media (min-width: 48.0625rem) and (max-width: 90rem) {
+
+    /* 체형분석 메인 섹션 */
+    .analysis-main-section {
+        gap: 30px !important;
+        margin-top: -20px !important;
+        max-width: 95% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    /* 업로드 영역 이미지 컨테이너 높이 및 너비 축소 */
+    .analysis-main-section .upload-area .image-container {
+        height: 320px !important;
+        max-height: 320px !important;
+        width: 95% !important;
+    }
+
+    /* 업로드 영역 너비 축소 */
+    .analysis-main-section .upload-area {
+        width: 95% !important;
+        max-width: 95% !important;
+    }
+
+    /* 결과 영역 높이 및 너비 축소 */
+    .analysis-result-area {
+        max-height: 500px !important;
+        padding: 12px !important;
+        width: 95% !important;
+        max-width: 95% !important;
+    }
+
+    /* 빈 이미지 플레이스홀더 높이 축소 */
+    .empty-image-placeholder {
+        min-height: 380px !important;
+    }
+
+    /* 업로드 박스 높이 및 너비 축소 */
+    .upload-box {
+        height: 400px !important;
+        width: 90% !important;
+        max-width: 350px !important;
+    }
+
+    /* 탭 컨텐츠 패딩 및 너비 축소 */
+    .tab-content {
+        padding: 35px 40px !important;
+        margin-top: 30px !important;
+        max-width: 95% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    /* 업로드 섹션 너비 축소 */
+    .upload-section {
+        max-width: 95% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    /* body-info-inputs 크기 축소 */
+    .analysis-main-section .body-info-inputs {
+        gap: 8px !important;
+        margin-top: 5px !important;
+        margin-bottom: 5px !important;
+        padding: 0 !important;
+        width: 85% !important;
+        max-width: 85% !important;
+    }
+
+    .analysis-main-section .body-info-inputs .input-group {
+        gap: 5px !important;
+        flex: 1 !important;
+        min-width: 0 !important;
+        max-width: 48% !important;
+    }
+
+    .analysis-main-section .body-info-inputs .input-group label {
+        font-size: 0.85rem !important;
+        margin-top: 5px !important;
+    }
+
+    .analysis-main-section .body-info-inputs .input-group input {
+        padding: 8px 12px !important;
+        font-size: 0.9rem !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* 분석하기 버튼 크기 조정 및 강제 표시 */
+    .analysis-main-section .upload-area .analyze-button {
+        width: 85% !important;
+        max-width: 85% !important;
+        padding: 10px 16px !important;
+        font-size: 0.9rem !important;
+        margin-top: 8px !important;
+        margin-bottom: 5px !important;
+        margin-left: 0 !important;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: relative !important;
+        z-index: 10 !important;
+    }
+
+    /* 업로드 영역에 버튼이 보이도록 */
+    .analysis-main-section .upload-area {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .tab-menu {
@@ -1234,6 +1349,44 @@
 
     .feature-list li {
         font-size: 1rem;
+    }
+
+    /* 노트북 화면 스타일 (769px ~ 1440px) */
+    @media (min-width: 48.0625rem) and (max-width: 90rem) {
+
+        /* 체형분석 메인 섹션 */
+        .analysis-main-section {
+            gap: 30px !important;
+            margin-top: -20px !important;
+        }
+
+        /* 업로드 영역 이미지 컨테이너 높이 축소 */
+        .analysis-main-section .upload-area .image-container {
+            height: 380px !important;
+            max-height: 380px !important;
+        }
+
+        /* 결과 영역 높이 축소 */
+        .analysis-result-area {
+            max-height: 500px !important;
+            padding: 12px !important;
+        }
+
+        /* 빈 이미지 플레이스홀더 높이 축소 */
+        .empty-image-placeholder {
+            min-height: 380px !important;
+        }
+
+        /* 업로드 박스 높이 축소 */
+        .upload-box {
+            height: 400px !important;
+        }
+
+        /* 탭 컨텐츠 패딩 축소 */
+        .tab-content {
+            padding: 35px 40px !important;
+            margin-top: 30px !important;
+        }
     }
 
     /* Body Analysis Responsive Styles */
@@ -1288,7 +1441,6 @@
         padding: 12px;
         max-height: none;
         display: block;
-
     }
 
     /* 모바일 버전 - 체형특징 라벨 가로 2개씩 배치 */

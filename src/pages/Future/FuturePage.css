@@ -242,6 +242,47 @@
     cursor: default;
 }
 
+/* 노트북 화면 스타일 (769px ~ 1440px) */
+@media (min-width: 48.0625rem) and (max-width: 90rem) {
+    #vision1012 .b_txt .top_txt {
+        transform: translateX(0px) !important;
+        white-space: nowrap !important;
+    }
+
+    #vision1012 .b_txt .btm_txt {
+        transform: translateX(0px) !important;
+        white-space: nowrap !important;
+    }
+
+    /* 노트북 화면에서 canvas 드래그 기능 활성화 */
+    #vision1012 .full_img .bg .future-canvas {
+        pointer-events: auto !important;
+        cursor: grab !important;
+        z-index: 1 !important;
+        position: relative !important;
+    }
+
+    #vision1012 .full_img .bg {
+        pointer-events: auto !important;
+        z-index: 1 !important;
+    }
+
+    #vision1012 .full_img {
+        pointer-events: auto !important;
+    }
+
+    /* 텍스트 요소들이 canvas를 가리지 않도록 */
+    #vision1012 .b_txt {
+        pointer-events: none !important;
+        z-index: 2 !important;
+    }
+
+    #vision1012 .instruction_txt {
+        pointer-events: none !important;
+        z-index: 3 !important;
+    }
+}
+
 #vision1012 .instruction_txt {
     position: absolute;
     bottom: 60px;

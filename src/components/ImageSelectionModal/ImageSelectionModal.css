@@ -164,6 +164,59 @@
     transform: translateY(0);
 }
 
+/* 노트북 화면 스타일 (769px ~ 1440px) */
+@media (min-width: 48.0625rem) and (max-width: 90rem) {
+    .image-selection-modal-container {
+        padding: 20px !important;
+        max-width: 85% !important;
+        min-height: 60vh !important;
+        max-height: 85vh !important;
+    }
+
+    .image-selection-modal-header {
+        margin-bottom: 20px !important;
+    }
+
+    .image-selection-modal-header h2 {
+        font-size: 20px !important;
+    }
+
+    .image-selection-modal-header p {
+        font-size: 14px !important;
+    }
+
+    .image-selection-modal-images {
+        gap: 20px !important;
+        margin-top: 15px !important;
+    }
+
+    .image-selection-item {
+        padding: 12px !important;
+        max-width: 400px !important;
+    }
+
+    .image-selection-preview {
+        max-width: 400px !important;
+        min-height: 400px !important;
+        max-height: 500px !important;
+    }
+
+    .image-selection-nav-button {
+        width: 42px !important;
+        height: 42px !important;
+        font-size: 28px !important;
+    }
+
+    .image-selection-counter {
+        font-size: 16px !important;
+    }
+
+    .image-selection-select-button {
+        padding: 12px 24px !important;
+        font-size: 16px !important;
+    }
+}
+
 /* 모바일 반응형 */
 @media (max-width: 768px) {
     .image-selection-modal-container {

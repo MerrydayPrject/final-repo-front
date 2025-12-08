@@ -117,7 +117,7 @@
     display: block;
 }
 
-/* ex_B ?��?지 (좌측) ?�치 조정 */
+/* ex_B ?��?지 (좌측) ?�치 조정 */
 .slider-image-ex-b {
     z-index: 1;
 }
@@ -130,7 +130,7 @@
     display: block;
 }
 
-/* ex_A ?��?지 (?�측) ?�치 조정 */
+/* ex_A ?��?지 (?�측) ?�치 조정 */
 .slider-image-ex-a {
     z-index: 2;
     pointer-events: none;
@@ -239,6 +239,25 @@
     font-size: 0.9rem;
     color: #7a6a52;
     cursor: default;
+}
+
+/* 노트북 화면 스타일 (769px ~ 1440px) */
+@media (min-width: 48.0625rem) and (max-width: 90rem) {
+    .usage-guide-container {
+        margin-left: 280px !important;
+    }
+
+    .usage-guide-label {
+        margin-left: -50px !important;
+    }
+
+    .usage-guide-steps {
+        margin-left: -50px !important;
+    }
+
+    .usage-guide-hint {
+        margin-left: -50px !important;
+    }
 }
 
 @media (max-width: 768px) {

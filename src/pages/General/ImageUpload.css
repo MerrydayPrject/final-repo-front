@@ -347,13 +347,28 @@
     max-width: 100% !important;
 }
 
-.step-guide-panel-step2 .step-panel-content .preview-container,
-.step-guide-panel-step2 .step-panel-content .upload-area {
-    width: 100% !important;
-    max-width: 450px !important;
-    height: 520px !important;
-    max-height: 520px !important;
-    margin-left: 250px !important;
+/* 데스크톱 화면(1440px 이상)에서만 기본 height 적용 */
+@media (min-width: 90.0625rem) {
+
+    .step-guide-panel-step2 .step-panel-content .preview-container,
+    .step-guide-panel-step2 .step-panel-content .upload-area {
+        width: 100% !important;
+        max-width: 450px !important;
+        height: 520px !important;
+        max-height: 520px !important;
+        margin-left: 250px !important;
+    }
+}
+
+/* 노트북 화면 이하에서는 기본 스타일만 (height는 미디어 쿼리에서 설정) */
+@media (max-width: 90rem) {
+
+    .step-guide-panel-step2 .step-panel-content .preview-container,
+    .step-guide-panel-step2 .step-panel-content .upload-area {
+        width: 100% !important;
+        max-width: 450px !important;
+        margin-left: 250px !important;
+    }
 }
 
 .step-2-header {
@@ -395,6 +410,170 @@
     color: #2c2c2c;
     cursor: default;
     text-align: left;
+}
+
+/* ============================================
+   노트북 화면 스타일 (769px ~ 1440px)
+   ============================================ */
+@media (min-width: 48.0625rem) and (max-width: 90rem) {
+    .step-guide-panel {
+        padding: 30px 22px 10px 22px !important;
+        transform: scale(0.95);
+        transform-origin: top center;
+        min-height: 550px !important;
+        height: 550px !important;
+        max-height: 550px !important;
+        gap: 8px !important;
+        margin-bottom: 0 !important;
+    }
+
+    .fitting-container .step-guide-panel,
+    .fitting-container .step-guide-panel-step1,
+    .fitting-container .step-guide-panel-step2,
+    .fitting-container .step-guide-panel-step3 {
+        min-height: 550px !important;
+        height: 550px !important;
+        max-height: 550px !important;
+        gap: 10px !important;
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    .step-guide-panel-step2 .step-panel-content,
+    .step-guide-panel-step3 .step-panel-content {
+        gap: 8px !important;
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    .step-title {
+        font-size: 19px !important;
+    }
+
+    .step-description {
+        font-size: 14.5px !important;
+    }
+
+    .step-badge {
+        font-size: 13px !important;
+        padding: 6px 17px !important;
+    }
+
+    .step-guide-panel .preview-container {
+        max-width: 700px !important;
+        height: 380px !important;
+        max-height: 380px !important;
+    }
+
+    .fitting-container .step-guide-panel .preview-container {
+        height: 380px !important;
+        max-height: 380px !important;
+    }
+
+    .step-guide-panel .upload-area {
+        max-width: 450px !important;
+        height: 380px !important;
+        max-height: 380px !important;
+    }
+
+    .fitting-container .step-guide-panel .upload-area {
+        height: 380px !important;
+        max-height: 380px !important;
+    }
+
+    .step-progress-item {
+        padding: 7px 14px !important;
+        font-size: 11.5px !important;
+    }
+
+    .step-progress-number {
+        font-size: 15px !important;
+    }
+
+    .step-progress-label {
+        font-size: 10.5px !important;
+    }
+
+    .filter-button {
+        padding: 7px 14px !important;
+        font-size: 11.5px !important;
+    }
+
+    .filter-label {
+        font-size: 13px !important;
+    }
+
+    .download-button {
+        padding: 6px 11px !important;
+        font-size: 11.5px !important;
+    }
+
+    .step-guide-panel-step2 .step-panel-content .preview-container,
+    .step-guide-panel-step2 .step-panel-content .upload-area {
+        max-width: 400px !important;
+        height: 380px !important;
+        max-height: 380px !important;
+        margin-left: 200px !important;
+    }
+
+    .fitting-container .step-guide-panel-step2 .step-panel-content .preview-container,
+    .fitting-container .step-guide-panel-step2 .step-panel-content .upload-area {
+        height: 380px !important;
+        max-height: 380px !important;
+    }
+
+    .step-guide-panel-step3 .preview-container {
+        max-width: 700px !important;
+        height: 380px !important;
+        max-height: 380px !important;
+    }
+
+    .fitting-container .step-guide-panel-step3 .preview-container {
+        height: 380px !important;
+        max-height: 380px !important;
+    }
+
+    .step-background-selector .background-button {
+        width: 80px !important;
+        height: 80px !important;
+    }
+
+    /* Step3 필터 영역 크기 축소 및 우측 이동 */
+    .step-guide-panel-step3 .step-result-actions {
+        right: -20px !important;
+    }
+
+    .step-guide-panel-step3 .filter-label {
+        font-size: 10.5px !important;
+        margin-right: 60px !important;
+        margin-bottom: 3px !important;
+    }
+
+    .step-guide-panel-step3 .filter-label i {
+        font-size: 11.5px !important;
+    }
+
+    .step-guide-panel-step3 .filter-buttons-container {
+        margin-right: 15px !important;
+        margin-top: 25px !important;
+        gap: 6px !important;
+    }
+
+    .step-guide-panel-step3 .filter-buttons {
+        gap: 8px !important;
+        margin-right: 30px !important;
+    }
+
+    .step-guide-panel-step3 .filter-button {
+        min-width: 65px !important;
+        padding: 5px 10px !important;
+        font-size: 10.5px !important;
+    }
+
+    .step-guide-panel-step3 .step-result-actions .download-button {
+        margin-top: 170px !important;
+        margin-right: 60px !important;
+    }
 }
 
 /* ============================================
@@ -606,14 +785,28 @@
     }
 }
 
-.fitting-container .step-guide-panel .preview-container {
-    width: 100% !important;
-    max-width: 900px !important;
-    height: 550px !important;
-    max-height: 600px !important;
-    margin-top: 10px;
-    margin-left: -80px !important;
+/* 데스크톱 화면 (1440px 이상)에서만 기본 height 적용 */
+@media (min-width: 90.0625rem) {
+    .fitting-container .step-guide-panel .preview-container {
+        width: 100% !important;
+        max-width: 900px !important;
+        height: 550px !important;
+        max-height: 600px !important;
+        margin-top: 10px;
+        margin-left: -80px !important;
+    }
 }
+
+/* 노트북 화면 이하에서 기본 스타일 */
+@media (max-width: 90rem) {
+    .fitting-container .step-guide-panel .preview-container {
+        width: 100% !important;
+        max-width: 900px !important;
+        margin-top: 10px;
+        margin-left: -80px !important;
+    }
+}
+
 
 .fitting-container .step-guide-panel .preview-container .preview-image {
     width: 100% !important;
@@ -2220,4 +2413,73 @@
     color: #212121;
     margin: 0;
     text-align: center;
+}
+
+/* 노트북 화면 height 강제 적용 - 파일 끝에 배치하여 최우선 적용 */
+@media (min-width: 48.0625rem) and (max-width: 90rem) {
+
+    /* image-upload 컨테이너 height 증가 및 하단 공백 제거 */
+    .fitting-container .image-upload {
+        height: 550px !important;
+        min-height: 550px !important;
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    /* step-panel-content 하단 공백 제거 */
+    .fitting-container .step-guide-panel-step2 .step-panel-content,
+    .fitting-container .step-guide-panel-step3 .step-panel-content {
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    /* image-upload-wrapper 하단 공백 제거 */
+    .fitting-container .step-guide-panel .image-upload-wrapper,
+    .fitting-container .step-guide-panel-step2 .step-panel-content .image-upload-wrapper,
+    .fitting-container .step-guide-panel-step3 .step-panel-content .image-upload-wrapper {
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    /* 모든 하단 공백 강제 제거 */
+    .fitting-container * {
+        box-sizing: border-box;
+    }
+
+    .fitting-container .content-wrapper>*:last-child {
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    .fitting-container .right-container>*:last-child {
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    /* Step1, Step3 preview-container - 크기 축소하여 하단 잘림 방지 */
+    .fitting-container .step-guide-panel .preview-container,
+    .fitting-container .step-guide-panel-step3 .preview-container,
+    .fitting-container .step-guide-panel:not(.step-guide-panel-step2) .preview-container {
+        height: 380px !important;
+        max-height: 380px !important;
+        min-height: 380px !important;
+    }
+
+    /* Step1, Step3 upload-area - 크기 축소하여 하단 잘림 방지 */
+    .fitting-container .step-guide-panel .upload-area,
+    .fitting-container .step-guide-panel:not(.step-guide-panel-step2) .upload-area {
+        height: 380px !important;
+        max-height: 380px !important;
+        min-height: 380px !important;
+    }
+
+    /* Step2 preview-container, upload-area - 크기 축소하여 하단 잘림 방지 */
+    .fitting-container .step-guide-panel-step2 .step-panel-content .preview-container,
+    .fitting-container .step-guide-panel-step2 .step-panel-content .upload-area,
+    .fitting-container .step-guide-panel-step2 .preview-container,
+    .fitting-container .step-guide-panel-step2 .upload-area {
+        height: 380px !important;
+        max-height: 380px !important;
+        min-height: 380px !important;
+    }
 }
