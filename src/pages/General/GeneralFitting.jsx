@@ -1421,9 +1421,6 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                 onClose={closeImageUploadModal}
                 message="먼저 전신 사진을 업로드해주세요."
                 center
-                onConfirm={() => {
-                    fileInputRef.current?.click()
-                }}
             >
                 <input
                     type="file"
