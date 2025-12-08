@@ -138,6 +138,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
     const contentRef = useRef(null)
     const sliderTrackRef = useRef(null)
     const sliderHandleRef = useRef(null)
+    const categoryButtonsRef = useRef(null)
 
     // 카테고리 정의
     const categories = [
@@ -574,12 +575,35 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
     }
 
     const handleCategoryClick = (categoryId) => {
+        // 같은 카테고리를 다시 선택해도 스크롤 초기화를 보장하기 위해 먼저 스크롤 초기화
+        if (contentRef.current) {
+            contentRef.current.scrollTop = 0
+            // 모바일에서 드레스 그리드 가로 스크롤 초기화
+            if (isMobile) {
+                contentRef.current.scrollLeft = 0
+            }
+        }
+        // 모바일에서 카테고리 버튼 가로 스크롤 초기화
+        if (isMobile && categoryButtonsRef.current) {
+            categoryButtonsRef.current.scrollLeft = 0
+        }
+
         setSelectedCategory(categoryId)
         setDisplayCount(6)
         setScrollPosition(0)
-        if (contentRef.current) {
-            contentRef.current.scrollTop = 0
-        }
+
+        // DOM 업데이트 후에도 다시 한 번 스크롤 초기화 (확실하게)
+        requestAnimationFrame(() => {
+            if (contentRef.current) {
+                contentRef.current.scrollTop = 0
+                if (isMobile) {
+                    contentRef.current.scrollLeft = 0
+                }
+            }
+            if (isMobile && categoryButtonsRef.current) {
+                categoryButtonsRef.current.scrollLeft = 0
+            }
+        })
     }
 
     const handleDragStart = (e, dress) => {
@@ -691,6 +715,21 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
     useEffect(() => {
         updateSliderHandleTop(scrollPosition)
     }, [scrollPosition, updateSliderHandleTop])
+
+    // 카테고리 변경 시 스크롤 초기화
+    useEffect(() => {
+        if (contentRef.current) {
+            contentRef.current.scrollTop = 0
+            // 모바일에서 드레스 그리드 가로 스크롤 초기화
+            if (isMobile) {
+                contentRef.current.scrollLeft = 0
+            }
+        }
+        // 모바일에서 카테고리 버튼 가로 스크롤 초기화
+        if (isMobile && categoryButtonsRef.current) {
+            categoryButtonsRef.current.scrollLeft = 0
+        }
+    }, [selectedCategory, isMobile])
 
     useEffect(() => {
         const container = contentRef.current
@@ -1244,7 +1283,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                                     >
                                         ‹
                                     </button>
-                                    <div className="category-buttons">
+                                    <div className="category-buttons" ref={categoryButtonsRef}>
                                         {visibleCategories.map((category) => (
                                             <button
                                                 key={category.id}
