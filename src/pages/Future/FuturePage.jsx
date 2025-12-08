@@ -1308,7 +1308,9 @@ const FuturePage = ({ onBackToMain }) => {
                 const isRefValid = visionRef.current &&
                     fullImgRef.current &&
                     visionRef.current.parentNode &&
-                    fullImgRef.current.parentNode;
+                    fullImgRef.current.parentNode &&
+                    document.body.contains(visionRef.current) &&
+                    document.body.contains(fullImgRef.current);
 
                 // 모든 ScrollTrigger를 역순으로 disable하고 kill (pin이 있는 것부터)
                 for (let i = scrollTriggers.length - 1; i >= 0; i--) {
@@ -1321,12 +1323,14 @@ const FuturePage = ({ onBackToMain }) => {
                                     trigger.disable();
                                 }
                             }
-                            // kill로 완전히 제거 (항상 실행)
+                            // kill로 완전히 제거 (false를 전달하여 DOM 제거 시도 방지)
                             if (typeof trigger.kill === 'function') {
-                                trigger.kill(true);
+                                // false를 전달하면 DOM에서 요소를 제거하지 않고 ScrollTrigger만 정리
+                                trigger.kill(false);
                             }
                         } catch (e) {
                             // ignore individual errors - 이미 제거되었을 수 있음
+                            console.debug('ScrollTrigger cleanup error:', e);
                         }
                     }
                 }
@@ -1344,17 +1348,19 @@ const FuturePage = ({ onBackToMain }) => {
                                         trigger.disable();
                                     }
                                 }
-                                // kill로 완전히 제거
+                                // kill로 완전히 제거 (false를 전달하여 DOM 제거 시도 방지)
                                 if (typeof trigger.kill === 'function') {
-                                    trigger.kill(true);
+                                    trigger.kill(false);
                                 }
                             } catch (e) {
                                 // ignore cleanup errors
+                                console.debug('ScrollTrigger cleanup error:', e);
                             }
                         }
                     }
                 } catch (e) {
                     // ignore getAll errors
+                    console.debug('ScrollTrigger.getAll error:', e);
                 }
 
                 // ScrollTrigger 전체 정리 및 스크롤 위치 리셋
@@ -1366,9 +1372,11 @@ const FuturePage = ({ onBackToMain }) => {
                     document.body.scrollTop = 0
                 } catch (e) {
                     // ignore clearScrollMemory errors
+                    console.debug('ScrollTrigger.clearScrollMemory error:', e);
                 }
             } catch (e) {
                 // ignore ScrollTrigger cleanup errors
+                console.debug('ScrollTrigger cleanup error:', e);
             }
 
             // GSAP 애니메이션 kill
