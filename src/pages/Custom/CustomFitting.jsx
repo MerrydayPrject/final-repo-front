@@ -1022,44 +1022,26 @@ const CustomFitting = ({ onBackToMain }) => {
                                 ) : (
                                     <>
                                         <div
-                                            className={`custom-preview-container ${isDraggingDress ? 'dragging' : ''}`}
+                                            className={`custom-preview-container ${isDraggingDress ? 'dragging' : ''} ${isCheckingDress ? 'processing' : ''}`}
                                             onDragOver={handleDressDragOver}
                                             onDragLeave={handleDressDragLeave}
                                             onDrop={handleDressDrop}
                                         >
                                             <img src={dressPreview} alt="Dress" className="custom-preview-image" />
-                                            {!isMatching && (
+                                            {isCheckingDress && (
+                                                <>
+                                                    <div className="validation-overlay"></div>
+                                                    <div className="validation-loader-wrapper">
+                                                        <p className="upload-text">드레스를 확인 중입니다.<br />잠시만 기다려주세요</p>
+                                                    </div>
+                                                </>
+                                            )}
+                                            {!isMatching && !isCheckingDress && (
                                                 <button className="custom-remove-button" onClick={handleDressRemove}>
                                                     ✕
                                                 </button>
                                             )}
                                         </div>
-                                        {/* 드레스 체크 결과 표시 */}
-                                        {isCheckingDress && (
-                                            <div style={{
-                                                marginTop: '8px',
-                                                padding: '8px',
-                                                textAlign: 'center',
-                                                fontSize: '14px',
-                                                color: '#666'
-                                            }}>
-                                                드레스 확인 중...
-                                            </div>
-                                        )}
-                                        {!isCheckingDress && dressCheckResult === true && (
-                                            <div style={{
-                                                marginTop: '8px',
-                                                padding: '8px',
-                                                textAlign: 'center',
-                                                fontSize: '14px',
-                                                backgroundColor: '#e8f5e9',
-                                                color: '#2e7d32',
-                                                borderRadius: '4px',
-                                                fontWeight: '500'
-                                            }}>
-                                                ✓ 드레스로 확인됨
-                                            </div>
-                                        )}
                                     </>
                                 )}
                             </div>

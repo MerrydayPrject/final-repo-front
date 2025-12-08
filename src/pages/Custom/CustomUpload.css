@@ -669,6 +669,46 @@
     pointer-events: none;
 }
 
+/* Custom Preview Container Validation Overlay */
+.custom-preview-container .validation-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(8px);
+    border-radius: inherit;
+    z-index: 1;
+}
+
+.custom-preview-container .validation-loader-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    z-index: 2;
+    width: auto;
+    min-width: 280px;
+    max-width: 90%;
+}
+
+.custom-preview-container .validation-loader-wrapper .upload-text {
+    font-size: 14px;
+    color: #212121;
+    margin: 0;
+    text-align: center;
+    white-space: normal;
+    line-height: 1.5;
+    word-break: keep-all;
+    width: 100%;
+}
+
 .custom-remove-button {
     position: absolute;
     top: 12px;
