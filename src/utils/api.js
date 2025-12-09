@@ -133,9 +133,11 @@ export const autoMatchImageV4 = async (personImage, dressData, backgroundImage) 
  * @param {File} personImage - 사용자 사진
  * @param {Object|File} dressData - 드레스 데이터 (id, name, image, originalUrl) 또는 File 객체
  * @param {File} backgroundImage - 배경 이미지 파일
+ * @param {string} traceId - 추적 ID
+ * @param {Object} profileFront - 프론트엔드 프로파일링 데이터
  * @returns {Promise} 매칭된 이미지 결과 (v5_result 사용)
  */
-export const autoMatchImageV5V5 = async (personImage, dressData, backgroundImage) => {
+export const autoMatchImageV5V5 = async (personImage, dressData, backgroundImage, traceId = null, profileFront = null) => {
     try {
         const formData = new FormData()
         formData.append('person_image', personImage)
@@ -163,12 +165,21 @@ export const autoMatchImageV5V5 = async (personImage, dressData, backgroundImage
         }
         formData.append('background_image', backgroundImage)
 
+        // 프로파일링 데이터 추가
+        if (profileFront) {
+            formData.append('profile_front', JSON.stringify(profileFront))
+        }
+
+        // 헤더 설정
+        const headers = {
+            'Content-Type': 'multipart/form-data',
+        }
+        if (traceId) {
+            headers['X-Trace-Id'] = traceId
+        }
+
         // /tryon/compare 엔드포인트를 사용하여 v4_result와 v5_result를 모두 받음
-        const response = await api.post('/tryon/compare', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        })
+        const response = await api.post('/tryon/compare', formData, { headers })
 
         // V4V5CompareResponse 반환 (v4_result와 v5_result를 모두 포함)
         return response.data
@@ -183,21 +194,32 @@ export const autoMatchImageV5V5 = async (personImage, dressData, backgroundImage
  * @param {File} fullBodyImage - 전신 사진
  * @param {File} dressImage - 드레스 이미지
  * @param {File} backgroundImage - 배경 이미지
+ * @param {string} traceId - 추적 ID
+ * @param {Object} profileFront - 프론트엔드 프로파일링 데이터
  * @returns {Promise} 매칭된 이미지 결과 (v5_result 사용)
  */
-export const customV5V5MatchImage = async (fullBodyImage, dressImage, backgroundImage) => {
+export const customV5V5MatchImage = async (fullBodyImage, dressImage, backgroundImage, traceId = null, profileFront = null) => {
     try {
         const formData = new FormData()
         formData.append('person_image', fullBodyImage)
         formData.append('garment_image', dressImage)
         formData.append('background_image', backgroundImage)
 
+        // 프로파일링 데이터 추가
+        if (profileFront) {
+            formData.append('profile_front', JSON.stringify(profileFront))
+        }
+
+        // 헤더 설정
+        const headers = {
+            'Content-Type': 'multipart/form-data',
+        }
+        if (traceId) {
+            headers['X-Trace-Id'] = traceId
+        }
+
         // /tryon/compare/custom 엔드포인트를 사용하여 v4_result와 v5_result를 모두 받음
-        const response = await api.post('/tryon/compare/custom', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        })
+        const response = await api.post('/tryon/compare/custom', formData, { headers })
 
         // V4V5CustomCompareResponse 반환 (v4_result와 v5_result를 모두 포함)
         return response.data

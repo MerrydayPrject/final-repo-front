@@ -11,6 +11,11 @@ import '../General/ImageUpload.css'
 import './CustomUpload.css'
 import './CustomResult.css'
 
+// trace_id 생성 함수
+const generateTraceId = () => {
+    return `trace_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+}
+
 const CustomFitting = ({ onBackToMain }) => {
     // Custom Fitting 상태
     const [fullBodyImage, setFullBodyImage] = useState(null)
@@ -31,6 +36,19 @@ const CustomFitting = ({ onBackToMain }) => {
     const [progress, setProgress] = useState(0)
     const [imageSelectionModalOpen, setImageSelectionModalOpen] = useState(false)
     const [resultImages, setResultImages] = useState([]) // 두 개의 결과 이미지 저장
+    
+    // 프로파일링 관련 상태
+    const [traceId, setTraceId] = useState(null)
+    const profileTimingsRef = useRef({
+        bg_select_ms: null,
+        person_upload_ms: null,
+        person_validate_ms: null,
+        dress_upload_ms: null,
+        dress_validate_ms: null,
+        dress_cutout_ms: null,
+        compose_click_to_response_ms: null,
+        result_image_load_ms: null
+    })
 
     // 로딩 메시지 목록 (순차적으로 표시, 마지막은 고정)
     const loadingMessages = [
@@ -181,9 +199,25 @@ const CustomFitting = ({ onBackToMain }) => {
 
     // 배경 선택 핸들러
     const handleBackgroundSelect = (index) => {
+        // trace_id 생성 (피팅 1회 시작)
+        if (!traceId) {
+            const newTraceId = generateTraceId()
+            setTraceId(newTraceId)
+        }
+        
+        // 배경 선택 시간 측정 시작
+        if (profileTimingsRef.current.bg_select_ms === null) {
+            profileTimingsRef.current.bg_select_start = Date.now()
+        }
+        
         setSelectedBackgroundIndex(index)
         if (currentStep < 2) {
             setCurrentStep(2)
+        }
+        
+        // 배경 선택 완료 시간 측정
+        if (profileTimingsRef.current.bg_select_start) {
+            profileTimingsRef.current.bg_select_ms = Date.now() - profileTimingsRef.current.bg_select_start
         }
     }
 
@@ -242,12 +276,30 @@ const CustomFitting = ({ onBackToMain }) => {
             const backgroundImageUrl = backgroundImages[selectedBackgroundIndex]
             const backgroundFile = await urlToFile(backgroundImageUrl, `background${selectedBackgroundIndex + 1}.jpg`)
 
-            const result = await customV5V5MatchImage(fullBody, dress, backgroundFile)
+            // 합성 클릭 시간 측정 시작
+            const composeClickStart = Date.now()
+            
+            const result = await customV5V5MatchImage(
+                fullBody, 
+                dress, 
+                backgroundFile,
+                traceId,
+                profileTimingsRef.current
+            )
+            
+            // 합성 클릭~응답 수신 시간 측정 완료
+            profileTimingsRef.current.compose_click_to_response_ms = Date.now() - composeClickStart
+            
+            // 의상 누끼 처리 시간은 백엔드에서 측정되므로 프론트에서는 측정하지 않음
+            // (프론트에서 기다리는 시간은 compose_click_to_response_ms에 포함됨)
 
             setProgress(100)
             setSelectedFilter('none') // 필터 초기화
             setIsMatching(false)
             setCurrentStep(3)
+
+            // 결과 이미지 로딩 시간 측정 시작
+            const resultImageLoadStart = Date.now()
 
             // /tryon/compare/custom 엔드포인트는 V4V5CustomCompareResponse를 반환 (v4_result와 v5_result 포함)
             const images = []
@@ -274,10 +326,19 @@ const CustomFitting = ({ onBackToMain }) => {
             if (images.length >= 2) {
                 setResultImages(images)
                 setImageSelectionModalOpen(true)
+                // 결과 이미지 로딩 시간 측정 완료 (화면 표시 완료)
+                setTimeout(() => {
+                    profileTimingsRef.current.result_image_load_ms = Date.now() - resultImageLoadStart
+                }, 100)
             } else if (images.length === 1) {
                 // 하나의 이미지만 있는 경우
                 setCustomResultImage(images[0])
                 setOriginalResultImage(images[0])
+                
+                // 결과 이미지 로딩 시간 측정 완료 (화면 표시 완료)
+                setTimeout(() => {
+                    profileTimingsRef.current.result_image_load_ms = Date.now() - resultImageLoadStart
+                }, 100)
 
                 // 리뷰 모달 표시 (1번만, 쿠키 확인)
                 if (!isReviewCompleted('custom')) {
@@ -289,6 +350,11 @@ const CustomFitting = ({ onBackToMain }) => {
                 // 단일 이미지 응답인 경우 (기존 동작 유지, 호환성)
                 setCustomResultImage(result.result_image)
                 setOriginalResultImage(result.result_image)
+                
+                // 결과 이미지 로딩 시간 측정 완료 (화면 표시 완료)
+                setTimeout(() => {
+                    profileTimingsRef.current.result_image_load_ms = Date.now() - resultImageLoadStart
+                }, 100)
 
                 // 리뷰 모달 표시 (1번만, 쿠키 확인)
                 if (!isReviewCompleted('custom')) {
@@ -319,10 +385,26 @@ const CustomFitting = ({ onBackToMain }) => {
     }
 
     const handleFullBodyFile = async (file) => {
+        // trace_id 생성 (피팅 1회 시작)
+        if (!traceId) {
+            const newTraceId = generateTraceId()
+            setTraceId(newTraceId)
+        }
+        
+        // 인물 업로드 시간 측정 시작
+        const personUploadStart = Date.now()
+        
         // 사람 감지 검증
         try {
             setIsValidatingPerson(true)
+            
+            // 인물 검증 시간 측정 시작
+            const personValidateStart = Date.now()
+            
             const validationResult = await validatePerson(file)
+            
+            // 인물 검증 시간 측정 완료
+            profileTimingsRef.current.person_validate_ms = Date.now() - personValidateStart
 
             // 동물이 감지된 경우
             if (validationResult.is_animal) {
@@ -345,6 +427,9 @@ const CustomFitting = ({ onBackToMain }) => {
                 setFullBodyPreview(reader.result)
                 handleFullBodyUpload(file)
                 setIsValidatingPerson(false)
+                
+                // 인물 업로드 시간 측정 완료
+                profileTimingsRef.current.person_upload_ms = Date.now() - personUploadStart
             }
             reader.readAsDataURL(file)
         } catch (error) {
@@ -421,6 +506,15 @@ const CustomFitting = ({ onBackToMain }) => {
     }
 
     const handleDressFile = async (file) => {
+        // trace_id 생성 (피팅 1회 시작)
+        if (!traceId) {
+            const newTraceId = generateTraceId()
+            setTraceId(newTraceId)
+        }
+        
+        // 드레스 업로드 시간 측정 시작
+        const dressUploadStart = Date.now()
+        
         const reader = new FileReader()
         reader.onloadend = () => {
             setDressPreview(reader.result)
@@ -430,8 +524,18 @@ const CustomFitting = ({ onBackToMain }) => {
         // 드레스 체크 수행
         setIsCheckingDress(true)
         setDressCheckResult(null)
+        
+        // 드레스 검증 시간 측정 시작
+        const dressValidateStart = Date.now()
+        
         try {
+            console.log('[프론트] 드레스 체크 시작:', file.name, file.size)
             const checkResult = await checkDress(file, 'gpt-4o-mini', 'fast')
+            console.log('[프론트] 드레스 체크 결과:', checkResult)
+            
+            // 드레스 검증 시간 측정 완료
+            profileTimingsRef.current.dress_validate_ms = Date.now() - dressValidateStart
+            
             if (checkResult.success && checkResult.result) {
                 const isDress = checkResult.result.dress
                 setDressCheckResult(isDress)
@@ -454,12 +558,18 @@ const CustomFitting = ({ onBackToMain }) => {
             }
         } catch (error) {
             setDressCheckResult(null)
+            
+            // 드레스 검증 시간 측정 완료 (에러 발생 시에도)
+            profileTimingsRef.current.dress_validate_ms = Date.now() - dressValidateStart
         } finally {
             setIsCheckingDress(false)
         }
 
         // 드레스 이미지 설정 (체크 결과와 관계없이 업로드 허용)
         handleCustomDressUpload(file)
+        
+        // 드레스 업로드 시간 측정 완료
+        profileTimingsRef.current.dress_upload_ms = Date.now() - dressUploadStart
     }
 
     useEffect(() => {

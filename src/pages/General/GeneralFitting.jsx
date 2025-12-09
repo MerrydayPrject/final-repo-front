@@ -10,6 +10,11 @@ import '../../styles/App.css'
 import './ImageUpload.css'
 import './DressSelection.css'
 
+// trace_id 생성 함수
+const generateTraceId = () => {
+    return `trace_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+}
+
 const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
     // General Fitting 상태
     const [uploadedImage, setUploadedImage] = useState(null)
@@ -35,6 +40,17 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
     const [reviewModalOpen, setReviewModalOpen] = useState(false)
     const [imageSelectionModalOpen, setImageSelectionModalOpen] = useState(false)
     const [resultImages, setResultImages] = useState([]) // 두 개의 결과 이미지 저장
+    
+    // 프로파일링 관련 상태
+    const [traceId, setTraceId] = useState(null)
+    const profileTimingsRef = useRef({
+        bg_select_ms: null,
+        person_upload_ms: null,
+        person_validate_ms: null,
+        dress_drop_ms: null,
+        compose_click_to_response_ms: null,
+        result_image_load_ms: null
+    })
 
     // 로딩 메시지 목록 (순차적으로 표시, 마지막은 고정)
     const loadingMessages = [
@@ -350,9 +366,25 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
 
     // 배경 선택 핸들러
     const handleBackgroundSelect = (index) => {
+        // trace_id 생성 (피팅 1회 시작)
+        if (!traceId) {
+            const newTraceId = generateTraceId()
+            setTraceId(newTraceId)
+        }
+        
+        // 배경 선택 시간 측정 시작
+        if (profileTimingsRef.current.bg_select_ms === null) {
+            profileTimingsRef.current.bg_select_start = Date.now()
+        }
+        
         setSelectedBackgroundIndex(index)
         if (currentStep < 2) {
             setCurrentStep(2)
+        }
+        
+        // 배경 선택 완료 시간 측정
+        if (profileTimingsRef.current.bg_select_start) {
+            profileTimingsRef.current.bg_select_ms = Date.now() - profileTimingsRef.current.bg_select_start
         }
     }
 
@@ -364,6 +396,15 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
             return
         }
 
+        // trace_id 생성 (피팅 1회 시작)
+        if (!traceId) {
+            const newTraceId = generateTraceId()
+            setTraceId(newTraceId)
+        }
+        
+        // 드레스 드롭 시간 측정 시작
+        const dressDropStart = Date.now()
+
         setIsProcessing(true)
         setProgress(0)
         setLoadingMessageIndex(0)
@@ -373,7 +414,22 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
             const backgroundImageUrl = backgroundImages[selectedBackgroundIndex]
             const backgroundFile = await urlToFile(backgroundImageUrl, `background${selectedBackgroundIndex + 1}.jpg`)
 
-            const result = await autoMatchImageV5V5(uploadedImage, dress, backgroundFile)
+            // 드레스 드롭 시간 측정 완료 (드레스 업로드 완료)
+            profileTimingsRef.current.dress_drop_ms = Date.now() - dressDropStart
+            
+            // 합성 클릭 시간 측정 시작
+            const composeClickStart = Date.now()
+
+            const result = await autoMatchImageV5V5(
+                uploadedImage, 
+                dress, 
+                backgroundFile,
+                traceId,
+                profileTimingsRef.current
+            )
+            
+            // 합성 클릭~응답 수신 시간 측정 완료
+            profileTimingsRef.current.compose_click_to_response_ms = Date.now() - composeClickStart
 
             setProgress(100)
             setSelectedDress(dress)
@@ -400,14 +456,26 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                 }
             }
 
+            // 결과 이미지 로딩 시간 측정 시작
+            const resultImageLoadStart = Date.now()
+            
             // 두 개의 이미지가 있는 경우 모달 표시
             if (images.length >= 2) {
                 setResultImages(images)
                 setImageSelectionModalOpen(true)
+                // 결과 이미지 로딩 시간 측정 완료 (화면 표시 완료)
+                setTimeout(() => {
+                    profileTimingsRef.current.result_image_load_ms = Date.now() - resultImageLoadStart
+                }, 100)
             } else if (images.length === 1) {
                 // 하나의 이미지만 있는 경우
                 setGeneralResultImage(images[0])
                 setOriginalResultImage(images[0])
+                
+                // 결과 이미지 로딩 시간 측정 완료 (화면 표시 완료)
+                setTimeout(() => {
+                    profileTimingsRef.current.result_image_load_ms = Date.now() - resultImageLoadStart
+                }, 100)
 
                 // 리뷰 모달 표시 (1번만, 쿠키 확인)
                 if (!isReviewCompleted('general')) {
@@ -419,6 +487,11 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                 // 단일 이미지 응답인 경우 (기존 동작 유지, 호환성)
                 setGeneralResultImage(result.result_image)
                 setOriginalResultImage(result.result_image)
+                
+                // 결과 이미지 로딩 시간 측정 완료 (화면 표시 완료)
+                setTimeout(() => {
+                    profileTimingsRef.current.result_image_load_ms = Date.now() - resultImageLoadStart
+                }, 100)
 
                 // 리뷰 모달 표시 (1번만, 쿠키 확인)
                 if (!isReviewCompleted('general')) {
@@ -485,10 +558,26 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
     }
 
     const handleFile = async (file) => {
+        // trace_id 생성 (피팅 1회 시작)
+        if (!traceId) {
+            const newTraceId = generateTraceId()
+            setTraceId(newTraceId)
+        }
+        
+        // 인물 업로드 시간 측정 시작
+        const personUploadStart = Date.now()
+        
         // 사람 감지 검증
         try {
             setIsValidatingPerson(true)
+            
+            // 인물 검증 시간 측정 시작
+            const personValidateStart = Date.now()
+            
             const validationResult = await validatePerson(file)
+            
+            // 인물 검증 시간 측정 완료
+            profileTimingsRef.current.person_validate_ms = Date.now() - personValidateStart
 
             // 동물이 감지된 경우
             if (validationResult.is_animal) {
@@ -511,6 +600,9 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
             reader.onloadend = () => {
                 setPreview(reader.result)
                 handleImageUpload(file)
+                
+                // 인물 업로드 시간 측정 완료
+                profileTimingsRef.current.person_upload_ms = Date.now() - personUploadStart
             }
             reader.readAsDataURL(file)
         } catch (error) {
