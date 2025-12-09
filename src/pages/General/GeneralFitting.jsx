@@ -223,9 +223,36 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                         image: `${apiBaseUrl}/api/proxy-image?url=${encodeURIComponent(dress.url)}`,
                         originalUrl: dress.url,  // 합성용 원본 URL 보관
                         description: `${dress.style} 스타일의 드레스`,
-                        category: styleToCategory(dress.style)
+                        category: styleToCategory(dress.style),
+                        fitting_count: dress.fitting_count || 0  // 피팅 횟수 (백엔드에서 제공)
                     }))
-                    setDresses(transformedDresses)
+                    
+                    // 카테고리별로 그룹화하고 각 카테고리 내에서 피팅 횟수로 내림차순 정렬
+                    const groupedByCategory = transformedDresses.reduce((acc, dress) => {
+                        const category = dress.category
+                        if (!acc[category]) {
+                            acc[category] = []
+                        }
+                        acc[category].push(dress)
+                        return acc
+                    }, {})
+                    
+                    // 각 카테고리 내에서 피팅 횟수로 내림차순 정렬
+                    Object.keys(groupedByCategory).forEach(category => {
+                        groupedByCategory[category].sort((a, b) => 
+                            (b.fitting_count || 0) - (a.fitting_count || 0)
+                        )
+                    })
+                    
+                    // 카테고리 순서대로 평탄화
+                    const sortedDresses = []
+                    categories.forEach(cat => {
+                        if (groupedByCategory[cat.id]) {
+                            sortedDresses.push(...groupedByCategory[cat.id])
+                        }
+                    })
+                    
+                    setDresses(sortedDresses.length > 0 ? sortedDresses : transformedDresses)
                 } else {
                     setError('드레스 목록을 불러올 수 없습니다.')
                     setDresses([])
@@ -558,8 +585,17 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
     const filteredDresses = selectedCategory === 'all'
         ? dresses
         : dresses.filter(dress => dress.category === selectedCategory)
+    
+    // 선택된 카테고리 내에서도 피팅 횟수로 정렬 (이미 정렬되어 있지만 확실하게)
+    const sortedFilteredDresses = [...filteredDresses].sort((a, b) => {
+        // fitting_count가 있으면 그것으로 정렬, 없으면 기존 순서 유지
+        if (a.fitting_count !== undefined && b.fitting_count !== undefined) {
+            return (b.fitting_count || 0) - (a.fitting_count || 0)
+        }
+        return 0
+    })
 
-    const dressesToRender = isMobile ? filteredDresses : filteredDresses.slice(0, displayCount)
+    const dressesToRender = isMobile ? sortedFilteredDresses : sortedFilteredDresses.slice(0, displayCount)
 
     const handleDressClick = (dress) => {
         if (isProcessing) return

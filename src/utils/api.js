@@ -148,6 +148,11 @@ export const autoMatchImageV5V5 = async (personImage, dressData, backgroundImage
             const dressUrl = dressData.originalUrl || dressData.image
             const dressFile = await urlToFile(dressUrl, 'dress.jpg')
             formData.append('garment_image', dressFile)
+            
+            // dress_id 추가 (dressData가 객체인 경우)
+            if (dressData.id) {
+                formData.append('dress_id', dressData.id.toString())
+            }
         } else {
             throw new Error('드레스 이미지가 필요합니다.')
         }
