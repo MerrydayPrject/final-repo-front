@@ -67,9 +67,6 @@ const Modal = ({ isOpen, onClose, message, children, center = false, hideFooter 
         <div
             className="modal-overlay"
             onClick={handleOverlayClick}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby={message ? "modal-message" : undefined}
         >
             <div
                 className="modal-container"
@@ -78,7 +75,7 @@ const Modal = ({ isOpen, onClose, message, children, center = false, hideFooter 
             >
                 <div className={`modal-body${center ? ' center' : ''}`}>
                     {message && (
-                        <p id="modal-message" className="modal-message">
+                        <p className="modal-message">
                             {message}
                         </p>
                     )}
