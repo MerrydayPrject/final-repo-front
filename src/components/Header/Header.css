@@ -101,7 +101,14 @@ body.image-selection-modal-open .header {
     letter-spacing: 2px;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     user-select: none;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
 }
+
+.logo-text:hover {
+    opacity: 0.8;
+}
+
 
 .header-menu {
     display: flex;
@@ -141,7 +148,6 @@ body.image-selection-modal-open .header {
     font-family: 'GowoonDodum', sans-serif;
     cursor: pointer;
     padding: 8px 16px;
-    border-radius: 20px;
     transition: all 0.3s ease;
     position: relative;
     white-space: nowrap;
@@ -164,12 +170,9 @@ body.image-selection-modal-open .header {
     color: #2c2c2c;
 }
 
-.menu-item:hover::after {
+.menu-item:hover::after,
+.menu-item.active::after {
     transform: translateX(-50%) scaleX(1);
-}
-
-.menu-item:active {
-    transform: scale(0.95);
 }
 
 @media (max-width: 768px) {
@@ -222,7 +225,9 @@ body.image-selection-modal-open .header {
         font-family: 'GowoonDodum', sans-serif;
         padding: 6px 0;
         color: #2c2c2c;
+        cursor: pointer;
     }
+
 }
 
 @media (max-width: 480px) {
