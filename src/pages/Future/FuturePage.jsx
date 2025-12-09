@@ -138,51 +138,76 @@ const FuturePage = ({ onBackToMain }) => {
 
         // 씬 생성
         const scene = new THREE.Scene()
-        scene.background = new THREE.Color(0x111111)
+        scene.background = new THREE.Color(0x050505)  // 더 어둡게
         sceneRef.current = scene
 
-        // 스튜디오 조명 설정 (천 느낌을 위해 부드러운 조명)
-        const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.9)
+        // 스튜디오 조명 설정 (주변은 어둡게, 드레스만 밝게)
+        const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.1)
+        hemisphereLight.color.setHex(0xffffff)  // 명확한 하얀색
+        hemisphereLight.groundColor.setHex(0xffffff)  // 명확한 하얀색
         hemisphereLight.position.set(0, 4, 0)
         scene.add(hemisphereLight)
 
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6)
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.05)
+        ambientLight.color.setHex(0xffffff)  // 명확한 하얀색
         scene.add(ambientLight)
 
-        const directionalLight1 = new THREE.DirectionalLight(0xffffff, 1.0)
+        // 주변 조명은 최소화 (드레스만 밝게 하기 위해)
+        const directionalLight1 = new THREE.DirectionalLight(0xffffff, 0.1)
+        directionalLight1.color.setHex(0xffffff)  // 명확한 하얀색
         directionalLight1.position.set(1.5, 5, 2)
-        directionalLight1.castShadow = true
-        directionalLight1.shadow.mapSize.width = 4096
-        directionalLight1.shadow.mapSize.height = 4096
-        directionalLight1.shadow.camera.near = 0.5
-        directionalLight1.shadow.camera.far = 50
-        directionalLight1.shadow.radius = 8
+        directionalLight1.castShadow = false
         scene.add(directionalLight1)
 
-        const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.6)
+        const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.05)
+        directionalLight2.color.setHex(0xffffff)  // 명확한 하얀색
         directionalLight2.position.set(0, 3, 3)
-        directionalLight2.castShadow = true
-        directionalLight2.shadow.mapSize.width = 4096
-        directionalLight2.shadow.mapSize.height = 4096
-        directionalLight2.shadow.radius = 8
+        directionalLight2.castShadow = false
         scene.add(directionalLight2)
 
-        const directionalLight3 = new THREE.DirectionalLight(0xffffff, 0.4)
+        const directionalLight3 = new THREE.DirectionalLight(0xffffff, 0.05)
+        directionalLight3.color.setHex(0xffffff)  // 명확한 하얀색
         directionalLight3.position.set(-2, 3, -2)
         scene.add(directionalLight3)
 
-        const pointLight1 = new THREE.PointLight(0xffffff, 0.7, 10)
+        const pointLight1 = new THREE.PointLight(0xffffff, 0.1, 10)
+        pointLight1.color.setHex(0xffffff)  // 명확한 하얀색
         pointLight1.position.set(2, 2, 1)
         scene.add(pointLight1)
 
-        const pointLight2 = new THREE.PointLight(0xffffff, 0.6, 10)
+        const pointLight2 = new THREE.PointLight(0xffffff, 0.1, 10)
+        pointLight2.color.setHex(0xffffff)  // 명확한 하얀색
         pointLight2.position.set(-2, 2, 1)
         scene.add(pointLight2)
 
-        // 피팅룸 공간 구성
+        // SpotLight 추가 (드레스 조명 - 메인 조명, 천 재질을 위한 부드러운 조명)
+        const spotLight = new THREE.SpotLight(0xe0e0e0, 4.0)  // 적당한 밝기
+        spotLight.color.setHex(0xe0e0e0)  // 약간 밝은 회색빛 하얀색
+        spotLight.position.set(0, 4, 2.5)  // 드레스 위쪽에서 비춤 (더 위에서, 더 앞에서)
+        spotLight.angle = Math.PI / 3  // 60도 각도 (더 넓게, 부드러운 조명)
+        spotLight.penumbra = 0.8  // 매우 부드러운 가장자리 (천 재질 느낌)
+        spotLight.decay = 0.3  // 거리 감쇠 최소화
+        spotLight.distance = 30  // 거리 증가
+        spotLight.castShadow = true
+        spotLight.shadow.enabled = true
+        spotLight.shadow.mapSize.width = 2048  // 울렁임 방지를 위해 해상도 증가
+        spotLight.shadow.mapSize.height = 2048  // 울렁임 방지를 위해 해상도 증가
+        spotLight.shadow.camera.near = 0.1
+        spotLight.shadow.camera.far = 50
+        spotLight.shadow.camera.fov = 45
+        spotLight.shadow.radius = 8
+        spotLight.shadow.bias = -0.0008  // 울렁임 방지 (그림자가 표면과 겹치지 않도록)
+        spotLight.shadow.normalBias = 0.02  // 울렁임 방지 추가 설정
+        // 드레스 중앙(가슴~허리 높이)에 타겟 설정
+        spotLight.target.position.set(0, 0.4, -0.8)
+        spotLight.target.updateMatrixWorld()
+        scene.add(spotLight)
+        scene.add(spotLight.target)
+
+        // 피팅룸 공간 구성 (어두운 배경)
         const floorGeometry = new THREE.PlaneGeometry(6, 6)
         const floorMaterial = new THREE.MeshStandardMaterial({
-            color: 0x3a3a3a,
+            color: 0x0a0a0a,
             roughness: 1.0,
             metalness: 0.0
         })
@@ -193,7 +218,7 @@ const FuturePage = ({ onBackToMain }) => {
         scene.add(floor)
 
         const wallMaterial = new THREE.MeshStandardMaterial({
-            color: 0x2b2b2b,
+            color: 0x0f0f0f,
             roughness: 1.0,
             metalness: 0.0
         })
@@ -211,7 +236,7 @@ const FuturePage = ({ onBackToMain }) => {
 
         const backWallGeometry = new THREE.PlaneGeometry(4, 4.5)
         const backWallMaterial = new THREE.MeshStandardMaterial({
-            color: 0x404040,
+            color: 0x0f0f0f,
             roughness: 1.0,
             metalness: 0.0
         })
@@ -228,6 +253,20 @@ const FuturePage = ({ onBackToMain }) => {
         const mirror = new THREE.Mesh(mirrorGeometry, mirrorMaterial)
         mirror.position.set(0.9, 2.0, -2.49)
         scene.add(mirror)
+
+        // 배경 거울 추가 (뷰어 배경에 큰 거울)
+        const backgroundMirrorGeometry = new THREE.PlaneGeometry(20, 20)  // 매우 큰 거울
+        const backgroundMirrorMaterial = new THREE.MeshStandardMaterial({
+            color: 0x1a1a1a,
+            roughness: 0.05,  // 매우 매끄러움 (거울 효과)
+            metalness: 0.95,  // 높은 금속성 (반사 효과)
+            side: THREE.DoubleSide  // 양면 모두 렌더링
+        })
+        const backgroundMirror = new THREE.Mesh(backgroundMirrorGeometry, backgroundMirrorMaterial)
+        backgroundMirror.position.set(0, 1, 3)  // 카메라 뒤쪽에 배치
+        backgroundMirror.rotation.y = Math.PI  // 카메라를 향하도록 회전
+        backgroundMirror.receiveShadow = true
+        scene.add(backgroundMirror)
 
         // HDRI 환경 맵 설정
         const rgbeLoader = new RGBELoader()
@@ -248,7 +287,7 @@ const FuturePage = ({ onBackToMain }) => {
                     // 환경맵을 완전히 제거하여 반사 방지 (천 재질)
                     scene.environment = null
                     scene.environmentIntensity = 0.0  // 환경맵 강도 완전 제거
-                    scene.background = new THREE.Color(0x111111)
+                    scene.background = new THREE.Color(0x050505)  // 어두운 배경 유지
                 },
                 undefined,
                 (error) => {
@@ -266,12 +305,12 @@ const FuturePage = ({ onBackToMain }) => {
         defaultCameraZRef.current = defaultZ // 기본 Z 위치 저장
         cameraRef.current = camera
 
-        // 렌더러 설정 (천 재질 느낌을 위해 exposure 낮춤)
+        // 렌더러 설정 (천 재질 느낌을 위해 exposure 조정)
         const renderer = new THREE.WebGLRenderer({
             canvas,
             antialias: true,
             toneMapping: THREE.ACESFilmicToneMapping,
-            toneMappingExposure: 1.0,  // 반사 효과를 줄이기 위해 낮춤
+            toneMappingExposure: 0.9,  // 약간 낮춰서 부드러운 느낌 (플라스틱 느낌 방지)
             powerPreference: 'high-performance'
         })
         renderer.setSize(width, height)
@@ -360,6 +399,15 @@ const FuturePage = ({ onBackToMain }) => {
                             if (mat.normalMap) {
                                 mat.normalMap.colorSpace = THREE.NoColorSpace
                                 setTextureFiltering(mat.normalMap)
+                                // 울렁임 방지를 위한 normalScale 조정
+                                if (mat.normalScale !== undefined) {
+                                    mat.normalScale.set(0.5, 0.5)  // 울렁임 방지
+                                }
+                            } else {
+                                // normalMap이 없어도 normalScale 설정
+                                if (mat.normalScale !== undefined) {
+                                    mat.normalScale.set(0.5, 0.5)  // 울렁임 방지
+                                }
                             }
 
                             // 다른 텍스처 맵들도 필터링 개선
@@ -431,7 +479,7 @@ const FuturePage = ({ onBackToMain }) => {
 
                             // 천 느낌을 위해 반사 완전 제거
                             if (mat.roughness !== undefined) {
-                                mat.roughness = 1.0  // 최대 거칠기 (반사 최소)
+                                mat.roughness = 1.0  // 최대 거칠기 (천 재질 느낌)
                             }
 
                             if (mat.metalness !== undefined) {
@@ -442,6 +490,12 @@ const FuturePage = ({ onBackToMain }) => {
                             mat.envMap = null
                             if (mat.envMapIntensity !== undefined) {
                                 mat.envMapIntensity = 0.0
+                            }
+
+                            // 천 재질 느낌을 위한 emissive 추가 (부드러운 느낌)
+                            if (mat.emissive !== undefined) {
+                                mat.emissive = new THREE.Color(0x000000)
+                                mat.emissiveIntensity = 0.0
                             }
 
                             // 스펙큘러 반사 완전 제거
@@ -500,6 +554,30 @@ const FuturePage = ({ onBackToMain }) => {
                                 mat.refractionRatio = 1.0
                             }
 
+                            // 추가 반사 제거 (플라스틱 느낌 방지)
+                            if (mat.transmission !== undefined) {
+                                mat.transmission = 0.0
+                            }
+                            if (mat.thickness !== undefined) {
+                                mat.thickness = 0.0
+                            }
+                            if (mat.ior !== undefined) {
+                                mat.ior = 1.0
+                            }
+
+                            // 텍스처의 반사도 제거
+                            if (mat.roughnessMap) {
+                                // roughnessMap은 유지하되 반사는 없도록
+                            }
+                            if (mat.metalnessMap) {
+                                mat.metalnessMap = null
+                            }
+
+                            // 울렁임 방지를 위한 dithering 설정
+                            if (mat.dithering !== undefined) {
+                                mat.dithering = true  // 울렁임 방지
+                            }
+
                             // 천 재질 느낌을 위한 추가 설정
                             mat.needsUpdate = true
                         })
@@ -509,7 +587,7 @@ const FuturePage = ({ onBackToMain }) => {
                 scene.add(model)
 
                 // 단상 추가
-                const pedestalGeometry = new THREE.CylinderGeometry(0.4, 0.4, 0.3, 32)
+                const pedestalGeometry = new THREE.CylinderGeometry(0.6, 0.6, 0.3, 32)  // 너비를 더 넓게
                 const pedestalMaterial = new THREE.MeshStandardMaterial({
                     color: 0xF0F0E8,
                     roughness: 0.8,
@@ -1527,8 +1605,8 @@ const FuturePage = ({ onBackToMain }) => {
                         <button className="future-faq-button">
                             <HiQuestionMarkCircle />
                             <div className="future-tooltip">
-                                <span>웨딩드레스의 선택은 디테일에서 시작됩니다.</span>
-                                <span>3D로 회전하거나 확대하며 라인과 구조를 직접 탐색해볼 수 있습니다.</span>
+                                <span>웨딩드레스의 선택은 디테일에서 시작됩니다</span>
+                                <span>3D로 회전하거나 확대하며 라인과 구조를 직접 탐색해볼 수 있습니다</span>
                             </div>
                         </button>
                     </div>
