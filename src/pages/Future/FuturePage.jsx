@@ -26,7 +26,7 @@ if (typeof ScrollTrigger !== 'undefined') {
     // ScrollTrigger의 refresh 메서드를 안전하게 패치
     const originalRefresh = ScrollTrigger.refresh
     if (originalRefresh && typeof originalRefresh === 'function') {
-        ScrollTrigger.refresh = function() {
+        ScrollTrigger.refresh = function () {
             try {
                 // DOM이 안전한 상태인지 확인
                 if (!document.body || !document.documentElement) {
@@ -67,9 +67,9 @@ if (typeof ScrollTrigger !== 'undefined') {
     // ScrollTrigger의 내부 refresh 함수들을 패치하기 위해
     // 전역 오류 핸들러로 ScrollTrigger refresh 오류를 무시
     const originalErrorHandler = window.onerror
-    window.onerror = function(message, source, lineno, colno, error) {
+    window.onerror = function (message, source, lineno, colno, error) {
         // ScrollTrigger의 removeChild 오류는 무시
-        if (message && typeof message === 'string' && 
+        if (message && typeof message === 'string' &&
             (message.includes('removeChild') || message.includes('NotFoundError'))) {
             if (source && source.includes('ScrollTrigger')) {
                 console.debug('ScrollTrigger removeChild error ignored:', message)
@@ -84,10 +84,10 @@ if (typeof ScrollTrigger !== 'undefined') {
     }
 
     // unhandledrejection도 처리
-    window.addEventListener('unhandledrejection', function(event) {
+    window.addEventListener('unhandledrejection', function (event) {
         if (event.reason && typeof event.reason === 'object') {
             const errorMessage = event.reason.message || event.reason.toString()
-            if (errorMessage && errorMessage.includes('removeChild') && 
+            if (errorMessage && errorMessage.includes('removeChild') &&
                 errorMessage.includes('ScrollTrigger')) {
                 console.debug('ScrollTrigger removeChild promise rejection ignored:', errorMessage)
                 event.preventDefault() // 오류 전파 방지
