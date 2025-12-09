@@ -17,6 +17,14 @@
     font-display: swap;
 }
 
+/* 카페24 클래식타입 폰트 추가 */
+@font-face {
+    font-family: 'Cafe24ClassicType';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2210-2@1.0/Cafe24ClassicType-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-display: swap;
+}
+
 :root {
     --mainsize: 1400px;
     --e-font: "Anton", sans-serif;
@@ -164,7 +172,7 @@
 #vision1012 .full_img p {
     font-size: 80px;
     line-height: 1.15;
-    font-family: 'HsJandari', serif;
+    font-family: 'Cafe24ClassicType', serif;
     font-weight: normal;
     letter-spacing: 0.08em;
     color: #8b7a3a;
@@ -179,7 +187,7 @@
 #vision1012 .full_img p.btm_txt {
     font-size: 100px;
     color: #ffffff;
-    -webkit-text-stroke: 1.5px #ad9f41;
+    -webkit-text-stroke: 0.8px #ad9f41;
     text-shadow:
         0 2px 4px rgba(255, 255, 255, 0.6),
         0 4px 14px rgba(255, 255, 255, 0.5),
@@ -188,11 +196,11 @@
 
 #vision1012 .full_img p.top_txt span {
     font-size: 80px;
-    font-family: 'HsJandari', serif;
-    font-weight: 600;
+    font-family: 'Cafe24ClassicType', serif;
+    font-weight: normal;
     letter-spacing: 0.08em;
     color: #8b7a3a;
-    -webkit-text-stroke: 1.5px #ad9f41;
+    -webkit-text-stroke: 0.8px #ad9f41;
     text-shadow:
         0 2px 4px rgba(255, 255, 255, 0.6),
         0 4px 12px rgba(255, 255, 255, 0.5),
@@ -201,9 +209,9 @@
 
 #vision1012 .full_img p span {
     font-size: 92px;
-    font-family: 'HsJandari', serif;
+    font-family: 'Cafe24ClassicType', serif;
     font-weight: normal;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     color: #8b7a3a;
     -webkit-text-stroke: 1.5px #ad9f41;
     text-shadow:
@@ -215,6 +223,7 @@
 /* 3D 웨딩드레스의 '3D' 부분만 새로운 경험과 같은 색상으로, 크기도 키움 */
 #vision1012 .full_img p.btm_txt span {
     font-size: 110px;
+    font-family: 'Cafe24ClassicType', serif;
     color: #ffffff;
     -webkit-text-stroke: 0.8px #ad9f41;
     text-shadow:
@@ -235,6 +244,7 @@
 #vision1012 .b_txt .top_txt {
     transform: translateX(-350px);
     cursor: default;
+    white-space: nowrap;
 }
 
 #vision1012 .b_txt .btm_txt {
@@ -457,10 +467,12 @@
 
     #vision1012 .b_txt .top_txt {
         transform: translateX(-200px);
+        white-space: nowrap;
     }
 
     #vision1012 .b_txt .btm_txt {
         transform: translateX(200px);
+        white-space: nowrap;
     }
 
     #vision1012 .instruction_txt {
@@ -487,17 +499,19 @@
 
     #vision1012 .full_img p {
         font-size: 50px;
+        font-family: 'Cafe24ClassicType', serif;
     }
 
     #vision1012 .full_img p span {
         font-size: 65px;
+        font-family: 'Cafe24ClassicType', serif;
     }
 }
 
 @media (max-width: 768px) {
     #vision1012 .full_img p {
-        font-size: 32px;
-        font-family: 'HsJandari', serif;
+        font-size: 28px;
+        font-family: 'Cafe24ClassicType', serif;
         font-weight: normal;
         color: #8b7a3a;
         -webkit-text-stroke: 1.5px #ad9f41;
@@ -508,8 +522,8 @@
     }
 
     #vision1012 .full_img p span {
-        font-size: 40px;
-        font-family: 'HsJandari', serif;
+        font-size: 28px;
+        font-family: 'Cafe24ClassicType', serif;
         font-weight: normal;
         color: #8b7a3a;
         -webkit-text-stroke: 1.5px #ad9f41;
@@ -519,9 +533,17 @@
             0 0 15px rgba(173, 159, 65, 0.2);
     }
 
-    /* 모바일(태블릿)에서 '새로운 경험' 크기를 '곧 만나게 될'과 동일하게 */
+    /* 모바일(태블릿)에서 '새로운 경험' 크기를 줄임 */
     #vision1012 .full_img p.top_txt span {
-        font-size: 20px !important;
+        font-size: 28px !important;
+        font-family: 'Cafe24ClassicType', serif !important;
+        font-weight: normal !important;
+        color: #8b7a3a !important;
+        -webkit-text-stroke: 1.5px #ad9f41 !important;
+        text-shadow:
+            0 2px 4px rgba(0, 0, 0, 0.3),
+            0 4px 8px rgba(0, 0, 0, 0.4),
+            0 0 15px rgba(173, 159, 65, 0.2) !important;
     }
 
     /* 모바일(태블릿)에서 '3D 웨딩드레스' 크기 키움 */
@@ -543,8 +565,8 @@
 
     #vision1012 .b_txt .top_txt {
         will-change: transform !important;
-        font-size: 20px !important;
-        font-family: 'HsJandari', serif !important;
+        font-size: 28px !important;
+        font-family: 'Cafe24ClassicType', serif !important;
         font-weight: normal !important;
         display: block !important;
         visibility: visible !important;
@@ -559,23 +581,27 @@
     }
 
     #vision1012 .b_txt .top_txt span {
-        font-size: 20px !important;
-        font-family: 'HsJandari', serif !important;
+        font-size: 28px !important;
+        font-family: 'Cafe24ClassicType', serif !important;
         font-weight: normal !important;
         color: #8b7a3a !important;
         -webkit-text-stroke: 1.5px #ad9f41 !important;
+        text-shadow:
+            0 2px 4px rgba(0, 0, 0, 0.3),
+            0 4px 8px rgba(0, 0, 0, 0.4),
+            0 0 15px rgba(173, 159, 65, 0.2) !important;
     }
 
     #vision1012 .b_txt .btm_txt {
         will-change: transform !important;
         font-size: 30px !important;
-        font-family: 'HsJandari', serif !important;
+        font-family: 'Cafe24ClassicType', serif !important;
         font-weight: normal !important;
         display: block !important;
         visibility: visible !important;
         opacity: 1 !important;
         color: #ffffff !important;
-        -webkit-text-stroke: 1.5px #ad9f41 !important;
+        -webkit-text-stroke: 0.8px #ad9f41 !important;
         text-shadow:
             0 2px 4px rgba(255, 255, 255, 0.6),
             0 4px 14px rgba(255, 255, 255, 0.5),
@@ -585,10 +611,10 @@
 
     #vision1012 .b_txt .btm_txt span {
         font-size: 32px !important;
-        font-family: 'HsJandari', serif !important;
+        font-family: 'Cafe24ClassicType', serif !important;
         font-weight: normal !important;
         color: #ffffff !important;
-        -webkit-text-stroke: 1.5px #ad9f41 !important;
+        -webkit-text-stroke: 0.8px #ad9f41 !important;
     }
 
     #vision1012 .instruction_txt {
@@ -688,8 +714,8 @@
     }
 
     #vision1012 .full_img p {
-        font-size: 45px !important;
-        font-family: 'HsJandari', serif !important;
+        font-size: 28px !important;
+        font-family: 'Cafe24ClassicType', serif !important;
         font-weight: normal !important;
         color: #8b7a3a !important;
         -webkit-text-stroke: 0.8px #ad9f41 !important;
@@ -700,22 +726,28 @@
     }
 
     #vision1012 .full_img p span {
-        font-size: 36px !important;
-        font-family: 'HsJandari', serif !important;
+        font-size: 28px !important;
+        font-family: 'Cafe24ClassicType', serif !important;
         font-weight: normal !important;
         color: #8b7a3a !important;
-        -webkit-text-stroke: 1.5px #ad9f41 !important;
+        -webkit-text-stroke: 0.8px #ad9f41 !important;
         text-shadow:
             0 2px 3px rgba(0, 0, 0, 0.3),
             0 3px 6px rgba(0, 0, 0, 0.4),
             0 0 12px rgba(173, 159, 65, 0.2) !important;
     }
 
-    /* 모바일(폰)에서 '새로운 경험' 크기를 '곧 만나게 될'과 동일하게 */
+    /* 모바일(폰)에서 '새로운 경험' 크기를 줄임 */
     #vision1012 .full_img p.top_txt span {
-        font-size: 24px !important;
-        font-family: 'HsJandari', serif !important;
+        font-size: 28px !important;
+        font-family: 'Cafe24ClassicType', serif !important;
         font-weight: normal !important;
+        color: #8b7a3a !important;
+        -webkit-text-stroke: 0.8px #ad9f41 !important;
+        text-shadow:
+            0 2px 3px rgba(0, 0, 0, 0.3),
+            0 3px 6px rgba(0, 0, 0, 0.4),
+            0 0 12px rgba(173, 159, 65, 0.2) !important;
     }
 
     /* 모바일(폰)에서 '3D 웨딩드레스' 크기 키움 */
@@ -737,14 +769,14 @@
 
     #vision1012 .b_txt .top_txt {
         will-change: transform !important;
-        font-size: 24px !important;
-        font-family: 'HsJandari', serif !important;
+        font-size: 28px !important;
+        font-family: 'Cafe24ClassicType', serif !important;
         font-weight: normal !important;
         display: block !important;
         visibility: visible !important;
         opacity: 1 !important;
         color: #8b7a3a !important;
-        -webkit-text-stroke: 1.5px #ad9f41 !important;
+        -webkit-text-stroke: 0.8px #ad9f41 !important;
         text-shadow:
             0 2px 3px rgba(0, 0, 0, 0.3),
             0 3px 6px rgba(0, 0, 0, 0.4),
@@ -753,11 +785,15 @@
     }
 
     #vision1012 .b_txt .top_txt span {
-        font-size: 24px !important;
-        font-family: 'HsJandari', serif !important;
+        font-size: 28px !important;
+        font-family: 'Cafe24ClassicType', serif !important;
         font-weight: normal !important;
         color: #8b7a3a !important;
-        -webkit-text-stroke: 1.5px #ad9f41 !important;
+        -webkit-text-stroke: 0.8px #ad9f41 !important;
+        text-shadow:
+            0 2px 3px rgba(0, 0, 0, 0.3),
+            0 3px 6px rgba(0, 0, 0, 0.4),
+            0 0 12px rgba(173, 159, 65, 0.2) !important;
     }
 
     #vision1012 .b_txt .btm_txt {
@@ -769,7 +805,7 @@
         visibility: visible !important;
         opacity: 1 !important;
         color: #ffffff !important;
-        -webkit-text-stroke: 1.5px #ad9f41 !important;
+        -webkit-text-stroke: 0.8px #ad9f41 !important;
         text-shadow:
             0 2px 4px rgba(255, 255, 255, 0.6),
             0 4px 14px rgba(255, 255, 255, 0.5),
@@ -782,7 +818,7 @@
         font-family: 'HsJandari', serif !important;
         font-weight: normal !important;
         color: #ffffff !important;
-        -webkit-text-stroke: 1.5px #ad9f41 !important;
+        -webkit-text-stroke: 0.8px #ad9f41 !important;
     }
 
     #vision1012 .instruction_txt {
