@@ -95,6 +95,11 @@
     transform: translateY(0);
 }
 
+.modal-button:focus {
+    outline: 2px solid #ad9f41;
+    outline-offset: 2px;
+}
+
 @media (max-width: 768px) {
     .modal-container {
         max-width: 340px;
@@ -256,4 +261,3 @@
         transform: none;
     }
 }
-
