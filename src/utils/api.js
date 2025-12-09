@@ -405,23 +405,16 @@ export const countVisitor = async () => {
  */
 export const checkDress = async (imageFile, model = 'gpt-4o-mini', mode = 'fast') => {
     try {
-        const apiBaseUrl = getApiBaseUrl()
-        const url = `${apiBaseUrl}/api/dress/check`
-        console.log('[API] 드레스 체크 요청 URL:', url)
-        console.log('[API] 파일명:', imageFile.name, '크기:', imageFile.size)
-        
         const formData = new FormData()
         formData.append('file', imageFile)
         formData.append('model', model)
         formData.append('mode', mode)
 
-        console.log('[API] 요청 전송 중...')
         const response = await api.post('/api/dress/check', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
         })
-        console.log('[API] 응답 받음:', response.status, response.data)
 
         return response.data
     } catch (error) {

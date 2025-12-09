@@ -431,9 +431,7 @@ const CustomFitting = ({ onBackToMain }) => {
         setIsCheckingDress(true)
         setDressCheckResult(null)
         try {
-            console.log('[프론트] 드레스 체크 시작:', file.name, file.size)
             const checkResult = await checkDress(file, 'gpt-4o-mini', 'fast')
-            console.log('[프론트] 드레스 체크 결과:', checkResult)
             if (checkResult.success && checkResult.result) {
                 const isDress = checkResult.result.dress
                 setDressCheckResult(isDress)
@@ -455,8 +453,6 @@ const CustomFitting = ({ onBackToMain }) => {
                 setDressCheckResult(null)
             }
         } catch (error) {
-            console.error('[프론트] 드레스 체크 실패:', error)
-            console.error('[프론트] 에러 상세:', error.response?.data || error.message)
             setDressCheckResult(null)
         } finally {
             setIsCheckingDress(false)
