@@ -120,6 +120,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
     const [isDragging, setIsDragging] = useState(false)
     const [showCheckmark, setShowCheckmark] = useState(false)
     const fileInputRef = useRef(null)
+    const modalFileInputRef = useRef(null)  // 모달용 별도 ref
     const prevProcessingRef = useRef(isProcessing)
 
     // DressSelection 상태
@@ -425,6 +426,10 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
     const closeImageUploadModal = () => {
         setImageUploadModalOpen(false)
         setPendingDress(null)
+        // 모달이 닫힐 때 모달 input 초기화
+        if (modalFileInputRef.current) {
+            modalFileInputRef.current.value = ''
+        }
     }
 
     const handleImageUploadedForDress = (image) => {
@@ -1433,7 +1438,7 @@ const GeneralFitting = ({ onBackToMain, initialCategory, onCategorySet }) => {
                     }}
                     style={{ display: 'none' }}
                     id="modal-image-input"
-                    ref={fileInputRef}
+                    ref={modalFileInputRef}
                 />
             </Modal>
 
