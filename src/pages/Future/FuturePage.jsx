@@ -323,8 +323,8 @@ const FuturePage = ({ onBackToMain }) => {
             // 웹버전: 최소 2를 보장하되 최대 3까지
             pixelRatio = Math.max(Math.min(pixelRatio, 3), 2)
         } else {
-            // 모바일: devicePixelRatio를 그대로 사용하되 최대 3까지
-            pixelRatio = Math.min(pixelRatio, 3)
+            // 모바일: devicePixelRatio를 그대로 사용하되 최대 2까지 (성능 최적화)
+            pixelRatio = Math.min(pixelRatio, 2)
         }
 
         renderer.setPixelRatio(pixelRatio)
@@ -656,8 +656,8 @@ const FuturePage = ({ onBackToMain }) => {
                     // 웹버전: 최소 2를 보장하되 최대 3까지
                     pixelRatio = Math.max(Math.min(pixelRatio, 3), 2)
                 } else {
-                    // 모바일: devicePixelRatio를 그대로 사용하되 최대 3까지
-                    pixelRatio = Math.min(pixelRatio, 3)
+                    // 모바일: devicePixelRatio를 그대로 사용하되 최대 2까지 (성능 최적화)
+                    pixelRatio = Math.min(pixelRatio, 2)
                 }
 
                 rendererRef.current.setPixelRatio(pixelRatio)
@@ -761,10 +761,34 @@ const FuturePage = ({ onBackToMain }) => {
 
         // 애니메이션 루프
         let isAnimating = true
-        const animate = () => {
+        // 모바일 여부 확인 (렌더러 설정 시 이미 선언된 isMobile 사용)
+        const isMobileDevice = window.innerWidth <= 768
+        const targetFPS = isMobileDevice ? 30 : 60  // 모바일: 30fps, 웹: 60fps
+        const frameInterval = 1000 / targetFPS  // 모바일: 33.33ms, 웹: 16.67ms
+        let lastFrameTime = performance.now()
+        let accumulatedTime = 0
+
+        const animate = (currentTime) => {
             if (!isAnimating) return
 
+            // currentTime이 없으면 performance.now() 사용
+            const now = currentTime || performance.now()
+
             animationIdRef.current = requestAnimationFrame(animate)
+
+            const deltaTime = now - lastFrameTime
+            lastFrameTime = now
+            accumulatedTime += deltaTime
+
+            // 모바일에서 30fps로 제한 (프레임 스킵 방식)
+            if (isMobileDevice) {
+                // 누적된 시간이 프레임 간격(33.33ms)보다 작으면 렌더링 건너뛰기
+                if (accumulatedTime < frameInterval) {
+                    return  // 이 프레임은 렌더링하지 않고 다음 프레임으로
+                }
+                // 렌더링할 시간이 되었으므로 누적 시간에서 프레임 간격만큼 빼기
+                accumulatedTime -= frameInterval
+            }
 
             if (mixerRef.current) {
                 mixerRef.current.update(clock.getDelta())
