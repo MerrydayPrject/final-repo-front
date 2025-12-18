@@ -7,7 +7,7 @@
     <!-- 메인 페이지 -->
     <url>
         <loc>https://www.marryday.co.kr/</loc>
-        <lastmod>2024-01-01</lastmod>
+        <lastmod>2025-12-18</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
@@ -15,7 +15,7 @@
     <!-- 일반 피팅 페이지 -->
     <url>
         <loc>https://www.marryday.co.kr/general</loc>
-        <lastmod>2024-01-01</lastmod>
+        <lastmod>2025-12-18</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
     </url>
@@ -23,7 +23,7 @@
     <!-- 커스텀 피팅 페이지 -->
     <url>
         <loc>https://www.marryday.co.kr/custom</loc>
-        <lastmod>2024-01-01</lastmod>
+        <lastmod>2025-12-18</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
     </url>
@@ -31,7 +31,7 @@
     <!-- 체형 분석 페이지 -->
     <url>
         <loc>https://www.marryday.co.kr/analysis</loc>
-        <lastmod>2024-01-01</lastmod>
+        <lastmod>2025-12-18</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
@@ -39,7 +39,7 @@
     <!-- 미래 페이지 -->
     <url>
         <loc>https://www.marryday.co.kr/future</loc>
-        <lastmod>2024-01-01</lastmod>
+        <lastmod>2025-12-18</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
