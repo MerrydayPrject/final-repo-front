@@ -53,6 +53,28 @@ function App() {
         }
     }, [])
 
+    // Canonical URL 동적 설정
+    useEffect(() => {
+        const baseUrl = 'https://www.marryday.co.kr'
+        const canonicalUrl = `${baseUrl}${location.pathname}`
+
+        // 기존 canonical 태그 제거
+        let existingCanonical = document.querySelector('link[rel="canonical"]')
+        if (existingCanonical) {
+            existingCanonical.remove()
+        }
+
+        // 새로운 canonical 태그 추가
+        const link = document.createElement('link')
+        link.rel = 'canonical'
+        link.href = canonicalUrl
+        document.head.appendChild(link)
+
+        return () => {
+            // 컴포넌트 언마운트 시 정리 (필요한 경우)
+        }
+    }, [location.pathname])
+
     // 페이지 전환 시 ScrollTrigger 정리 (모바일 오류 방지)
     useEffect(() => {
         return () => {
